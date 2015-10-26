@@ -40,6 +40,16 @@ public class PlacesListAdapter extends BaseAdapter {
         return 0;
     }
 
+//    @Override
+//    public int getViewTypeCount() {
+//        return super.getViewTypeCount();
+//    }
+//
+//    @Override
+//    public int getItemViewType(int position) {
+//        return super.getItemViewType(position);
+//    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 

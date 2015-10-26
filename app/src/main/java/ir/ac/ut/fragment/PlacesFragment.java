@@ -11,7 +11,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import ir.ac.ut.adapter.PlacesListAdapter;
-import ir.ac.ut.berim.PlaceActivity;
+import ir.ac.ut.berim.ChatActivity;
 import ir.ac.ut.berim.R;
 import ir.ac.ut.models.Place;
 
@@ -53,7 +53,7 @@ public class PlacesFragment extends Fragment {
         PlacesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), PlaceActivity.class);
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
                 intent.putExtra("placeId", places[position].getId());
                 getActivity().startActivity(intent);
             }

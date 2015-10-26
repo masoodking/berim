@@ -8,5 +8,6 @@
     <string name="chats">chats</string>
     <string name="berims">berims</string>
     <string name="title_activity_place">PlaceActivity</string>
+    <string name="title_activity_chat">ChatActivity</string>
 
 </resources>
