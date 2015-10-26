@@ -28,18 +28,15 @@ public class MainActivity extends FragmentActivity {
         final AppPagerAdapter mFragmentPagerAdapter = new AppPagerAdapter(getSupportFragmentManager());
 
         final ViewPager fragmentPager = (ViewPager) findViewById(R.id.list_pager);
-        fragmentPager.setAnimationCacheEnabled(true);
+//        fragmentPager.setAnimationCacheEnabled(true);
         mTabBar.setOnTabChangeListener(new SlidingTabBar.OnTabChangeListener() {
-
             @Override
             public void onTabChange(int position) {
-                fragmentPager.setCurrentItem(position, false);
+                fragmentPager.setCurrentItem(position, true);
             }
         });
-
         mTabBar.setAdapter(mTabAdapter, true);
         mTabBar.setListPager(fragmentPager);
-
         fragmentPager.setAdapter(mFragmentPagerAdapter);
     }
 
@@ -88,8 +85,6 @@ public class MainActivity extends FragmentActivity {
                 case 1:
                     return PlacesFragment.newInstance();
                 case 2:
-                    return PlacesFragment.newInstance();
-                case 3:
                     return PlacesFragment.newInstance();
                 default:
                     return PlacesFragment.newInstance();

@@ -17,13 +17,9 @@ import ir.ac.ut.models.Place;
 
 public class PlacesFragment extends Fragment {
 
-    private Place[] mPlaces;
-
     private GridView PlacesGridView;
 
     private PlacesListAdapter mAdapter;
-
-    private View mRootView;
 
     public static PlacesFragment newInstance() {
         return new PlacesFragment();
@@ -34,13 +30,13 @@ public class PlacesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        mRootView = inflater.inflate(R.layout.fragment_places_list, null);
+        View rootView = inflater.inflate(R.layout.fragment_places_list, null);
 
-        PlacesGridView = (GridView) mRootView.findViewById(R.id.gridView_places);
+        PlacesGridView = (GridView) rootView.findViewById(R.id.gridView_places);
 
         getPlaces();
 
-        return mRootView;
+        return rootView;
     }
 
 
@@ -48,17 +44,17 @@ public class PlacesFragment extends Fragment {
         // todo get from server
 
         int count = 20;
-        mPlaces = new Place[count];
+        final Place[] places = new Place[count];
         for (int i = 0; i < count; i++) {
-            mPlaces[i] = new Place(String.valueOf(i), "Place " + i, "this is place " + i);
+            places[i] = new Place(String.valueOf(i), "Place " + i, "this is place " + i);
         }
-        mAdapter = new PlacesListAdapter(getActivity(), mPlaces);
+        mAdapter = new PlacesListAdapter(getActivity(), places);
         PlacesGridView.setAdapter(mAdapter);
         PlacesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), PlaceActivity.class);
-                intent.putExtra("placeId", mPlaces[position].getId());
+                intent.putExtra("placeId", places[position].getId());
                 getActivity().startActivity(intent);
             }
         });

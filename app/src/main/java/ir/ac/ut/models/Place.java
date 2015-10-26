@@ -11,10 +11,6 @@ public class Place {
 
     String description;
 
-    public Place() {
-
-    }
-
     public Place(String id, String name, String description) {
         this.id = id;
         this.name = name;

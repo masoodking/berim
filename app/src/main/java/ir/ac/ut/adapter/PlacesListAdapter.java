@@ -17,6 +17,7 @@ import ir.ac.ut.models.Place;
 public class PlacesListAdapter extends BaseAdapter {
 
     private Context mContext;
+
     private Place[] mPlaces;
 
     public PlacesListAdapter(Context context, Place[] data) {
@@ -42,13 +43,13 @@ public class PlacesListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        AchievementsViewHolder viewHolder;
+        PlaceViewHolder viewHolder;
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_place_row, parent, false);
-            viewHolder = new AchievementsViewHolder(convertView);
+            viewHolder = new PlaceViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
-            viewHolder = (AchievementsViewHolder) convertView.getTag();
+            viewHolder = (PlaceViewHolder) convertView.getTag();
         }
 
         viewHolder.name.setText(mPlaces[position].getName());
@@ -58,14 +59,14 @@ public class PlacesListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    class AchievementsViewHolder {
+    class PlaceViewHolder {
 
         final TextView name;
         final TextView description;
         final ImageView icon;
 
 
-        AchievementsViewHolder(View view) {
+        PlaceViewHolder(View view) {
             name = (TextView) view.findViewById(R.id.place_name_text_view);
             description = (TextView) view.findViewById(R.id.place_description_text_view);
             icon = (ImageView) view.findViewById(R.id.list_icon_image);
