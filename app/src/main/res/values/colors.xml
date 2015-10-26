@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="selector_pressed">#66e5e5e5</color>
+    <color name="text_tab">#f1f1f1</color>
+    <color name="tab_bar_bg">#338eba</color>
+    <color name="text_primary">#24292b</color>
+</resources>

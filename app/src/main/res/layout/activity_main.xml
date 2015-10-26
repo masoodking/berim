@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <ir.ut.ac.widget.SlidingTabBar
+        android:id="@+id/tab_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/tab_bar_height"
+        android:layout_alignParentTop="true"
+        android:overScrollMode="never" />
+
+    <ir.ut.ac.widget.ViewPager
+        android:id="@+id/list_pager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/tab_bar"
+        android:layout_marginTop="@dimen/tab_bar_height"
+        android:layout_alignParentTop="true" />
+
+    <View
+        android:id="@+id/tab_bar_shadow"
+        android:background="@drawable/actionbar_shadow"
+        android:layout_below="@id/tab_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="4dp" />
+
+
+</RelativeLayout>
