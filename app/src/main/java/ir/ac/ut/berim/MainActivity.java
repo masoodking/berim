@@ -14,6 +14,7 @@ public class MainActivity extends FragmentActivity {
 
     private SlidingTabBar mTabBar;
 
+    public static final int PLACE=1,BERIM=2,CHAT=3,ERROR=4;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +33,7 @@ public class MainActivity extends FragmentActivity {
         mTabBar.setOnTabChangeListener(new SlidingTabBar.OnTabChangeListener() {
             @Override
             public void onTabChange(int position) {
-                fragmentPager.setCurrentItem(position, true);
+                fragmentPager.setCurrentItem(position,true);
             }
         });
         mTabBar.setAdapter(mTabAdapter, true);
@@ -81,13 +82,13 @@ public class MainActivity extends FragmentActivity {
         public Fragment getItem(int i) {
             switch (i) {
                 case 0:
-                    return PlacesFragment.newInstance();
+                    return PlacesFragment.newInstance(1);
                 case 1:
-                    return PlacesFragment.newInstance();
+                    return PlacesFragment.newInstance(2);
                 case 2:
-                    return PlacesFragment.newInstance();
+                    return PlacesFragment.newInstance(3);
                 default:
-                    return PlacesFragment.newInstance();
+                    return PlacesFragment.newInstance(4);
             }
         }
 
