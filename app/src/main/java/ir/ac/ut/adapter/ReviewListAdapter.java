@@ -12,32 +12,36 @@ import java.util.ArrayList;
 
 import ir.ac.ut.berim.PlaceActivity;
 import ir.ac.ut.berim.R;
-import ir.ac.ut.models.Place;
+import ir.ac.ut.models.Review;
 
 /**
- * Created by masood on 10/1/15.
+ * Created by Saeed on 10/1/15.
  */
-public class PlacesListAdapter extends BaseAdapter {
+public class ReviewListAdapter extends BaseAdapter {
 
     private Context mContext;
 
-    private Place[] mPlaces;
+    private Review[] mReviews;
 
-    public PlacesListAdapter(Context context, Place[] data) {
+    public ReviewListAdapter(Context context, Review[] data) {
         mContext = context;
-        mPlaces = data;
+        mReviews = data;
     }
 
+    public ReviewListAdapter(PlaceActivity context, ArrayList<Review> data) {
+        mContext = context;
+        mReviews = (Review[]) data.toArray();
+    }
 
 
     @Override
     public int getCount() {
-        return mPlaces.length;
+        return mReviews.length;
     }
 
     @Override
     public Object getItem(int position) {
-        return mPlaces[position];
+        return mReviews[position];
     }
 
     @Override
@@ -58,30 +62,31 @@ public class PlacesListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        PlaceViewHolder viewHolder;
+        ReviewViewHolder viewHolder;
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_place_row, parent, false);
-            viewHolder = new PlaceViewHolder(convertView);
+            viewHolder = new ReviewViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
-            viewHolder = (PlaceViewHolder) convertView.getTag();
+            viewHolder = (ReviewViewHolder) convertView.getTag();
         }
 
-        viewHolder.name.setText(mPlaces[position].getName());
-        viewHolder.description.setText(mPlaces[position].getDescription());
+        viewHolder.name.setText(mReviews[position].getUser().getName());
+        viewHolder.description.setText(mReviews[position].getDescription());
         viewHolder.icon.setImageResource(R.drawable.ic_launcher);
 
         return convertView;
     }
 
-    class PlaceViewHolder {
+    //todo: for now we use the settings used for main activity's lists. it can be customized later
+    class ReviewViewHolder {
 
         final TextView name;
         final TextView description;
         final ImageView icon;
 
 
-        PlaceViewHolder(View view) {
+        ReviewViewHolder(View view) {
             name = (TextView) view.findViewById(R.id.place_name_text_view);
             description = (TextView) view.findViewById(R.id.place_description_text_view);
             icon = (ImageView) view.findViewById(R.id.list_icon_image);

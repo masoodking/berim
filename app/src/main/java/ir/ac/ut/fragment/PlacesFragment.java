@@ -13,7 +13,9 @@ import android.widget.GridView;
 import ir.ac.ut.adapter.PlacesListAdapter;
 import ir.ac.ut.berim.ChatActivity;
 import ir.ac.ut.berim.MainActivity;
+import ir.ac.ut.berim.PlaceActivity;
 import ir.ac.ut.berim.R;
+import ir.ac.ut.berim.TestScrollActivity;
 import ir.ac.ut.models.Chat;
 import ir.ac.ut.models.Place;
 
@@ -47,51 +49,51 @@ public class PlacesFragment extends Fragment {
 
         if(mContext.getArguments().getInt("type")== MainActivity.PLACE)
             getPlaces();
-        if(mContext.getArguments().getInt("type")== MainActivity.PLACE)
-            getBerims();
-        if(mContext.getArguments().getInt("type")== MainActivity.PLACE)
-            getChats();
+        if(mContext.getArguments().getInt("type")== MainActivity.BERIM)
+            getPlaces();
+        if(mContext.getArguments().getInt("type")== MainActivity.CHAT)
+            getPlaces();
 
         return rootView;
     }
 
-    private void getChats() {
-        // todo get from server
-        int count = 20;
-        final Chat[] chats= new Chat[count];
-        for (int i = 0; i < count; i++) {
-            chats[i] = new Chat(String.valueOf(i), "Chat " + i, "this is chat " +i);
-        }
-        mAdapter = new PlacesListAdapter(getActivity(), chats);
-        PlacesGridView.setAdapter(mAdapter);
-        PlacesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), ChatActivity.class);
-                intent.putExtra("placeId", chats[position].getId());
-                getActivity().startActivity(intent);
-            }
-        });
-    }
+//    private void getChats() {
+//        // todo get from server
+//        int count = 20;
+//        final Chat[] chats= new Chat[count];
+//        for (int i = 0; i < count; i++) {
+//            chats[i] = new Chat(String.valueOf(i), "Chat " + i, "this is chat " +i);
+//        }
+//        mAdapter = new PlacesListAdapter(getActivity(), chats);
+//        PlacesGridView.setAdapter(mAdapter);
+//        PlacesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Intent intent = new Intent(getActivity(), ChatActivity.class);
+//                intent.putExtra("placeId", chats[position].getId());
+//                getActivity().startActivity(intent);
+//            }
+//        });
+//    }
 
-    private void getBerims() {
-        // todo get from server
-        int count = 20;
-        final Place[] places = new Place[count];
-        for (int i = 0; i < count; i++) {
-            places[i] = new Place(String.valueOf(i), "Berim" + i, "this is berim " +i);
-        }
-        mAdapter = new PlacesListAdapter(getActivity(), places);
-        PlacesGridView.setAdapter(mAdapter);
-        PlacesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), ChatActivity.class);
-                intent.putExtra("placeId", places[position].getId());
-                getActivity().startActivity(intent);
-            }
-        });
-    }
+//    private void getBerims() {
+//        // todo get from server
+//        int count = 20;
+//        final Place[] places = new Place[count];
+//        for (int i = 0; i < count; i++) {
+//            places[i] = new Place(String.valueOf(i), "Berim" + i, "this is berim " +i);
+//        }
+//        mAdapter = new PlacesListAdapter(getActivity(), places);
+//        PlacesGridView.setAdapter(mAdapter);
+//        PlacesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Intent intent = new Intent(getActivity(), ChatActivity.class);
+//                intent.putExtra("placeId", places[position].getId());
+//                getActivity().startActivity(intent);
+//            }
+//        });
+//    }
 
     public void getPlaces() {
         // todo get from server
@@ -105,8 +107,8 @@ public class PlacesFragment extends Fragment {
         PlacesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), ChatActivity.class);
-                intent.putExtra("placeId", places[position].getId());
+                Intent intent = new Intent(getActivity(), TestScrollActivity.class);//0544250
+//                intent.putExtra("placeId", places[position].getId());
                 getActivity().startActivity(intent);
             }
         });

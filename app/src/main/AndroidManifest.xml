@@ -24,6 +24,11 @@
             android:name=".ChatActivity"
             android:label="@string/title_activity_chat" >
         </activity>
+        <activity
+            android:name=".TestScrollActivity"
+            android:label="@string/title_activity_test_scroll"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>

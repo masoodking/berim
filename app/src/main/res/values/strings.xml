@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Berim</string>
+    <string name="app_name">بریم</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="places">places</string>
-    <string name="chats">chats</string>
-    <string name="berims">berims</string>
+    <string name="places">مکان‌ها</string>
+    <string name="chats">گفتگوها</string>
+    <string name="berims">بریم‌ها</string>
     <string name="title_activity_place">PlaceActivity</string>
     <string name="title_activity_chat">ChatActivity</string>
 
+    <!--Place Activity:-->
+    <string name="place_photos">تصاویر</string>
+    <string name="place_maps">نقشه</string>
+    <string name="place_x">چی بذاریم؟</string>
+    <string name="place_share">شر</string>
+
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_test_scroll">TestScrollActivity</string>
 
 </resources>

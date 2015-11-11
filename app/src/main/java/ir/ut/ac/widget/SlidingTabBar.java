@@ -201,7 +201,7 @@ public class SlidingTabBar extends HorizontalScrollView {
         tabPadding = a
                 .getDimensionPixelSize(R.styleable.SlidingTabBar_tabPaddingLeftRight, tabPadding);
         tabBackgroundResId = a
-                .getResourceId(R.styleable.SlidingTabBar_tabBackground, tabBackgroundResId);
+                .getResourceId(R.styleable.SlidingTabBar_tabBackgroundFuckYou, tabBackgroundResId);
         shouldExpand = a.getBoolean(R.styleable.SlidingTabBar_shouldExpand, shouldExpand);
         scrollOffset = a
                 .getDimensionPixelSize(R.styleable.SlidingTabBar_scrollOffset, scrollOffset);

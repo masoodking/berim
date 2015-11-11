@@ -7,4 +7,8 @@ public class Chat {
     public Chat(String s, String s1, String s2) {
 
     }
+
+//    public long getId() {
+//        return id;
+//    }
 }

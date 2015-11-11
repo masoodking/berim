@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/placeBackground"
+    android:layout_width="match_parent"
+    android:layout_height="300dp"
+    android:background="@drawable/screenshot"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:id="@+id/placeHeaderMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#88ffffff"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/place_photos"
+            android:background="#ffcc00"
+            android:fontFamily="B Yekan"
+            android:textSize="24sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/place_maps"
+            android:textColor="#ffcc00"
+            android:fontFamily="B Yekan"
+            android:textSize="24sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/place_x"
+            android:textColor="#ffcc00"
+            android:fontFamily="B Yekan"
+            android:textSize="24sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/place_share"
+            android:textColor="#ffccff"
+            android:fontFamily="B Yekan"
+            android:textSize="24sp"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/placeDescription"
+        android:text="کس‌شععر \n کسشعر \n کسشعر"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/placeHeaderMenu"/>
+</RelativeLayout>
