@@ -9,38 +9,51 @@
     <LinearLayout
         android:id="@+id/placeHeaderMenu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/place_sticky_height"
         android:background="#88ffffff"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true">
+
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/placeRate"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="@string/place_photos"
-            android:background="#ffcc00"
-            android:fontFamily="B Yekan"
-            android:textSize="24sp"/>
-        <TextView
-            android:layout_width="wrap_content"
+            android:layout_weight="0.25"
+            android:textSize="44dp"
+            android:textAlignment="center"
+            android:text="3.7"/>
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="@string/place_maps"
-            android:textColor="#ffcc00"
-            android:fontFamily="B Yekan"
-            android:textSize="24sp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/place_x"
-            android:textColor="#ffcc00"
-            android:fontFamily="B Yekan"
-            android:textSize="24sp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/place_share"
-            android:textColor="#ffccff"
-            android:fontFamily="B Yekan"
-            android:textSize="24sp"/>
+            android:layout_weight="0.25"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/PlaceName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textSize="26dp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/PlaceLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Location"
+                android:textSize="20dp"/>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight="0.25"
+            android:layout_height="wrap_content"
+            android:src="@drawable/location"
+            android:padding="5dp"/>
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight="0.25"
+            android:layout_height="wrap_content"
+            android:src="@drawable/share"
+            android:padding="5dp"/>
     </LinearLayout>
     <TextView
         android:id="@+id/placeDescription"

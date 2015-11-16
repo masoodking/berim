@@ -19,5 +19,8 @@
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_test_scroll">TestScrollActivity</string>
+    <string name="register">ورود</string>
+    <string name="Enter_phone">تلفن خود را وارد کنید</string>
+    <string name="button_register">ورود</string>
 
 </resources>
