@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,9 +51,8 @@ public class ChatActivity extends ActionBarActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (et.getText().length()==0) {
+                if (TextUtils.isEmpty(et.getText())) {
                     button.setImageResource(R.drawable.attach);
-                    button.setPadding(5,5,5,5);
                 } else
                     button.setImageResource(R.drawable.send_icon);
             }
