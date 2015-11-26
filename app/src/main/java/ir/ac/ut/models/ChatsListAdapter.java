@@ -1,4 +1,4 @@
-package ir.ac.ut.adapter;
+package ir.ac.ut.models;
 
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
@@ -9,38 +9,36 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
-import ir.ac.ut.berim.PlaceActivity;
+import ir.ac.ut.adapter.PlacesListAdapter;
 import ir.ac.ut.berim.R;
-import ir.ac.ut.models.Chat;
-import ir.ac.ut.models.Place;
 
 /**
- * Created by masood on 10/1/15.
+ * Created by saeed on 11/24/2015.
  */
-public class PlacesListAdapter extends BaseAdapter {
+public class ChatsListAdapter extends BaseAdapter {
+
 
     private Context mContext;
 
-    private Place[] mPlaces;
+    private Chat[] mChats;
 
-    public PlacesListAdapter(Context context, Place[] data) {
+    public ChatsListAdapter(FragmentActivity context, Chat[] data) {
         mContext = context;
-        mPlaces = data;
+        mChats = data;
     }
+
 
 
 
 
     @Override
     public int getCount() {
-        return mPlaces.length;
+        return mChats.length;
     }
 
     @Override
     public Object getItem(int position) {
-        return mPlaces[position];
+        return mChats[position];
     }
 
     @Override
@@ -70,8 +68,7 @@ public class PlacesListAdapter extends BaseAdapter {
             viewHolder = (PlaceViewHolder) convertView.getTag();
         }
 
-        viewHolder.name.setText(mPlaces[position].getName());
-        viewHolder.description.setText(mPlaces[position].getDescription());
+        viewHolder.name.setText(mChats[position].getName());
         viewHolder.icon.setImageResource(R.drawable.ic_launcher);
 
         return convertView;
@@ -91,6 +88,3 @@ public class PlacesListAdapter extends BaseAdapter {
         }
     }
 }
-
-
-

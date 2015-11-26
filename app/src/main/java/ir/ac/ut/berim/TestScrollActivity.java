@@ -31,12 +31,15 @@ public class TestScrollActivity extends AppCompatActivity implements ObservableS
     private ObservableListView listView;
     TextView mtextView;
     String temp;
+    private View mStickyHeader;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_scroll);
 
         listView = (ObservableListView) findViewById(R.id.list);
+        mStickyHeader = findViewById(R.id.placeHeaderMenuSticky);
         listView.setScrollViewCallbacks(this);
         ArrayList<String> items = new ArrayList<String>();
         for (int i = 1; i <= 100; i++) {
@@ -44,11 +47,6 @@ public class TestScrollActivity extends AppCompatActivity implements ObservableS
         }
         listView.setAdapter(new ArrayAdapter<String>(
                 this, android.R.layout.simple_list_item_1, items));
-//        mToolbarView = findViewById(R.id.toolbar);
-        mBackgroundImage= findViewById(R.id.placeBackground);
-        mtextView = (TextView) findViewById(R.id.placeDescription);
-//        temp = mtextView.getText().toString();
-        CharSequence ttemp = mtextView.getText();
         LayoutInflater inflater = getLayoutInflater();
         ViewGroup header = (ViewGroup) inflater.inflate(R.layout.place_header, listView,
                 false);
@@ -57,12 +55,11 @@ public class TestScrollActivity extends AppCompatActivity implements ObservableS
 
     @Override
     public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
-//        ViewHelper.setTranslationY(mBackgroundImage, -scrollY / 2);
-//        ViewHelper.setTranslationY(listView, -scrollY / 2);
-//        mtextView.setText(temp+","+scrollY  );
-//        findViewById(R.id.placeDescription).getLayoutParams()
-//        LayoutParams lp = (LayoutParams) listView.getLayoutParams();
-//        lp.height += scrollY/2;
+        if(listView.getChildAt(1).getTop()<85)
+            mStickyHeader.setVisibility(View.VISIBLE);
+        else
+            mStickyHeader.setVisibility(View.GONE);
+
     }
 
     @Override

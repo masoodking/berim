@@ -22,21 +22,25 @@
             android:id="@+id/send_button"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/send_icon"
+            android:src="@drawable/attach"
+            android:padding="0dp"
+            android:background="#ffffff"
             android:layout_alignParentRight="true" />
-        <ImageButton
-            android:id="@+id/attach_button"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/send_icon"
-            android:layout_toLeftOf="@id/send_button"/>
+        <!--<ImageButton-->
+            <!--android:id="@+id/attach_button"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:padding="10dp"-->
+            <!--android:background="#ffffff"-->
+            <!--android:src="@drawable/attach"-->
+            <!--android:layout_toLeftOf="@id/send_button"/>-->
 
         <EditText
             android:id="@+id/chat_text"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="#ffffff"
-            android:layout_toLeftOf="@id/attach_button" />
+            android:layout_toLeftOf="@id/send_button" />
 
     </RelativeLayout>
 
