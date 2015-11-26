@@ -1,4 +1,4 @@
-package ir.ac.ut.models;
+package ir.ac.ut.adapter;
 
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
@@ -9,8 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import ir.ac.ut.adapter.PlacesListAdapter;
 import ir.ac.ut.berim.R;
+import ir.ac.ut.models.Chat;
 
 /**
  * Created by saeed on 11/24/2015.

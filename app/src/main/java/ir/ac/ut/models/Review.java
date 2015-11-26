@@ -19,4 +19,12 @@ public class Review {
     public String getDescription(){
         return description;
     }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

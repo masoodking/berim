@@ -35,7 +35,7 @@ gen
 out
 build
 build/**
-app/build/**
-!app/build/outputs/proguard/release
+bazaar/build/**
+!bazaar/build/outputs/proguard/release
 .gradle
 captures

@@ -6,7 +6,9 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import ir.ac.ut.fragment.PlacesFragment;
+import ir.ac.ut.fragment.BerimListFragment;
+import ir.ac.ut.fragment.ChatsListFragment;
+import ir.ac.ut.fragment.PlaceListFragment;
 import ir.ut.ac.widget.SlidingTabBar;
 import ir.ut.ac.widget.ViewPager;
 
@@ -82,13 +84,13 @@ public class MainActivity extends FragmentActivity {
         public Fragment getItem(int i) {
             switch (i) {
                 case 0:
-                    return PlacesFragment.newInstance(1);
+                    return PlaceListFragment.newInstance();
                 case 1:
-                    return PlacesFragment.newInstance(2);
+                    return BerimListFragment.newInstance();
                 case 2:
-                    return PlacesFragment.newInstance(3);
+                    return ChatsListFragment.newInstance();
                 default:
-                    return PlacesFragment.newInstance(4);
+                    return PlaceListFragment.newInstance();
             }
         }
 
