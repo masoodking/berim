@@ -19,6 +19,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import ir.ac.ut.adapter.ChatAdapter;
+import ir.ac.ut.models.Message;
+
 import static android.graphics.Color.CYAN;
 
 
@@ -31,10 +34,9 @@ public class ChatActivity extends ActionBarActivity {
         mContext = this;
         final EditText et = (EditText)findViewById(R.id.chat_text);
         final ListView listview = (ListView) findViewById(R.id.listview);
-        final ArrayList<String> messages = new ArrayList<>();
-        final ArrayAdapter adapter = new ArrayAdapter(this,
-                android.R.layout.simple_list_item_1,messages);
-        listview.setAdapter(adapter);
+        final ArrayList<Message> messages = new ArrayList<>();
+        final ChatAdapter chatAdapter = new ChatAdapter(this, messages.toArray(new Message[messages.size()]));
+        listview.setAdapter(chatAdapter);
         final ImageButton button;
         button = (ImageButton) findViewById(R.id.send_button);
 
@@ -63,13 +65,14 @@ public class ChatActivity extends ActionBarActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String message = et.getText().toString();
+                //todo change Message constructor
+                Message message = new Message(et.getText().toString());
                 if (et.getText().toString().equals(""))
                     return;
                 messages.add(message);
-                adapter.notifyDataSetChanged();
+                chatAdapter.notifyDataSetChanged();
                 et.setText("");
-                listview.setSelection(adapter.getCount() - 1);
+                listview.setSelection(chatAdapter.getCount() - 1);
             }
         });
     }

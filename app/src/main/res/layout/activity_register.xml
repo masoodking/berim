@@ -11,20 +11,30 @@
         android:inputType="phone"
         android:ems="10"
         android:id="@+id/editText"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
         android:singleLine="true"
-        android:hint="@string/Enter_phone" />
+        android:hint="@string/Enter_phone"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/button_register"
-        android:layout_below="@+id/editText"
-        android:layout_centerHorizontal="true"
         android:background="#99bbff"
         android:padding="5dp"
         android:textSize="20dp"
         android:text="@string/button_register"
-        android:contextClickable="false" />
+        android:contextClickable="false"
+        android:layout_below="@+id/editText2"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/editText2"
+        android:layout_below="@+id/editText"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/passHint" />
 </RelativeLayout>

@@ -22,5 +22,6 @@
     <string name="register">ورود</string>
     <string name="Enter_phone">تلفن خود را وارد کنید</string>
     <string name="button_register">ورود</string>
+    <string name="passHint">رمز عبور</string>
 
 </resources>
