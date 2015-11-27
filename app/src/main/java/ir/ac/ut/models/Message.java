@@ -13,11 +13,20 @@ public class Message {
 
     private Long to;
 
+    private boolean seen;
     public Message(long id, String text, Long from, Long to) {
         this.id = id;
         this.text = text;
         this.from = from;
         this.to = to;
+    }
+
+    /**
+     * todo REMOVE THIS CONSTRUCTOR
+     * @param text
+     */
+    public Message(String text){
+        this.text = text;
     }
 
     public long getId() {
