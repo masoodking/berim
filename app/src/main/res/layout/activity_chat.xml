@@ -40,7 +40,10 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="#ffffff"
-            android:layout_toLeftOf="@id/send_button" />
+            android:layout_toLeftOf="@id/send_button"
+            android:inputType="text"
+            android:singleLine="true"
+            android:imeOptions="actionDone"/>
 
     </RelativeLayout>
 
