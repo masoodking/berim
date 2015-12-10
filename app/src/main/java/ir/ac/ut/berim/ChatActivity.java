@@ -18,7 +18,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -31,19 +30,17 @@ import java.util.ArrayList;
 import ir.ac.ut.adapter.ChatAdapter;
 import ir.ac.ut.models.Message;
 
-import static android.graphics.Color.CYAN;
-
 public class ChatActivity extends ActionBarActivity {
 
     private Context mContext;
 
-    private EditText mMessageText;
+    private EditText mMessageEditText;
 
     private ListView mListView;
 
-    private ArrayList<String> mMessages;
+    private ArrayList<Message> mMessages;
 
-    private ArrayAdapter mAdapter;
+    private ChatAdapter mAdapter;
 
     private Emitter.Listener onNewMessage;
 
@@ -68,19 +65,18 @@ public class ChatActivity extends ActionBarActivity {
 
         mSocket.connect();
 
-        mMessageText = (EditText) findViewById(R.id.chat_text);
+        mMessageEditText = (EditText) findViewById(R.id.chat_text);
         mListView = (ListView) findViewById(R.id.listview);
 
         mMessages = new ArrayList<>();
-        mAdapter = new ArrayAdapter(this,
-                android.R.layout.simple_list_item_1, mMessages);
+        mAdapter = new ChatAdapter(this, mMessages);
 
         mListView.setAdapter(mAdapter);
 
         final ImageButton button;
         button = (ImageButton) findViewById(R.id.send_button);
 
-        mMessageText.addTextChangedListener(new TextWatcher() {
+        mMessageEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -93,7 +89,7 @@ public class ChatActivity extends ActionBarActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (TextUtils.isEmpty(mMessageText.getText())) {
+                if (TextUtils.isEmpty(mMessageEditText.getText())) {
                     button.setImageResource(R.drawable.attach);
                 } else {
                     button.setImageResource(R.drawable.send_icon);
@@ -105,33 +101,35 @@ public class ChatActivity extends ActionBarActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Message message = new Message(mMessageText.getText().toString());
-                if (TextUtils.isEmpty(mMessageText.getText().toString())) {
+                Message message = new Message(mMessageEditText.getText().toString());
+                if (TextUtils.isEmpty(message.getText())) {
                     return;
                 }
                 try {
-                    sendMessage(message.getText());
+                    sendMessage(message);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         });
-        mMessageText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        /*
+        mMessageEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 try {
-                    if (TextUtils.isEmpty(mMessageText.getText().toString())) {
+                    if (TextUtils.isEmpty(mMessageEditText.getText().toString())) {
                         return false;
                     }
+
                     sendMessage(v.getText().toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                mMessageText.setText("");
+                mMessageEditText.setText("");
                 return true;
             }
         });
-
+*/
         onNewMessage = new Emitter.Listener() {
             @Override
             public void call(final Object... args) {
@@ -142,9 +140,9 @@ public class ChatActivity extends ActionBarActivity {
                             Log.e("notif", args[0].toString());
                             JSONObject data = new JSONObject(args[0].toString());
                             String username;
-                            String message;
+                            Message message;
                             username = "user";//data.getString("username");
-                            message = data.getString("text");
+                            message = new Message(data.getString("text"));
                             addMessage(username, message);
                         } catch (JSONException e) {
                             return;
@@ -158,23 +156,24 @@ public class ChatActivity extends ActionBarActivity {
     }
 
 
-    public void sendMessage(String message) throws JSONException {
+    public void sendMessage(Message message) throws JSONException {
         JSONObject json = new JSONObject();
-        json.put("text", message);
+        Toast.makeText(mContext, ": " + message.getText(), Toast.LENGTH_SHORT).show();
+        json.put("text", message.getText());
         mSocket.emit("broadcast", json.toString());
         mMessages.add(message);
         mAdapter.notifyDataSetChanged();
-        mMessageText.setText("");
+        mMessageEditText.setText("");
         mListView.smoothScrollToPosition((mAdapter.getCount() - 1));
     }
 
-    public void addMessage(String username, String message) {
+    public void addMessage(String username, Message message) {
         //add message to list
-        Toast.makeText(mContext, username + ": " + message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, username + ": " + message.getText(), Toast.LENGTH_SHORT).show();
 
         mMessages.add(message);
         mAdapter.notifyDataSetChanged();
-        mMessageText.setText("");
+        mMessageEditText.setText("");
         mListView.smoothScrollToPosition((mAdapter.getCount() - 1));
     }
 
@@ -188,17 +187,7 @@ public class ChatActivity extends ActionBarActivity {
                 ((Activity) mContext).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        try {
-                            Log.e("notif", args[0].toString());
-                            JSONObject data = new JSONObject(args[0].toString());
-//                            String username;
-//                            String message;
-//                            username = "user";//data.getString("username");
-//                            message = data.getString("text");
-                            addMessage("login", args[0].toString());
-                        } catch (JSONException e) {
-                            return;
-                        }
+                        Log.d("notif", args[0].toString());
                     }
                 });
             }
