@@ -28,6 +28,10 @@ import android.widget.Toast;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
+import ir.ac.ut.adapter.ChatAdapter;
+import ir.ac.ut.models.Message;
+
+import static android.graphics.Color.CYAN;
 
 public class ChatActivity extends ActionBarActivity {
 
@@ -101,12 +105,12 @@ public class ChatActivity extends ActionBarActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String message = mMessageText.getText().toString();
-                if (TextUtils.isEmpty(message)) {
+                Message message = new Message(mMessageText.getText().toString());
+                if (TextUtils.isEmpty(mMessageText.getText().toString())) {
                     return;
                 }
                 try {
-                    sendMessage(message);
+                    sendMessage(message.getText());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
