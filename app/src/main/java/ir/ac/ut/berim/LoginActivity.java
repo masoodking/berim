@@ -81,6 +81,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.makeText(mContext, "welcome back ;)", Toast.LENGTH_SHORT)
                                         .show();
                                 mContext.startActivity(new Intent(mContext, MainActivity.class));
+                                finish();
                             }
                         });
                     }

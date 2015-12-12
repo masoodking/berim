@@ -83,6 +83,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 Toast.makeText(mContext, "welcome ;)", Toast.LENGTH_SHORT)
                                         .show();
                                 mContext.startActivity(new Intent(mContext, MainActivity.class));
+                                finish();
                             }
                         });
 
