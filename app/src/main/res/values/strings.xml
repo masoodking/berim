@@ -30,4 +30,5 @@
 
     <!-- errors -->
     <string name="connection_error">اتصال به سرور برقرار نیست.</string>
+
 </resources>

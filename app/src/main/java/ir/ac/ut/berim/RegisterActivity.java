@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import ir.ac.ut.models.User;
 import ir.ac.ut.network.BerimNetworkException;
 import ir.ac.ut.network.MethodsName;
 import ir.ac.ut.network.NetworkManager;
@@ -35,6 +36,12 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        if(UserAccountUtils.isLogin(this)){
+            Toast.makeText(mContext, "you are already logged in :|", Toast.LENGTH_SHORT)
+                    .show();
+            finish();
+        }
 
         mContext = this;
 
@@ -63,9 +70,22 @@ public class RegisterActivity extends AppCompatActivity {
                 }
                 NetworkManager.sendRequest(MethodsName.SIGN_UP, jsonObject, new NetworkReceiver() {
                     @Override
-                    public void onResponse(Object response) {
-                        //todo save user data
-                        mContext.startActivity(new Intent(mContext, MainActivity.class));
+                    public void onResponse(final Object response) {
+                        ((Activity) mContext).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    User user = User.createFromJson((JSONObject) response);
+                                    UserAccountUtils.loginUser(mContext, user);
+                                }catch (JSONException e){
+
+                                }
+                                Toast.makeText(mContext, "welcome ;)", Toast.LENGTH_SHORT)
+                                        .show();
+                                mContext.startActivity(new Intent(mContext, MainActivity.class));
+                            }
+                        });
+
                     }
 
                     @Override

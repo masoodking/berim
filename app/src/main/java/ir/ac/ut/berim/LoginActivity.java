@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import ir.ac.ut.models.User;
 import ir.ac.ut.network.BerimNetworkException;
 import ir.ac.ut.network.MethodsName;
 import ir.ac.ut.network.NetworkManager;
@@ -37,6 +38,11 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mContext = this;
+
+        if (UserAccountUtils.isLogin(this)) {
+            mContext.startActivity(new Intent(mContext, MainActivity.class));
+            finish();
+        }
 
         mPhoneNumber = (EditText) findViewById(R.id.phone_number);
         mPassword = (EditText) findViewById(R.id.password);
@@ -62,9 +68,21 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 NetworkManager.sendRequest(MethodsName.SIGN_IN, jsonObject, new NetworkReceiver() {
                     @Override
-                    public void onResponse(Object response) {
-                        //todo save user data
-                        mContext.startActivity(new Intent(mContext, MainActivity.class));
+                    public void onResponse(final Object response) {
+                        ((Activity) mContext).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    User user = User.createFromJson((JSONObject) response);
+                                    UserAccountUtils.loginUser(mContext, user);
+                                }catch (JSONException e){
+
+                                }
+                                Toast.makeText(mContext, "welcome back ;)", Toast.LENGTH_SHORT)
+                                        .show();
+                                mContext.startActivity(new Intent(mContext, MainActivity.class));
+                            }
+                        });
                     }
 
                     @Override
