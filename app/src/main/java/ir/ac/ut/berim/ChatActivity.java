@@ -14,24 +14,22 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import ir.ac.ut.adapter.ChatAdapter;
 import ir.ac.ut.models.Message;
 import ir.ac.ut.network.BerimNetworkException;
 import ir.ac.ut.network.ChatNetworkListner;
 import ir.ac.ut.network.NetworkManager;
 import ir.ac.ut.network.NetworkReceiver;
 
-public class ChatActivity extends ActionBarActivity{
+public class ChatActivity extends ActionBarActivity {
 
     private Context mContext;
 
@@ -39,9 +37,9 @@ public class ChatActivity extends ActionBarActivity{
 
     private ListView mListView;
 
-    private ArrayList<String> mMessages;
+    private ArrayList<Message> mMessages;
 
-    private ArrayAdapter mAdapter;
+    private ChatAdapter mAdapter;
 
     private Emitter.Listener onNewMessage;
 
@@ -52,11 +50,11 @@ public class ChatActivity extends ActionBarActivity{
         mContext = this;
 
         mMessageText = (EditText) findViewById(R.id.chat_text);
+
         mListView = (ListView) findViewById(R.id.listview);
 
         mMessages = new ArrayList<>();
-        mAdapter = new ArrayAdapter(this,
-                android.R.layout.simple_list_item_1, mMessages);
+        mAdapter = new ChatAdapter(this, mMessages);
 
         mListView.setAdapter(mAdapter);
 
@@ -89,35 +87,20 @@ public class ChatActivity extends ActionBarActivity{
             @Override
             public void onClick(View v) {
                 Message message = new Message(mMessageText.getText().toString());
-                if (TextUtils.isEmpty(mMessageText.getText().toString())) {
+                if (TextUtils.isEmpty(message.getText())) {
                     return;
                 }
                 try {
-                    sendMessage(message.getText());
+                    sendMessage(message);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }
-        });
-        mMessageText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                try {
-                    if (TextUtils.isEmpty(mMessageText.getText().toString())) {
-                        return false;
-                    }
-                    sendMessage(v.getText().toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                mMessageText.setText("");
-                return true;
             }
         });
     }
 
 
-    public void sendMessage(String message) throws JSONException {
+    public void sendMessage(Message message) throws JSONException {
         JSONObject json = new JSONObject();
         json.put("text", message);
         NetworkManager.sendRequest("sendMessage", json, new NetworkReceiver() {
@@ -140,7 +123,7 @@ public class ChatActivity extends ActionBarActivity{
     public void addMessage(Message message) {
         //add message to list
         Toast.makeText(mContext, message.getUsername() + ": " + message.getText(), Toast.LENGTH_SHORT).show();
-        mMessages.add(message.getText());
+        mMessages.add(message);
         mAdapter.notifyDataSetChanged();
         mMessageText.setText("");
         mListView.smoothScrollToPosition((mAdapter.getCount() - 1));

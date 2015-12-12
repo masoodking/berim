@@ -9,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import ir.ac.ut.berim.R;
 import ir.ac.ut.models.Message;
 
@@ -20,9 +22,9 @@ public class ChatAdapter extends BaseAdapter {
 
     private Context mContext;
 
-    private Message[] mMessages;
+    private ArrayList<Message> mMessages;
 
-    public ChatAdapter(FragmentActivity context, Message[] data) {
+    public ChatAdapter(FragmentActivity context, ArrayList<Message> data) {
         mContext = context;
         mMessages = data;
     }
@@ -33,12 +35,12 @@ public class ChatAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mMessages.length;
+        return mMessages.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mMessages[position];
+        return mMessages.get(position);
     }
 
     @Override
@@ -68,8 +70,8 @@ public class ChatAdapter extends BaseAdapter {
             viewHolder = (MessageViewHolder) convertView.getTag();
         }
 
-        viewHolder.name.setText(mMessages[position].getText());
-        viewHolder.icon.setImageResource(R.drawable.ic_launcher);
+        viewHolder.name.setText(mMessages.get(position).getText());
+//        viewHolder.icon.setImageResource(R.drawable.ic_launcher);
 
         return convertView;
     }
@@ -79,7 +81,6 @@ public class ChatAdapter extends BaseAdapter {
         final TextView name;
         final TextView description;
         final ImageView icon;
-
 
         MessageViewHolder(View view) {
             name = (TextView) view.findViewById(R.id.message_name_text_view);
