@@ -37,7 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        if(UserAccountUtils.isLogin(this)){
+        if(ProfileUtils.isLogin(this)){
             Toast.makeText(mContext, "you are already logged in :|", Toast.LENGTH_SHORT)
                     .show();
             finish();
@@ -76,7 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
                             public void run() {
                                 try {
                                     User user = User.createFromJson((JSONObject) response);
-                                    UserAccountUtils.loginUser(mContext, user);
+                                    ProfileUtils.loginUser(mContext, user);
                                 }catch (JSONException e){
 
                                 }

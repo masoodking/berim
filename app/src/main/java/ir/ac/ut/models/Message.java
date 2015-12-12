@@ -8,23 +8,23 @@ import org.json.JSONObject;
  */
 public class Message {
 
-    private long id;
+    private String id;
 
     private String text;
 
-    private Long from;
+    private String from;
 
-    private Long to;
+    private String to;
 
     private String username;
 
-    private Long roomId;
+    private String roomId;
 
     private String date;
 
     private MessageStatus status;
 
-    private enum MessageStatus{
+    public enum MessageStatus{
         SENT,
         SEEN,
         FAIL
@@ -33,15 +33,15 @@ public class Message {
     public static Message createFromJson(JSONObject jsonObject) throws JSONException{
         Message message = new Message();
         if(jsonObject.has("id")){
-            message.setId(jsonObject.getLong("id"));
+            message.setId(jsonObject.getString("id"));
         }
 
         if(jsonObject.has("senderId")){
-            message.setFrom(jsonObject.getLong("senderId"));
+            message.setFrom(jsonObject.getString("senderId"));
         }
 
         if(jsonObject.has("roomId")){
-            message.setRoomId(jsonObject.getLong("roomId"));
+            message.setRoomId(jsonObject.getString("roomId"));
         }
 
         if(jsonObject.has("text")){
@@ -62,11 +62,11 @@ public class Message {
         this.text = text;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -78,19 +78,19 @@ public class Message {
         this.text = text;
     }
 
-    public Long getFrom() {
+    public String getFrom() {
         return from;
     }
 
-    public void setFrom(Long from) {
+    public void setFrom(String from) {
         this.from = from;
     }
 
-    public Long getTo() {
+    public String getTo() {
         return to;
     }
 
-    public void setTo(Long to) {
+    public void setTo(String to) {
         this.to = to;
     }
 
@@ -102,11 +102,11 @@ public class Message {
         this.username = username;
     }
 
-    public Long getRoomId() {
+    public String getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(Long roomId) {
+    public void setRoomId(String roomId) {
         this.roomId = roomId;
     }
 

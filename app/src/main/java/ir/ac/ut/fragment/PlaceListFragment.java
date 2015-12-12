@@ -14,9 +14,9 @@ import android.widget.GridView;
 import ir.ac.ut.adapter.ChatsListAdapter;
 import ir.ac.ut.adapter.PlacesListAdapter;
 import ir.ac.ut.berim.LoginActivity;
+import ir.ac.ut.berim.ProfileUtils;
 import ir.ac.ut.berim.R;
 import ir.ac.ut.berim.TestScrollActivity;
-import ir.ac.ut.berim.UserAccountUtils;
 import ir.ac.ut.models.Place;
 
 public class PlaceListFragment extends BaseFragment {
@@ -55,7 +55,7 @@ public class PlaceListFragment extends BaseFragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserAccountUtils.logoutUser(getActivity());
+                ProfileUtils.logoutUser(getActivity());
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 getActivity().startActivity(intent);
                 getActivity().finish();

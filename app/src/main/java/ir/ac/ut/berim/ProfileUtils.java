@@ -5,11 +5,12 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import ir.ac.ut.models.User;
+import ir.ac.ut.network.NetworkManager;
 
 /**
  * Created by Masood on 12/12/2015 AD.
  */
-public class UserAccountUtils {
+public class ProfileUtils {
 
     private static final String USER_ID = "user_id";
 
@@ -35,6 +36,16 @@ public class UserAccountUtils {
         editor.commit();
     }
 
+    public static User getUser(Context context){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        User user = new User();
+        user.setId(prefs.getString(USER_ID, null));
+        user.setRoomId(prefs.getString(USER_ROOM_ID, null));
+        user.setPhoneNumber(prefs.getString(USER_PHONE_NUMBER, null));
+        user.setPassword(prefs.getString(USER_PASSWORD, null));
+        user.setNickName(prefs.getString(USER_NICKNAME, null));
+        return user;
+    }
     public static void logoutUser(Context context){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
@@ -45,6 +56,7 @@ public class UserAccountUtils {
         editor.putString(USER_PHONE_NUMBER, null);
         editor.putBoolean(USER_IS_LOGIN, false);
         editor.commit();
+        NetworkManager.mSocket.disconnect();
     }
 
     public static boolean isLogin(Context context){

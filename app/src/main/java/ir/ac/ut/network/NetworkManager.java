@@ -26,8 +26,7 @@ public class NetworkManager {
             try {
                 mSocket = IO.socket("http://172.31.29.76:3000");
                 mSocket.connect();
-//                loginUser("0936", "masood");
-                connectMessageReciver();
+                connectMessageReceiver();
             } catch (URISyntaxException e) {
                 Log.wtf("Socket", "connection faild.");
             }
@@ -51,7 +50,7 @@ public class NetworkManager {
                             R.string.connection_error)));
         }
         mSocket.emit(methodName + "Request", params)
-                .on(methodName + "Response", new Emitter.Listener() {
+                .once(methodName + "Response", new Emitter.Listener() {
                     @Override
                     public void call(final Object... args) {
                         JSONObject jsonObject = (JSONObject) args[0];
@@ -70,39 +69,13 @@ public class NetworkManager {
                 });
     }
 
-    public static void connectMessageReciver() {
+    public static void connectMessageReceiver() {
+        mSocket.off("newMessage");
         mSocket.on("newMessage", new Emitter.Listener() {
             @Override
             public void call(final Object... args) {
-                ChatNetworkListner.sendNetworkResponseBroadcast(args);
+                ChatNetworkListner.sendNetworkResponseBroadcast(args[0]);
             }
         });
     }
-
-//    public void loginUser(String phoneNumber, String password) throws JSONException {
-//        JSONObject json = new JSONObject();
-//        json.put("phoneNumber", phoneNumber);
-//        json.put("password", password);
-//        mSocket.emit("signIn", json.toString()).on("signInResponse", new Emitter.Listener() {
-//            @Override
-//            public void call(final Object... args) {
-//                ((Activity) mContext).runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        try {
-//                            Log.e("notif", args[0].toString());
-//                            JSONObject data = new JSONObject(args[0].toString());
-////                            String username;
-////                            String message;
-////                            username = "user";//data.getString("username");
-////                            message = data.getString("text");
-//                            addMessage("login", args[0].toString());
-//                        } catch (JSONException e) {
-//                            return;
-//                        }
-//                    }
-//                });
-//            }
-//        });
-//    }
 }

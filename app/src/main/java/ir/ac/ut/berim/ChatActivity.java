@@ -1,13 +1,10 @@
 package ir.ac.ut.berim;
 
-import com.github.nkzawa.emitter.Emitter;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
@@ -24,8 +21,10 @@ import java.util.ArrayList;
 
 import ir.ac.ut.adapter.ChatAdapter;
 import ir.ac.ut.models.Message;
+import ir.ac.ut.models.User;
 import ir.ac.ut.network.BerimNetworkException;
 import ir.ac.ut.network.ChatNetworkListner;
+import ir.ac.ut.network.MethodsName;
 import ir.ac.ut.network.NetworkManager;
 import ir.ac.ut.network.NetworkReceiver;
 
@@ -41,13 +40,17 @@ public class ChatActivity extends ActionBarActivity {
 
     private ChatAdapter mAdapter;
 
-    private Emitter.Listener onNewMessage;
+    private User mMe;
+
+    private User mTalkee;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         mContext = this;
+
+        mMe = ProfileUtils.getUser(mContext);
 
         mMessageText = (EditText) findViewById(R.id.chat_text);
 
@@ -81,12 +84,15 @@ public class ChatActivity extends ActionBarActivity {
                 }
             }
         });
-        Intent intent = getIntent();
-        setTitle("sudn");
+        setTitle(ProfileUtils.getUser(this).getNickName());
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Message message = new Message(mMessageText.getText().toString());
+                Message message = new Message();
+                message.setText(mMessageText.getText().toString());
+                message.setRoomId(mMe.getRoomId());
+                message.setFrom(mMe.getId());
+                message.setStatus(Message.MessageStatus.SENT);
                 if (TextUtils.isEmpty(message.getText())) {
                     return;
                 }
@@ -102,8 +108,9 @@ public class ChatActivity extends ActionBarActivity {
 
     public void sendMessage(Message message) throws JSONException {
         JSONObject json = new JSONObject();
-        json.put("text", message);
-        NetworkManager.sendRequest("sendMessage", json, new NetworkReceiver() {
+        json.put("text", message.getText());
+        json.put("roomId", mMe.getRoomId());
+        NetworkManager.sendRequest(MethodsName.SEND_MESSAGE, json, new NetworkReceiver() {
             @Override
             public void onResponse(Object response) {
                 //todo change message status to sent
