@@ -30,6 +30,7 @@
 
     <!-- errors -->
     <string name="connection_error">اتصال به سرور برقرار نیست.</string>
+
     <string name="title_activity_profile">profileActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>

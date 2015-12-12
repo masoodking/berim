@@ -1,5 +1,7 @@
 package ir.ac.ut.fragment;
 
+import com.melnykov.fab.FloatingActionButton;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,8 +13,10 @@ import android.widget.GridView;
 
 import ir.ac.ut.adapter.ChatsListAdapter;
 import ir.ac.ut.adapter.PlacesListAdapter;
+import ir.ac.ut.berim.LoginActivity;
 import ir.ac.ut.berim.R;
 import ir.ac.ut.berim.TestScrollActivity;
+import ir.ac.ut.berim.UserAccountUtils;
 import ir.ac.ut.models.Place;
 
 public class PlaceListFragment extends BaseFragment {
@@ -46,6 +50,17 @@ public class PlaceListFragment extends BaseFragment {
         PlacesGridView = (GridView) rootView.findViewById(R.id.gridView_places);
 
         getPlaces();
+
+        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.places_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UserAccountUtils.logoutUser(getActivity());
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                getActivity().startActivity(intent);
+                getActivity().finish();
+            }
+        });
 
         return rootView;
     }

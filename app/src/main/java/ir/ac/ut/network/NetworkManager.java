@@ -50,7 +50,7 @@ public class NetworkManager {
                     new BerimNetworkException(0, BerimApplication.getInstance().getString(
                             R.string.connection_error)));
         }
-        mSocket.emit(methodName + "Request", params.toString())
+        mSocket.emit(methodName + "Request", params)
                 .on(methodName + "Response", new Emitter.Listener() {
                     @Override
                     public void call(final Object... args) {
@@ -60,11 +60,12 @@ public class NetworkManager {
                                 callback.onErrorResponse(new BerimNetworkException(0,
                                         jsonObject.getString("errorMessage")));
                                 return;
+                            }else{
+                                callback.onResponse(jsonObject.getJSONObject("data"));
                             }
                         } catch (JSONException e) {
                             callback.onErrorResponse(new BerimNetworkException());
                         }
-                        callback.onResponse(args);
                     }
                 });
     }

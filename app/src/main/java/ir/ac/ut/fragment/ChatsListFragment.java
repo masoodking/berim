@@ -56,7 +56,7 @@ public class ChatsListFragment extends BaseFragment {
         int count = 20;
         final Chat[] chats = new Chat[count];
         for (int i = 0; i < count; i++) {
-            chats[i] = new Chat(String.valueOf(i), "Chat " + i, "this is chat " + i);
+            chats[i] = new Chat(String.valueOf(i), "Chat " + i);
         }
         mChatAdapter = new ChatsListAdapter(getActivity(), chats);
         PlacesGridView.setAdapter(mChatAdapter);

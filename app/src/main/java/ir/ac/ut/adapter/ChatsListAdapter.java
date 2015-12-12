@@ -27,10 +27,6 @@ public class ChatsListAdapter extends BaseAdapter {
         mChats = data;
     }
 
-
-
-
-
     @Override
     public int getCount() {
         return mChats.length;
@@ -68,7 +64,7 @@ public class ChatsListAdapter extends BaseAdapter {
             viewHolder = (PlaceViewHolder) convertView.getTag();
         }
 
-        viewHolder.name.setText(mChats[position].getName());
+        viewHolder.name.setText(mChats[position].getTitle());
         viewHolder.icon.setImageResource(R.drawable.ic_launcher);
 
         return convertView;
