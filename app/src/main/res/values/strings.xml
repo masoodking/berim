@@ -4,6 +4,8 @@
     <string name="app_name">بریم</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="activity_register">ثبت نام</string>
+    <string name="activity_login">ورود</string>
     <string name="places">مکان‌ها</string>
     <string name="chats">گفتگوها</string>
     <string name="berims">بریم‌ها</string>
@@ -22,7 +24,8 @@
     <string name="register">ورود</string>
     <string name="enter_phone">تلفن خود را وارد کنید</string>
     <string name="nickname">نام کاربری</string>
-    <string name="button_register">ورود</string>
+    <string name="button_register">ثبت نام</string>
+    <string name="button_login">ورود</string>
     <string name="passHint">رمز عبور</string>
 
     <!-- errors -->

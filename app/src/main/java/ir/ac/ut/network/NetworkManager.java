@@ -24,7 +24,7 @@ public class NetworkManager {
     public static void connect() {
         if (!isConnected()) {
             try {
-                mSocket = IO.socket("http://192.168.102.14:3000");
+                mSocket = IO.socket("http://172.31.29.76:3000");
                 mSocket.connect();
 //                loginUser("0936", "masood");
                 connectMessageReciver();
