@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,6 +23,8 @@ import ir.ac.ut.network.NetworkReceiver;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private ProgressDialog mProgressDialog;
+
     private Button mRegisterButton;
 
     private Button mLoginButton;
@@ -32,6 +35,41 @@ public class LoginActivity extends AppCompatActivity {
 
     private Context mContext;
 
+    private NetworkReceiver mNetworkReceiver = new NetworkReceiver() {
+        @Override
+        public void onResponse(final Object response) {
+            ((Activity) mContext).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        User user = User.createFromJson((JSONObject) response);
+                        ProfileUtils.loginUser(mContext, user);
+
+                    } catch (JSONException e) {
+
+                    }
+                    mProgressDialog.dismiss();
+                    Toast.makeText(mContext, "welcome back ;)", Toast.LENGTH_SHORT)
+                            .show();
+                    mContext.startActivity(new Intent(mContext, MainActivity.class));
+                    finish();
+                }
+            });
+        }
+
+        @Override
+        public void onErrorResponse(final BerimNetworkException error) {
+            ((Activity) mContext).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(mContext, error.getMessage(), Toast.LENGTH_SHORT)
+                            .show();
+                    mProgressDialog.dismiss();
+                }
+            });
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,9 +77,20 @@ public class LoginActivity extends AppCompatActivity {
 
         mContext = this;
 
-        if (UserAccountUtils.isLogin(this)) {
-            mContext.startActivity(new Intent(mContext, MainActivity.class));
-            finish();
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setTitle("please wait...");
+        mProgressDialog.setMessage("please wait just a sec...");
+
+        if (ProfileUtils.isLogin(this)) {
+            mProgressDialog.show();
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("password", ProfileUtils.getUser(this).getPassword());
+                jsonObject.put("phoneNumber", ProfileUtils.getUser(this).getPhoneNumber());
+            } catch (JSONException e) {
+                return;
+            }
+            NetworkManager.sendRequest(MethodsName.SIGN_IN, jsonObject, mNetworkReceiver);
         }
 
         mPhoneNumber = (EditText) findViewById(R.id.phone_number);
@@ -58,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(mContext, "fill all inputs", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
+                mProgressDialog.show();
                 JSONObject jsonObject = new JSONObject();
                 try {
                     jsonObject.put("password", mPassword.getText().toString());
@@ -66,37 +115,7 @@ public class LoginActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     return;
                 }
-                NetworkManager.sendRequest(MethodsName.SIGN_IN, jsonObject, new NetworkReceiver() {
-                    @Override
-                    public void onResponse(final Object response) {
-                        ((Activity) mContext).runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    User user = User.createFromJson((JSONObject) response);
-                                    UserAccountUtils.loginUser(mContext, user);
-                                }catch (JSONException e){
-
-                                }
-                                Toast.makeText(mContext, "welcome back ;)", Toast.LENGTH_SHORT)
-                                        .show();
-                                mContext.startActivity(new Intent(mContext, MainActivity.class));
-                                finish();
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onErrorResponse(final BerimNetworkException error) {
-                        ((Activity) mContext).runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(mContext, error.getMessage(), Toast.LENGTH_SHORT)
-                                        .show();
-                            }
-                        });
-                    }
-                });
+                NetworkManager.sendRequest(MethodsName.SIGN_IN, jsonObject, mNetworkReceiver);
 
             }
         });
