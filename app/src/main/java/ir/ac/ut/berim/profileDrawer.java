@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import ir.ac.ut.models.FragmentIndex;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import it.neokree.materialnavigationdrawer.elements.MaterialSection;
 import it.neokree.materialnavigationdrawer.elements.listeners.MaterialSectionListener;
@@ -16,8 +17,7 @@ public class profileDrawer extends MaterialNavigationDrawer implements MaterialS
     public MaterialSection phoneSection;
         @Override
         public void init(Bundle savedInstanceState) {
-            phoneSection = newSection("Section 1", this);
-            this.addSection(phoneSection);
+            this.addSection(newSection("Section 1", new FragmentIndex()));
             Log.d("خر","خر");
         }
 }
