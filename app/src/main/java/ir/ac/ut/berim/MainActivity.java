@@ -1,5 +1,6 @@
 package ir.ac.ut.berim;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -22,6 +23,7 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        profileDrawer pd = new profileDrawer();
         mTabBar = (SlidingTabBar) findViewById(R.id.tab_bar);
 
         String[] titles = {getString(R.string.places),
@@ -35,12 +37,16 @@ public class MainActivity extends FragmentActivity {
         mTabBar.setOnTabChangeListener(new SlidingTabBar.OnTabChangeListener() {
             @Override
             public void onTabChange(int position) {
-                fragmentPager.setCurrentItem(position,true);
+                fragmentPager.setCurrentItem(position, true);
             }
         });
         mTabBar.setAdapter(mTabAdapter, true);
         mTabBar.setListPager(fragmentPager);
         fragmentPager.setAdapter(mFragmentPagerAdapter);
+
+        Intent profileIntent = new Intent(this,profileDrawer.class);
+        startActivity(profileIntent);
+
     }
 
     public class TabPagerAdapter extends SlidingTabBar.TabAdapter {
