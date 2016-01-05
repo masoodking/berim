@@ -7,9 +7,10 @@ import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 /**
  * Created by saeed on 12/12/2015.
  */
-public class profileDrawer extends MaterialNavigationDrawer {
+public class profileDrawer //extends MaterialNavigationDrawer
+ {
 
-        @Override
+//        @Override
         public void init(Bundle savedInstanceState) {
 
         }

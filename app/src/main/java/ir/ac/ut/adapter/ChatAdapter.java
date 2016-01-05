@@ -2,15 +2,18 @@ package ir.ac.ut.adapter;
 
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import ir.ac.ut.berim.ProfileUtils;
 import ir.ac.ut.berim.R;
 import ir.ac.ut.models.Message;
 
@@ -45,7 +48,7 @@ public class ChatAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return  0;
     }
 
 //    @Override
@@ -61,6 +64,7 @@ public class ChatAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        Message chatMessage = (Message) getItem(position);
         MessageViewHolder viewHolder;
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_chat_message, parent, false);
@@ -71,10 +75,22 @@ public class ChatAdapter extends BaseAdapter {
         }
 
         viewHolder.name.setText(mMessages.get(position).getText());
-//        viewHolder.icon.setImageResource(R.drawable.ic_launcher);
+        LinearLayout chatLayout = (LinearLayout) convertView.findViewById(R.id.chat_background_linear_layout);
+        LinearLayout chatScrennLayout = (LinearLayout) convertView.findViewById(R.id.chat_screen_linear_layout);
 
+        if(position%2==0) {//todo change this if
+            chatLayout.setBackgroundResource(R.drawable.bubble);
+            chatScrennLayout.setGravity(Gravity.RIGHT);
+        }
+        else {
+            chatLayout.setBackgroundResource(R.drawable.theirbubble);
+            chatScrennLayout.setGravity(Gravity.LEFT);
+        }
         return convertView;
     }
+
+
+
 
     class MessageViewHolder {
 
