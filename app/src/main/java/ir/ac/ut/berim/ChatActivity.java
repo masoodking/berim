@@ -64,6 +64,9 @@ public class ChatActivity extends ActionBarActivity {
         final ImageButton button;
         button = (ImageButton) findViewById(R.id.send_button);
 
+        setTitle("My new title");
+//        getActionBar().setIcon(R.drawable.attach);
+
         mMessageText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
