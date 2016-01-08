@@ -121,6 +121,7 @@ public class ChatActivity extends ActionBarActivity {
                 //todo show error for message.
             }
         });
+//        mAdapter.setSentBy(message.getFrom());
         mMessages.add(message);
         mAdapter.notifyDataSetChanged();
         mMessageText.setText("");

@@ -3,6 +3,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/chat_screen_linear_layout"
     android:padding="5dp">
 
     <!--<ImageView-->
@@ -14,10 +15,14 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
+        android:id="@+id/chat_background_linear_layout"
         android:layout_height="wrap_content"
         android:background="@drawable/bubble"
         android:layoutDirection="rtl"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="0dp"
+        android:paddingTop="0dp"
+        android:layout_marginBottom="0dp">
         <TextView
             android:id="@+id/message_name_text_view"
             android:layout_width="wrap_content"
@@ -25,7 +30,7 @@
             android:textSize="15sp"
             android:textColor="@android:color/black"
             android:gravity="center_vertical"
-            android:paddingLeft="10dp" />
+            android:paddingLeft="10dp"/>
 
         <TextView
             android:id="@+id/message_description_text_view"
@@ -33,6 +38,5 @@
             android:layout_height="wrap_content"
             android:textColor="@android:color/darker_gray"
             android:paddingLeft="20dp" />
-
     </LinearLayout>
 </LinearLayout>
