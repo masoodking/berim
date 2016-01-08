@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bubble"
         android:layoutDirection="rtl"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:paddingBottom="0dp"
         android:paddingTop="0dp"
         android:layout_marginBottom="0dp">
