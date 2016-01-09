@@ -2,6 +2,7 @@ package ir.ac.ut.berim;
 
 import com.github.ksoichiro.android.observablescrollview.ObservableListView;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -13,6 +14,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import ir.ac.ut.adapter.PlaceReviewAdapter;
+import ir.ac.ut.models.Review;
+import ir.ac.ut.models.User;
+
 public class TestScrollActivity extends AppCompatActivity {
 
     private View mToolbarView;
@@ -22,7 +27,7 @@ public class TestScrollActivity extends AppCompatActivity {
     private ObservableListView listView;
 
     TextView mtextView;
-
+    Context mContext;
     String temp;
 
     private View mStickyHeader;
@@ -31,15 +36,18 @@ public class TestScrollActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_scroll);
+        mContext = this;
 
         listView = (ObservableListView) findViewById(R.id.list);
+        listView.setDivider(null);
         mStickyHeader = findViewById(R.id.placeHeaderMenuSticky);
-        ArrayList<String> items = new ArrayList<String>();
+        ArrayList<Review> items = new ArrayList<Review>();
         for (int i = 1; i <= 100; i++) {
-            items.add("Item " + i);
+            User u = new User("user"+i);
+            items.add(new Review(u,"Review\nReview\nReview\nReview\n"+i));
         }
-        listView.setAdapter(new ArrayAdapter<String>(
-                this, android.R.layout.simple_list_item_1, items));
+        PlaceReviewAdapter placeReviewAdapter = new PlaceReviewAdapter(mContext,items);
+        listView.setAdapter(placeReviewAdapter);
         LayoutInflater inflater = getLayoutInflater();
         ViewGroup header = (ViewGroup) inflater.inflate(R.layout.place_header, listView,
                 false);
