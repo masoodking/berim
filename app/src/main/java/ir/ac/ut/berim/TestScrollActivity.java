@@ -5,6 +5,7 @@ import com.github.ksoichiro.android.observablescrollview.ObservableListView;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,25 +50,24 @@ public class TestScrollActivity extends AppCompatActivity {
         PlaceReviewAdapter placeReviewAdapter = new PlaceReviewAdapter(mContext,items);
         listView.setAdapter(placeReviewAdapter);
         LayoutInflater inflater = getLayoutInflater();
-        ViewGroup header = (ViewGroup) inflater.inflate(R.layout.place_header, listView,
+        final ViewGroup header = (ViewGroup) inflater.inflate(R.layout.place_header, listView,
                 false);
         listView.addHeaderView(header, null, false);
 
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                if (listView != null && listView.getChildAt(1) != null
-                        && listView.getChildAt(1).getTop() < 85) {
-                    mStickyHeader.setVisibility(View.VISIBLE);
-                } else {
-                    mStickyHeader.setVisibility(View.GONE);
-                }
             }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
                     int totalItemCount) {
-
+                if (listView != null && listView.getChildAt(1) != null
+                        && header.getBottom() <90) {//VERY STRANGE THINGS HAPPENING HERE, I DON'T WANT TO USE 90, BUT I WAS FORCED
+                    mStickyHeader.setVisibility(View.VISIBLE);
+                } else {
+                    mStickyHeader.setVisibility(View.GONE);
+                }
             }
         });
     }
