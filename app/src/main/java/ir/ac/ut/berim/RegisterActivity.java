@@ -37,14 +37,13 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        mContext = this;
+
         if(ProfileUtils.isLogin(this)){
             Toast.makeText(mContext, "you are already logged in :|", Toast.LENGTH_SHORT)
                     .show();
             finish();
         }
-
-        mContext = this;
-
         mNickName = (EditText) findViewById(R.id.nickname);
         mPhoneNumber = (EditText) findViewById(R.id.phone_number);
         mPassword = (EditText) findViewById(R.id.password);

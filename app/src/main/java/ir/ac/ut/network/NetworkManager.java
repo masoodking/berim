@@ -24,7 +24,7 @@ public class NetworkManager {
     public static void connect() {
         if (!isConnected()) {
             try {
-                mSocket = IO.socket("http://172.31.29.76:3000");
+                mSocket = IO.socket("http://berim-berimserver.rhcloud.com");
                 mSocket.connect();
                 connectMessageReceiver();
             } catch (URISyntaxException e) {
@@ -46,7 +46,7 @@ public class NetworkManager {
         if (!isConnected()) {
             connect();
             callback.onErrorResponse(
-                    new BerimNetworkException(0, BerimApplication.getInstance().getString(
+                    new BerimNetworkException(BerimNetworkException.CONNECTION_LOST_ERROR_CODE, BerimApplication.getInstance().getString(
                             R.string.connection_error)));
         }
         mSocket.emit(methodName + "Request", params)
