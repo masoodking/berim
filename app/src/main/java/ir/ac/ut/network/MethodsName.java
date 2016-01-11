@@ -11,4 +11,6 @@ public class MethodsName {
 
     public static final String SEND_MESSAGE = "sendMessage";
 
+    public final static String SEARCH_USER = "searchUser";
+
 }

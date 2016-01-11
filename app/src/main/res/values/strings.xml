@@ -12,13 +12,13 @@
     <string name="title_activity_place">PlaceActivity</string>
     <string name="title_activity_chat">ChatActivity</string>
 
-    <!--Place Activity:-->
+    <!-- Place Activity: -->
     <string name="place_photos">تصاویر</string>
     <string name="place_maps">نقشه</string>
     <string name="place_x">چی بذاریم؟</string>
     <string name="place_share">شر</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_test_scroll">TestScrollActivity</string>
     <string name="register">ورود</string>
@@ -31,7 +31,9 @@
     <!-- errors -->
     <string name="connection_error">اتصال به سرور برقرار نیست.</string>
     <string name="title_activity_profile">profileActivity</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_search_user">SearchUserActivity</string>
+
+    <string name="search">جستجو</string>
 </resources>

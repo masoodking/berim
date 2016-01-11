@@ -8,5 +8,4 @@ public abstract class NetworkReceiver<T> {
     public abstract void onResponse(T response);
 
     public abstract void onErrorResponse(BerimNetworkException error);
-
 }

@@ -1,29 +1,48 @@
 package ir.ac.ut.berim;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.view.View;
 
 import ir.ac.ut.fragment.BerimListFragment;
 import ir.ac.ut.fragment.ChatsListFragment;
 import ir.ac.ut.fragment.PlaceListFragment;
+import ir.ac.ut.widget.BerimHeader;
 import ir.ac.ut.widget.SlidingTabBar;
 import ir.ac.ut.widget.ViewPager;
 
 public class MainActivity extends FragmentActivity {
 
+    private Context mContext;
+
     private SlidingTabBar mTabBar;
 
-    public static final int PLACE=1,BERIM=3,CHAT=2,ERROR=4;
+    private BerimHeader mBerimHeader;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTabBar = (SlidingTabBar) findViewById(R.id.tab_bar);
+        mContext = this;
+        mBerimHeader = (BerimHeader) findViewById(R.id.berim_header);
+        mBerimHeader.showNewUserIcon(R.drawable.ic_action_new_user, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mContext, SearchUserActivity.class));
+            }
+        });
 
+        mTabBar = (SlidingTabBar) findViewById(R.id.tab_bar);
+        initTabBar();
+    }
+
+    private void initTabBar(){
         String[] titles = {getString(R.string.places),
                 getString(R.string.chats), getString(R.string.berims)};
         TabPagerAdapter mTabAdapter = new TabPagerAdapter(titles);
@@ -40,9 +59,9 @@ public class MainActivity extends FragmentActivity {
         });
         mTabBar.setAdapter(mTabAdapter, true);
         mTabBar.setListPager(fragmentPager);
+
         fragmentPager.setAdapter(mFragmentPagerAdapter);
     }
-
     public class TabPagerAdapter extends SlidingTabBar.TabAdapter {
 
         private final TabInfo[] mAppLists;

@@ -1,0 +1,17 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/header_height"
+                android:background="@color/tab_bar_bg"
+        >
+
+    <ImageView
+            android:id="@+id/header_new_user"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:src="@drawable/ic_action_new_user"
+            android:tint="@android:color/white"
+            android:layout_alignParentRight="true"/>
+
+
+</RelativeLayout>
