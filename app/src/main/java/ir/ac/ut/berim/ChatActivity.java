@@ -94,7 +94,7 @@ public class ChatActivity extends ActionBarActivity {
                     Message message = new Message();
                     message.setText(mMessageInput.getText().toString());
                     message.setRoomId(mTalkee.getRoomId());
-                    message.setFrom(mMe.getId());
+                    message.setSender(mTalkee.getRoomId());
                     message.setStatus(Message.MessageStatus.SENT);
                     try {
                         sendMessage(message);
@@ -105,7 +105,6 @@ public class ChatActivity extends ActionBarActivity {
             }
         });
     }
-
 
     public void sendMessage(Message message) throws JSONException {
         JSONObject json = new JSONObject();
@@ -131,7 +130,7 @@ public class ChatActivity extends ActionBarActivity {
 
     public void addMessage(Message message) {
         //add message to list
-        Toast.makeText(mContext, message.getUsername() + ": " + message.getText(),
+        Toast.makeText(mContext, message.getNickName() + ": " + message.getText(),
                 Toast.LENGTH_SHORT).show();
         mMessages.add(message);
         mAdapter.notifyDataSetChanged();

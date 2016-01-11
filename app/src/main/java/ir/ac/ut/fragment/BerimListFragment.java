@@ -53,7 +53,7 @@ public class BerimListFragment extends BaseFragment {
         int count = 20;
         final Place[] places = new Place[count];
         for (int i = 0; i < count; i++) {
-            places[i] = new Place(String.valueOf(i), "Berim" + i, "this is berim " + i);
+            places[i] = new Place(String.valueOf(i), "Berim" + i, "this is berim " + i, 0);
         }
         mAdapter = new PlacesListAdapter(getActivity(), places);
         PlacesGridView.setAdapter(mAdapter);

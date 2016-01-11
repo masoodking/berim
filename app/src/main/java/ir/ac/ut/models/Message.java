@@ -12,17 +12,19 @@ public class Message {
 
     private String text;
 
-    private String from;
-
-    private String to;
-
-    private String username;
-
     private String roomId;
 
-    private String date;
+    private String sender;
+
+    private String nickName;
 
     private MessageStatus status;
+
+    private String updateStatus;
+
+    private String fileAddress;
+
+    private String date;
 
     public enum MessageStatus{
         SENT,
@@ -37,7 +39,7 @@ public class Message {
         }
 
         if(jsonObject.has("senderId")){
-            message.setFrom(jsonObject.getString("senderId"));
+            message.setSender(jsonObject.getString("sender"));
         }
 
         if(jsonObject.has("roomId")){
@@ -52,14 +54,22 @@ public class Message {
             message.setDate(jsonObject.getString("date"));
         }
 
+        if(jsonObject.has("date")){
+            message.setDate(jsonObject.getString("date"));
+        }
+
+        if(jsonObject.has("date")){
+            message.setDate(jsonObject.getString("date"));
+        }
+
+        if(jsonObject.has("date")){
+            message.setDate(jsonObject.getString("date"));
+        }
+
         return message;
     }
 
     public Message() {
-    }
-
-    public Message(String text) {
-        this.text = text;
     }
 
     public String getId() {
@@ -78,30 +88,6 @@ public class Message {
         this.text = text;
     }
 
-    public String getFrom() {
-        return from;
-    }
-
-    public void setFrom(String from) {
-        this.from = from;
-    }
-
-    public String getTo() {
-        return to;
-    }
-
-    public void setTo(String to) {
-        this.to = to;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getRoomId() {
         return roomId;
     }
@@ -110,12 +96,20 @@ public class Message {
         this.roomId = roomId;
     }
 
-    public String getDate() {
-        return date;
+    public String getSender() {
+        return sender;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public MessageStatus getStatus() {
@@ -124,5 +118,29 @@ public class Message {
 
     public void setStatus(MessageStatus status) {
         this.status = status;
+    }
+
+    public String getUpdateStatus() {
+        return updateStatus;
+    }
+
+    public void setUpdateStatus(String updateStatus) {
+        this.updateStatus = updateStatus;
+    }
+
+    public String getFileAddress() {
+        return fileAddress;
+    }
+
+    public void setFileAddress(String fileAddress) {
+        this.fileAddress = fileAddress;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

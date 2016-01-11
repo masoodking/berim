@@ -1,5 +1,9 @@
 package ir.ac.ut.berim;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,11 +11,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.Log;
 import android.view.View;
 
 import ir.ac.ut.fragment.BerimListFragment;
 import ir.ac.ut.fragment.ChatsListFragment;
 import ir.ac.ut.fragment.PlaceListFragment;
+import ir.ac.ut.network.BerimNetworkException;
+import ir.ac.ut.network.ChatNetworkListner;
+import ir.ac.ut.network.MethodsName;
+import ir.ac.ut.network.NetworkManager;
+import ir.ac.ut.network.NetworkReceiver;
 import ir.ac.ut.widget.BerimHeader;
 import ir.ac.ut.widget.SlidingTabBar;
 import ir.ac.ut.widget.ViewPager;
@@ -40,6 +50,24 @@ public class MainActivity extends FragmentActivity {
 
         mTabBar = (SlidingTabBar) findViewById(R.id.tab_bar);
         initTabBar();
+
+
+        try {
+            JSONObject json = new JSONObject();
+            json.put("messageId", "");
+            NetworkManager.sendRequest(MethodsName.GET_CHAT_LIST, json, new NetworkReceiver() {
+                @Override
+                public void onResponse(Object response) {
+                    Log.wtf("CHAT_LIST", response.toString());
+                }
+
+                @Override
+                public void onErrorResponse(BerimNetworkException error) {
+                    Log.wtf("CHAT_LIST", error.getMessage());
+                }
+            });
+        }catch (JSONException e){
+        }
     }
 
     private void initTabBar(){
@@ -117,6 +145,38 @@ public class MainActivity extends FragmentActivity {
         public int getCount() {
             return 3;
         }
-
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mChatNetworkListner.register();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mChatNetworkListner.unregister();
+    }
+
+    protected ChatNetworkListner mChatNetworkListner = new ChatNetworkListner() {
+        @Override
+        public void onMessageReceived(final JSONObject response) {
+            ((Activity) mContext).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Log.wtf("notif", response.getString("text") + "-" + response.getString("id"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void onMessageErrorReceived(BerimNetworkException error) {
+            error.printStackTrace();
+        }
+    };
 }

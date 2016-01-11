@@ -1,7 +1,6 @@
 package ir.ac.ut.adapter;
 
 import android.content.Context;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
-import ir.ac.ut.berim.PlaceActivity;
 import ir.ac.ut.berim.R;
-import ir.ac.ut.models.Chat;
 import ir.ac.ut.models.Place;
 
 /**

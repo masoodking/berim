@@ -15,4 +15,8 @@ public class MethodsName {
 
     public final static String SEARCH_USER = "searchUser";
 
+    public final static String GET_ROOMS = "getRooms";
+
+    public final static String GET_CHAT_LIST = "getChatList";
+
 }
