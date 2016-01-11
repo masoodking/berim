@@ -35,14 +35,14 @@ public class LoginActivity extends AppCompatActivity {
 
     private Context mContext;
 
-    private NetworkReceiver mNetworkReceiver = new NetworkReceiver() {
+    private NetworkReceiver<JSONObject> mNetworkReceiver = new NetworkReceiver<JSONObject>() {
         @Override
-        public void onResponse(final Object response) {
+        public void onResponse(final JSONObject response) {
             ((Activity) mContext).runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        User user = User.createFromJson((JSONObject) response);
+                        User user = User.createFromJson(response);
                         ProfileUtils.loginUser(mContext, user);
 
                     } catch (JSONException e) {
@@ -80,8 +80,8 @@ public class LoginActivity extends AppCompatActivity {
 
         mContext = this;
         mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setTitle("please wait...");
-        mProgressDialog.setMessage("please wait just a sec...");
+        mProgressDialog.setTitle(getString(R.string.please_wait));
+        mProgressDialog.setMessage(getString(R.string.please_wait_more));
 
         if (ProfileUtils.isLogin(this)) {
             mProgressDialog.show();
@@ -106,7 +106,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (TextUtils.isEmpty(mPassword.getText().toString()) ||
                         TextUtils.isEmpty(mPhoneNumber.getText().toString())) {
-                    Toast.makeText(mContext, "fill all inputs", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, getString(R.string.fill_all_inputs), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 mProgressDialog.show();

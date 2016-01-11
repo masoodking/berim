@@ -1,46 +1,39 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ccd0ff"
-    tools:context="ir.ac.ut.berim.ChatActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ccd0ff"
+                tools:context="ir.ac.ut.berim.ChatActivity">
 
-        <ListView
+    <ListView
             android:id="@+id/listview"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:layout_alignParentTop="true"
             android:layout_above="@+id/relLayout">
-        </ListView>
+    </ListView>
     <RelativeLayout
-        android:id="@+id/relLayout"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true">
-
-        <ImageButton
-            android:id="@+id/send_button"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/attach"
-            android:padding="0dp"
-            android:background="#ffffff"
-            android:layout_alignParentRight="true" />
-        <!--<ImageButton-->
-            <!--android:id="@+id/attach_button"-->
-            <!--android:layout_width="50dp"-->
-            <!--android:layout_height="50dp"-->
-            <!--android:padding="10dp"-->
-            <!--android:background="#ffffff"-->
-            <!--android:src="@drawable/attach"-->
-            <!--android:layout_toLeftOf="@id/send_button"/>-->
-
-        <EditText
-            android:id="@+id/chat_text"
+            android:id="@+id/relLayout"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="#ffffff"
-            android:layout_toLeftOf="@id/send_button"/>
+            android:layout_alignParentBottom="true">
+
+        <ImageButton
+                android:id="@+id/send_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_action_attach"
+                android:padding="5dp"
+                android:background="@android:color/white"
+                android:layout_alignParentRight="true"/>
+
+        <EditText
+                android:id="@+id/chat_text"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:padding="5dp"
+                android:background="@android:color/white"
+                android:layout_toLeftOf="@id/send_button"/>
 
     </RelativeLayout>
 

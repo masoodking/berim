@@ -22,6 +22,7 @@ public class ChatsListFragment extends BaseFragment {
     private GridView PlacesGridView;
 
     private PlacesListAdapter mAdapter;
+
     private ChatsListAdapter mChatAdapter;
 
     public ChatsListFragment() {

@@ -27,6 +27,8 @@
     <string name="button_register">ثبت نام</string>
     <string name="button_login">ورود</string>
     <string name="passHint">رمز عبور</string>
+    <string name="activate">فعال‌سازی</string>
+    <string name="activate_code">کد فعال‌سازی</string>
 
     <!-- errors -->
     <string name="connection_error">اتصال به سرور برقرار نیست.</string>
@@ -36,4 +38,12 @@
     <string name="title_activity_search_user">SearchUserActivity</string>
 
     <string name="search">جستجو</string>
+
+    <string name="please_wait">شکیبا باشید</string>
+    <string name="please_wait_more">در حال اتصال به سرور...</string>
+    <string name="fill_all_inputs">لطفا همه ورودی‌ها را وارد کنید.</string>
+    
+    <string name="an_error_occurred">یه جایی یه مشکلی هست.</string>
+
+    <string name="welcome">خوش آمدید :)</string>
 </resources>

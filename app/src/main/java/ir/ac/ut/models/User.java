@@ -3,10 +3,12 @@ package ir.ac.ut.models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 /**
  * Created by saeed on 11/7/2015.
  */
-public class User {
+public class User implements Serializable {
 
     private String id;
 
@@ -18,15 +20,16 @@ public class User {
 
     private String roomId;
 
+    private String avatar;
+
     public static User createFromJson(JSONObject jsonObject) throws JSONException {
         User user = new User();
-        user.setId(jsonObject.getString("id"));
-        if (jsonObject.has("nickName")) {
-            user.setNickName(jsonObject.getString("nickName"));
-        }
-        user.setPassword(jsonObject.getString("password"));
-        user.setPhoneNumber(jsonObject.getString("phoneNumber"));
-        user.setRoomId(jsonObject.getString("roomId"));
+        user.setId(jsonObject.has("id") ? jsonObject.getString("id") : null);
+        user.setNickName(jsonObject.has("nickName") ? jsonObject.getString("nickName") : null);
+        user.setPassword(jsonObject.has("password") ? jsonObject.getString("password") : null);
+        user.setPhoneNumber(
+                jsonObject.has("phoneNumber") ? jsonObject.getString("phoneNumber") : null);
+        user.setRoomId(jsonObject.has("roomId") ? jsonObject.getString("roomId") : null);
         return user;
     }
 
