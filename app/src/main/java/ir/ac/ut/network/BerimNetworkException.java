@@ -9,6 +9,8 @@ public class BerimNetworkException extends Exception {
 
     private static final long serialVersionUID = 1L;
 
+    public static final int CONNECTION_LOST_ERROR_CODE = 10058;
+
     private int mErrorCode;
 
     private String mError;

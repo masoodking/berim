@@ -9,8 +9,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import ir.ac.ut.fragment.BerimListFragment;
 import ir.ac.ut.fragment.ChatsListFragment;
 import ir.ac.ut.fragment.PlaceListFragment;
-import ir.ut.ac.widget.SlidingTabBar;
-import ir.ut.ac.widget.ViewPager;
+import ir.ac.ut.widget.SlidingTabBar;
+import ir.ac.ut.widget.ViewPager;
 
 public class MainActivity extends FragmentActivity {
 

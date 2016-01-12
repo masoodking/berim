@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import ir.ac.ut.models.User;
-import ir.ac.ut.network.NetworkManager;
 
 /**
  * Created by Masood on 12/12/2015 AD.
@@ -56,7 +55,6 @@ public class ProfileUtils {
         editor.putString(USER_PHONE_NUMBER, null);
         editor.putBoolean(USER_IS_LOGIN, false);
         editor.commit();
-        NetworkManager.mSocket.disconnect();
     }
 
     public static boolean isLogin(Context context){

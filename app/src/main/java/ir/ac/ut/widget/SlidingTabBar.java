@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ir.ut.ac.widget;
+package ir.ac.ut.widget;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

@@ -62,9 +62,12 @@ public class LoginActivity extends AppCompatActivity {
             ((Activity) mContext).runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(mContext, error.getMessage(), Toast.LENGTH_SHORT)
-                            .show();
-                    mProgressDialog.dismiss();
+                    if (error.getErrorCode() != BerimNetworkException.CONNECTION_LOST_ERROR_CODE) {
+                        Toast.makeText(mContext, error.getMessage(), Toast.LENGTH_SHORT)
+                                .show();
+                        mProgressDialog.dismiss();
+                        ProfileUtils.logoutUser(mContext);
+                    }
                 }
             });
         }
@@ -76,7 +79,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mContext = this;
-
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setTitle("please wait...");
         mProgressDialog.setMessage("please wait just a sec...");

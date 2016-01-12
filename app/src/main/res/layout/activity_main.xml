@@ -4,14 +4,14 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <ir.ut.ac.widget.SlidingTabBar
+    <ir.ac.ut.widget.SlidingTabBar
         android:id="@+id/tab_bar"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/tab_bar_height"
         android:layout_alignParentTop="true"
         android:overScrollMode="never" />
 
-    <ir.ut.ac.widget.ViewPager
+    <ir.ac.ut.widget.ViewPager
         android:id="@+id/list_pager"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
