@@ -18,8 +18,8 @@ import ir.ac.ut.models.Review;
  * Created by masood on 10/1/15.
  */
 public class PlaceReviewAdapter extends BaseAdapter {
-    public static final int PLACE_DESCRIPTION=1;
-    public static final int PLACE_REVIEW=2;
+    public static final int PLACE_DESCRIPTION=0;
+    public static final int PLACE_REVIEW=1;
     private Context mContext;
 
     private Review[] reviews;
@@ -29,8 +29,6 @@ public class PlaceReviewAdapter extends BaseAdapter {
         reviews = new Review[data.size()];
         reviews = data.toArray(reviews);
     }
-
-
 
 
     @Override
