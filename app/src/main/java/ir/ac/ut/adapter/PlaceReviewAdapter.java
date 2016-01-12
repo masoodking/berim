@@ -18,7 +18,8 @@ import ir.ac.ut.models.Review;
  * Created by masood on 10/1/15.
  */
 public class PlaceReviewAdapter extends BaseAdapter {
-
+    public static final int PLACE_DESCRIPTION=1;
+    public static final int PLACE_REVIEW=2;
     private Context mContext;
 
     private Review[] reviews;
@@ -60,9 +61,16 @@ public class PlaceReviewAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        int listViewItemType = getItemViewType(position);
         PlaceViewHolder viewHolder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_place_review, parent, false);
+            if(listViewItemType==PLACE_DESCRIPTION){
+                convertView = LayoutInflater.from(mContext).inflate(R.layout.item_place_description, parent, false);
+            }
+            else
+            {//review
+                convertView = LayoutInflater.from(mContext).inflate(R.layout.item_place_review, parent, false);
+            }
             viewHolder = new PlaceViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
@@ -74,6 +82,17 @@ public class PlaceReviewAdapter extends BaseAdapter {
         viewHolder.icon.setImageResource(R.drawable.ic_launcher);
 
         return convertView;
+    }
+    @Override
+    public int getViewTypeCount(){
+        return 2;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position==0)
+            return PLACE_DESCRIPTION;
+        return PLACE_REVIEW;
     }
 
     class PlaceViewHolder {
