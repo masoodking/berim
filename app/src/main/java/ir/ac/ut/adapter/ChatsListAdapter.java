@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import ir.ac.ut.berim.R;
-import ir.ac.ut.models.Chat;
+import ir.ac.ut.models.Room;
 
 /**
  * Created by saeed on 11/24/2015.
@@ -20,21 +20,21 @@ public class ChatsListAdapter extends BaseAdapter {
 
     private Context mContext;
 
-    private Chat[] mChats;
+    private Room[] mRooms;
 
-    public ChatsListAdapter(FragmentActivity context, Chat[] data) {
+    public ChatsListAdapter(FragmentActivity context, Room[] data) {
         mContext = context;
-        mChats = data;
+        mRooms = data;
     }
 
     @Override
     public int getCount() {
-        return mChats.length;
+        return mRooms.length;
     }
 
     @Override
     public Object getItem(int position) {
-        return mChats[position];
+        return mRooms[position];
     }
 
     @Override
@@ -64,7 +64,7 @@ public class ChatsListAdapter extends BaseAdapter {
             viewHolder = (PlaceViewHolder) convertView.getTag();
         }
 
-        viewHolder.name.setText(mChats[position].getTitle());
+        viewHolder.name.setText(mRooms[position].getTitle());
         viewHolder.icon.setImageResource(R.drawable.ic_launcher);
 
         return convertView;

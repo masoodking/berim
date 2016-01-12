@@ -7,6 +7,7 @@
         tools:context=".RegisterActivity"
         android:background="#99bbff">
     <LinearLayout
+            android:id="@+id/register_pan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -50,6 +51,37 @@
                 android:padding="5dp"
                 android:textSize="20dp"
                 android:text="@string/button_register"
+                android:contextClickable="false"
+                android:layout_centerHorizontal="true"/>
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/activation_pan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bubble"
+            android:padding="30dp"
+            android:visibility="gone"
+            android:layout_centerInParent="true">
+
+        <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:ems="10"
+                android:id="@+id/activation_input"
+                android:singleLine="true"
+                android:layout_marginBottom="10dp"
+                android:hint="@string/activate_code"/>
+
+        <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/button_activate"
+                android:padding="5dp"
+                android:textSize="20dp"
+                android:text="@string/activate"
                 android:contextClickable="false"
                 android:layout_centerHorizontal="true"/>
     </LinearLayout>

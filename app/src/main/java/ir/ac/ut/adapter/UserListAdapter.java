@@ -9,33 +9,33 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import ir.ac.ut.berim.R;
-import ir.ac.ut.models.Place;
+import ir.ac.ut.models.User;
 
 /**
  * Created by masood on 10/1/15.
  */
-public class PlacesListAdapter extends BaseAdapter {
+public class UserListAdapter extends BaseAdapter {
 
     private Context mContext;
 
-    private Place[] mPlaces;
+    private User[] mUsers;
 
-    public PlacesListAdapter(Context context, Place[] data) {
+    public UserListAdapter(Context context, User[] data) {
         mContext = context;
-        mPlaces = data;
+        mUsers = data;
     }
 
-
-
-
+    public void setData(User[] data){
+        mUsers = data;
+    }
     @Override
     public int getCount() {
-        return mPlaces.length;
+        return mUsers.length;
     }
 
     @Override
-    public Object getItem(int position) {
-        return mPlaces[position];
+    public User getItem(int position) {
+        return mUsers[position];
     }
 
     @Override
@@ -43,32 +43,21 @@ public class PlacesListAdapter extends BaseAdapter {
         return 0;
     }
 
-//    @Override
-//    public int getViewTypeCount() {
-//        return super.getViewTypeCount();
-//    }
-//
-//    @Override
-//    public int getItemViewType(int position) {
-//        return super.getItemViewType(position);
-//    }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         PlaceViewHolder viewHolder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_place_row, parent, false);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_user_row, parent, false);
             viewHolder = new PlaceViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (PlaceViewHolder) convertView.getTag();
         }
-
-        viewHolder.name.setText(mPlaces[position].getName());
-        viewHolder.description.setText(mPlaces[position].getDescription());
-        viewHolder.icon.setImageResource(R.drawable.ic_launcher);
-
+        User user = mUsers[position];
+        viewHolder.name.setText(user.getNickName());
+        viewHolder.description.setText(user.getPhoneNumber());
+        viewHolder.icon.setImageResource(R.drawable.ic_action_user_default);
         return convertView;
     }
 
@@ -77,7 +66,6 @@ public class PlacesListAdapter extends BaseAdapter {
         final TextView name;
         final TextView description;
         final ImageView icon;
-
 
         PlaceViewHolder(View view) {
             name = (TextView) view.findViewById(R.id.place_name_text_view);

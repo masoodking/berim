@@ -37,7 +37,6 @@ public class BerimListFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-
         View rootView = inflater.inflate(R.layout.fragment_places_list, null);
         mContext = this;
 
@@ -54,7 +53,7 @@ public class BerimListFragment extends BaseFragment {
         int count = 20;
         final Place[] places = new Place[count];
         for (int i = 0; i < count; i++) {
-            places[i] = new Place(String.valueOf(i), "Berim" + i, "this is berim " + i);
+            places[i] = new Place(String.valueOf(i), "Berim" + i, "this is berim " + i, 0);
         }
         mAdapter = new PlacesListAdapter(getActivity(), places);
         PlacesGridView.setAdapter(mAdapter);

@@ -3,7 +3,7 @@ package ir.ac.ut.models;
 /**
  * Created by saeed on 11/3/2015.
  */
-public class Chat {
+public class Room {
 
     private String roomId;
 
@@ -15,7 +15,7 @@ public class Chat {
 
     private User talkee;
 
-    public Chat(String title, String lastText) {
+    public Room(String title, String lastText) {
         this.title = title;
         this.lastText = lastText;
     }

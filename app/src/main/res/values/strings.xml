@@ -12,13 +12,13 @@
     <string name="title_activity_place">PlaceActivity</string>
     <string name="title_activity_chat">ChatActivity</string>
 
-    <!--Place Activity:-->
+    <!-- Place Activity: -->
     <string name="place_photos">تصاویر</string>
     <string name="place_maps">نقشه</string>
     <string name="place_x">چی بذاریم؟</string>
     <string name="place_share">شر</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_test_scroll">TestScrollActivity</string>
     <string name="register">ورود</string>
@@ -27,9 +27,23 @@
     <string name="button_register">ثبت نام</string>
     <string name="button_login">ورود</string>
     <string name="passHint">رمز عبور</string>
+    <string name="activate">فعال‌سازی</string>
+    <string name="activate_code">کد فعال‌سازی</string>
 
     <!-- errors -->
     <string name="connection_error">اتصال به سرور برقرار نیست.</string>
     <string name="title_activity_profile">profileActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_search_user">SearchUserActivity</string>
 
+    <string name="search">جستجو</string>
+
+    <string name="please_wait">شکیبا باشید</string>
+    <string name="please_wait_more">در حال اتصال به سرور...</string>
+    <string name="fill_all_inputs">لطفا همه ورودی‌ها را وارد کنید.</string>
+    
+    <string name="an_error_occurred">یه جایی یه مشکلی هست.</string>
+
+    <string name="welcome">خوش آمدید :)</string>
 </resources>

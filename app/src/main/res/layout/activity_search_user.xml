@@ -1,0 +1,38 @@
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        tools:context="ir.ac.ut.berim.SearchUserActivity">
+
+    <EditText
+            android:id="@+id/user_search_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:dropDownWidth="match_parent"
+            android:hint="@string/search"
+            android:textAppearance="@style/TextAppearance.Small"
+            android:textColorHint="@color/primary_light"
+            android:textColor="@color/primary_dark"
+            android:imeOptions="actionSearch"
+            android:selectAllOnFocus="true"
+            android:maxLength="20"
+            android:gravity="right|center_vertical"
+            android:singleLine="true"/>
+
+    <ListView
+            android:id="@+id/user_search_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/user_search_box"/>
+
+
+</RelativeLayout>

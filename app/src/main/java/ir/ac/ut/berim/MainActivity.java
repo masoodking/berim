@@ -1,29 +1,76 @@
 package ir.ac.ut.berim;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.Log;
+import android.view.View;
 
 import ir.ac.ut.fragment.BerimListFragment;
 import ir.ac.ut.fragment.ChatsListFragment;
 import ir.ac.ut.fragment.PlaceListFragment;
+import ir.ac.ut.network.BerimNetworkException;
+import ir.ac.ut.network.ChatNetworkListner;
+import ir.ac.ut.network.MethodsName;
+import ir.ac.ut.network.NetworkManager;
+import ir.ac.ut.network.NetworkReceiver;
+import ir.ac.ut.widget.BerimHeader;
 import ir.ac.ut.widget.SlidingTabBar;
 import ir.ac.ut.widget.ViewPager;
 
 public class MainActivity extends FragmentActivity {
 
+    private Context mContext;
+
     private SlidingTabBar mTabBar;
 
-    public static final int PLACE=1,BERIM=3,CHAT=2,ERROR=4;
+    private BerimHeader mBerimHeader;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTabBar = (SlidingTabBar) findViewById(R.id.tab_bar);
+        mContext = this;
+        mBerimHeader = (BerimHeader) findViewById(R.id.berim_header);
+        mBerimHeader.showNewUserIcon(R.drawable.ic_action_new_user, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mContext, SearchUserActivity.class));
+            }
+        });
 
+        mTabBar = (SlidingTabBar) findViewById(R.id.tab_bar);
+        initTabBar();
+
+
+        try {
+            JSONObject json = new JSONObject();
+            json.put("messageId", "");
+            NetworkManager.sendRequest(MethodsName.GET_CHAT_LIST, json, new NetworkReceiver() {
+                @Override
+                public void onResponse(Object response) {
+                    Log.wtf("CHAT_LIST", response.toString());
+                }
+
+                @Override
+                public void onErrorResponse(BerimNetworkException error) {
+                    Log.wtf("CHAT_LIST", error.getMessage());
+                }
+            });
+        }catch (JSONException e){
+        }
+    }
+
+    private void initTabBar(){
         String[] titles = {getString(R.string.places),
                 getString(R.string.chats), getString(R.string.berims)};
         TabPagerAdapter mTabAdapter = new TabPagerAdapter(titles);
@@ -40,9 +87,9 @@ public class MainActivity extends FragmentActivity {
         });
         mTabBar.setAdapter(mTabAdapter, true);
         mTabBar.setListPager(fragmentPager);
+
         fragmentPager.setAdapter(mFragmentPagerAdapter);
     }
-
     public class TabPagerAdapter extends SlidingTabBar.TabAdapter {
 
         private final TabInfo[] mAppLists;
@@ -98,6 +145,38 @@ public class MainActivity extends FragmentActivity {
         public int getCount() {
             return 3;
         }
-
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mChatNetworkListner.register();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mChatNetworkListner.unregister();
+    }
+
+    protected ChatNetworkListner mChatNetworkListner = new ChatNetworkListner() {
+        @Override
+        public void onMessageReceived(final JSONObject response) {
+            ((Activity) mContext).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Log.wtf("notif", response.getString("text") + "-" + response.getString("id"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void onMessageErrorReceived(BerimNetworkException error) {
+            error.printStackTrace();
+        }
+    };
 }

@@ -32,7 +32,7 @@ public class ChatActivity extends ActionBarActivity {
 
     private Context mContext;
 
-    private EditText mMessageText;
+    private EditText mMessageInput;
 
     private ListView mListView;
 
@@ -52,8 +52,9 @@ public class ChatActivity extends ActionBarActivity {
 
         mMe = ProfileUtils.getUser(mContext);
 
-        mMessageText = (EditText) findViewById(R.id.chat_text);
+        mTalkee = (User) getIntent().getSerializableExtra("user");
 
+        mMessageInput = (EditText) findViewById(R.id.chat_text);
         mListView = (ListView) findViewById(R.id.listview);
 
         mMessages = new ArrayList<>();
@@ -61,13 +62,9 @@ public class ChatActivity extends ActionBarActivity {
 
         mListView.setAdapter(mAdapter);
         mListView.setDivider(null);
-        final ImageButton button;
-        button = (ImageButton) findViewById(R.id.send_button);
+        final ImageButton button = (ImageButton) findViewById(R.id.send_button);
 
-        setTitle("My new title");
-//        getActionBar().setIcon(R.drawable.attach);
-
-        mMessageText.addTextChangedListener(new TextWatcher() {
+        mMessageInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -80,39 +77,39 @@ public class ChatActivity extends ActionBarActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (TextUtils.isEmpty(mMessageText.getText())) {
-                    button.setImageResource(R.drawable.attach);
+                if (TextUtils.isEmpty(s.toString())) {
+                    button.setImageResource(R.drawable.ic_action_attach);
                 } else {
                     button.setImageResource(R.drawable.send_icon);
                 }
             }
         });
-        setTitle(ProfileUtils.getUser(this).getNickName());
+
+        setTitle(mTalkee.getNickName());
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Message message = new Message();
-                message.setText(mMessageText.getText().toString());
-                message.setRoomId(mMe.getRoomId());
-                message.setFrom(mMe.getId());
-                message.setStatus(Message.MessageStatus.SENT);
-                if (TextUtils.isEmpty(message.getText())) {
-                    return;
-                }
-                try {
-                    sendMessage(message);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if (!TextUtils.isEmpty(mMessageInput.getText().toString())) {
+                    Message message = new Message();
+                    message.setText(mMessageInput.getText().toString());
+                    message.setRoomId(mTalkee.getRoomId());
+                    message.setSender(mTalkee.getRoomId());
+                    message.setStatus(Message.MessageStatus.SENT);
+                    try {
+                        sendMessage(message);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
     }
 
-
     public void sendMessage(Message message) throws JSONException {
         JSONObject json = new JSONObject();
         json.put("text", message.getText());
-        json.put("roomId", mMe.getRoomId());
+        json.put("roomId", message.getRoomId());
         NetworkManager.sendRequest(MethodsName.SEND_MESSAGE, json, new NetworkReceiver() {
             @Override
             public void onResponse(Object response) {
@@ -127,16 +124,17 @@ public class ChatActivity extends ActionBarActivity {
 //        mAdapter.setSentBy(message.getFrom());
         mMessages.add(message);
         mAdapter.notifyDataSetChanged();
-        mMessageText.setText("");
+        mMessageInput.setText("");
         mListView.smoothScrollToPosition((mAdapter.getCount() - 1));
     }
 
     public void addMessage(Message message) {
         //add message to list
-        Toast.makeText(mContext, message.getUsername() + ": " + message.getText(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, message.getNickName() + ": " + message.getText(),
+                Toast.LENGTH_SHORT).show();
         mMessages.add(message);
         mAdapter.notifyDataSetChanged();
-        mMessageText.setText("");
+        mMessageInput.setText("");
         mListView.smoothScrollToPosition((mAdapter.getCount() - 1));
     }
 

@@ -1,30 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <ir.ac.ut.widget.BerimHeader
+            android:id="@+id/berim_header"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/header_height"
+            android:layout_alignParentTop="true"/>
 
     <ir.ac.ut.widget.SlidingTabBar
-        android:id="@+id/tab_bar"
-        android:layout_width="fill_parent"
-        android:layout_height="@dimen/tab_bar_height"
-        android:layout_alignParentTop="true"
-        android:overScrollMode="never" />
+            android:id="@+id/tab_bar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tab_bar_height"
+            android:layout_below="@id/berim_header"/>
 
     <ir.ac.ut.widget.ViewPager
-        android:id="@+id/list_pager"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@id/tab_bar"
-        android:layout_marginTop="@dimen/tab_bar_height"
-        android:layout_alignParentTop="true" />
+            android:id="@+id/list_pager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tab_bar"/>
 
     <View
-        android:id="@+id/tab_bar_shadow"
-        android:background="@drawable/actionbar_shadow"
-        android:layout_below="@id/tab_bar"
-        android:layout_width="fill_parent"
-        android:layout_height="4dp" />
+            android:id="@+id/tab_bar_shadow"
+            android:background="@drawable/actionbar_shadow"
+            android:layout_below="@id/tab_bar"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"/>
 
 
 </RelativeLayout>

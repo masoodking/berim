@@ -13,7 +13,6 @@ import ir.ac.ut.adapter.ChatsListAdapter;
 import ir.ac.ut.adapter.PlacesListAdapter;
 import ir.ac.ut.berim.ChatActivity;
 import ir.ac.ut.berim.R;
-import ir.ac.ut.models.Chat;
 
 public class ChatsListFragment extends BaseFragment {
 
@@ -22,6 +21,7 @@ public class ChatsListFragment extends BaseFragment {
     private GridView PlacesGridView;
 
     private PlacesListAdapter mAdapter;
+
     private ChatsListAdapter mChatAdapter;
 
     public ChatsListFragment() {
@@ -37,7 +37,8 @@ public class ChatsListFragment extends BaseFragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View rootView = inflater.inflate(R.layout.fragment_places_list, null);
@@ -52,13 +53,9 @@ public class ChatsListFragment extends BaseFragment {
 
 
     private void getChats() {
-        // todo get from server
-        int count = 20;
-        final Chat[] chats = new Chat[count];
-        for (int i = 0; i < count; i++) {
-            chats[i] = new Chat(String.valueOf(i), "Chat " + i);
-        }
-        mChatAdapter = new ChatsListAdapter(getActivity(), chats);
+//        NetworkManager
+//                .sendRequest(MethodsName.GET_ROOMS, new JSONObject(), mNetworkReceiver);
+//        mChatAdapter = new ChatsListAdapter(getActivity(), chats);
         PlacesGridView.setAdapter(mChatAdapter);
         PlacesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -69,4 +66,34 @@ public class ChatsListFragment extends BaseFragment {
             }
         });
     }
+
+//    private NetworkReceiver<JSONArray> mNetworkReceiver = new NetworkReceiver<JSONArray>() {
+//        @Override
+//        public void onResponse(final JSONArray response) {
+//            getActivity().runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    Room[] rooms = new Room[response.length()];
+//                    for (int i = 0; i < response.length(); i++) {
+//                        try {
+//                            Room[i] = Room.createFromJson(response.getJSONObject(i));
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                    updateUserList(users);
+//                }
+//            });
+//        }
+//
+//        @Override
+//        public void onErrorResponse(final BerimNetworkException error) {
+//            ((Activity) mContext).runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    Toast.makeText(mContext, error.toString(), Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//        }
+//    };
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="min_tab_count_to_snap">7</integer>
-    <integer name="max_tab_count_to_snap">7</integer>
+    <integer name="min_tab_count_to_snap">6</integer>
+    <integer name="max_tab_count_to_snap">8</integer>
 </resources>
