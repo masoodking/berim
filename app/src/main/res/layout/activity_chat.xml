@@ -82,5 +82,4 @@
             android:gravity="center_vertical"
             android:layout_toLeftOf="@id/send_button"/>
     </RelativeLayout>
-
 </RelativeLayout>
