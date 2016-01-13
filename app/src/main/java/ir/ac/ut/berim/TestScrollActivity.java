@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -18,6 +17,7 @@ import java.util.ArrayList;
 import ir.ac.ut.adapter.PlaceReviewAdapter;
 import ir.ac.ut.models.Review;
 import ir.ac.ut.models.User;
+import ir.ac.ut.utils.DimensionUtils;
 
 public class TestScrollActivity extends AppCompatActivity {
 
@@ -28,7 +28,9 @@ public class TestScrollActivity extends AppCompatActivity {
     private ObservableListView listView;
 
     TextView mtextView;
+
     Context mContext;
+
     String temp;
 
     private View mStickyHeader;
@@ -44,10 +46,10 @@ public class TestScrollActivity extends AppCompatActivity {
         mStickyHeader = findViewById(R.id.placeHeaderMenuSticky);
         ArrayList<Review> items = new ArrayList<Review>();
         for (int i = 1; i <= 100; i++) {
-            User u = new User("user"+i);
-            items.add(new Review(u,"Review\nReview\nReview\nReview\n"+i));
+            User u = new User("user" + i);
+            items.add(new Review(u, "Review\nReview\nReview\nReview\n" + i));
         }
-        PlaceReviewAdapter placeReviewAdapter = new PlaceReviewAdapter(mContext,items);
+        PlaceReviewAdapter placeReviewAdapter = new PlaceReviewAdapter(mContext, items);
         listView.setAdapter(placeReviewAdapter);
         LayoutInflater inflater = getLayoutInflater();
         final ViewGroup header = (ViewGroup) inflater.inflate(R.layout.place_header, listView,
@@ -62,8 +64,9 @@ public class TestScrollActivity extends AppCompatActivity {
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
                     int totalItemCount) {
+                Log.i("header bot", "" + header.getBottom());
                 if (listView != null && listView.getChildAt(1) != null
-                        && header.getBottom() <90) {//VERY STRANGE THINGS HAPPENING HERE, I DON'T WANT TO USE 90, BUT I WAS FORCED
+                        && header.getBottom() < DimensionUtils.convertDpToPx(mContext, 90)) {
                     mStickyHeader.setVisibility(View.VISIBLE);
                 } else {
                     mStickyHeader.setVisibility(View.GONE);
