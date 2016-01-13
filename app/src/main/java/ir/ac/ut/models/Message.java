@@ -16,7 +16,9 @@ public class Message {
 
     private String sender;
 
-    private String nickName;
+    private String senderId;
+
+    private String senderAvatar;
 
     private MessageStatus status;
 
@@ -31,6 +33,20 @@ public class Message {
         SEEN,
         FAIL
     };
+
+    public Message(String id, String text, String roomId, String sender, String senderId, String senderAvatar,
+            MessageStatus status, String updateStatus, String fileAddress, String date) {
+        this.id = id;
+        this.text = text;
+        this.roomId = roomId;
+        this.sender = sender;
+        this.senderId = senderId;
+        this.senderAvatar = senderAvatar;
+        this.status = status;
+        this.updateStatus = updateStatus;
+        this.fileAddress = fileAddress;
+        this.date = date;
+    }
 
     public static Message createFromJson(JSONObject jsonObject) throws JSONException{
         Message message = new Message();
@@ -104,12 +120,20 @@ public class Message {
         this.sender = sender;
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getSenderId() {
+        return senderId;
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
+    }
+
+    public String getSenderAvatar() {
+        return senderAvatar;
+    }
+
+    public void setSenderAvatar(String senderAvatar) {
+        this.senderAvatar = senderAvatar;
     }
 
     public MessageStatus getStatus() {
