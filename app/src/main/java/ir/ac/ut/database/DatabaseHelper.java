@@ -96,6 +96,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 MESSAGE_TABLE_NAME, null, where, null, null, null, null));
     }
 
+    public void getChatList() {
+        Cursor cursor = db.query(
+        /* FROM */ MESSAGE_TABLE_NAME,
+        /* SELECT */ new String[]{"*", "COUNT(" + STATUS + ") AS count"},
+        /* WHERE */ null,
+        /* WHERE args */ null,
+        /* GROUP BY */ SENDER_ID,
+        /* HAVING */ null,
+        /* ORDER BY */ DATE + " DESC"
+        );
+    }
+
     public List<Message> convertCursorToMessage(Cursor cursor) {
         List<Message> list = new ArrayList<Message>();
         while (cursor.moveToNext()) {

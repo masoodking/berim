@@ -55,7 +55,7 @@ public class MainActivity extends FragmentActivity {
         try {
             JSONObject json = new JSONObject();
             json.put("messageId", "");
-            NetworkManager.sendRequest(MethodsName.GET_CHAT_LIST, json, new NetworkReceiver() {
+            NetworkManager.sendRequest(MethodsName.GET_CHAT_LIST, new JSONObject(), new NetworkReceiver() {
                 @Override
                 public void onResponse(Object response) {
                     Log.wtf("CHAT_LIST", response.toString());
@@ -166,7 +166,8 @@ public class MainActivity extends FragmentActivity {
                 @Override
                 public void run() {
                     try {
-                        Log.wtf("notif", response.getString("text") + "-" + response.getString("id"));
+                        Log.wtf("notif",
+                                response.getString("text") + "-" + response.getString("id"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

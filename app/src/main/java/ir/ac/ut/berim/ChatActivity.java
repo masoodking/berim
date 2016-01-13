@@ -4,8 +4,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -17,6 +27,10 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import ir.ac.ut.adapter.ChatAdapter;
@@ -40,6 +54,8 @@ public class ChatActivity extends ActionBarActivity {
 
     private ChatAdapter mAdapter;
 
+    private ImageButton mSendAttachButton;
+
     private User mMe;
 
     private User mTalkee;
@@ -62,7 +78,7 @@ public class ChatActivity extends ActionBarActivity {
 
         mListView.setAdapter(mAdapter);
         mListView.setDivider(null);
-        final ImageButton button = (ImageButton) findViewById(R.id.send_button);
+        mSendAttachButton = (ImageButton) findViewById(R.id.send_button);
 
         mMessageInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -78,16 +94,16 @@ public class ChatActivity extends ActionBarActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if (TextUtils.isEmpty(s.toString())) {
-                    button.setImageResource(R.drawable.ic_action_attach);
+                    mSendAttachButton.setImageResource(R.drawable.ic_action_attach);
                 } else {
-                    button.setImageResource(R.drawable.send_icon);
+                    mSendAttachButton.setImageResource(R.drawable.send_icon);
                 }
             }
         });
 
         setTitle(mTalkee.getNickName());
 
-        button.setOnClickListener(new View.OnClickListener() {
+        mSendAttachButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(mMessageInput.getText().toString())) {
@@ -101,6 +117,8 @@ public class ChatActivity extends ActionBarActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                } else {
+                    attachFile();
                 }
             }
         });
@@ -114,11 +132,13 @@ public class ChatActivity extends ActionBarActivity {
             @Override
             public void onResponse(Object response) {
                 //todo change message status to sent
+                Log.wtf("SEND_MESSAGE", response.toString());
             }
 
             @Override
             public void onErrorResponse(BerimNetworkException error) {
                 //todo show error for message.
+                Log.wtf("SEND_MESSAGE", error.getMessage());
             }
         });
 //        mAdapter.setSentBy(message.getFrom());
@@ -130,7 +150,7 @@ public class ChatActivity extends ActionBarActivity {
 
     public void addMessage(Message message) {
         //add message to list
-        Toast.makeText(mContext, message.getNickName() + ": " + message.getText(),
+        Toast.makeText(mContext, message.getSender() + ": " + message.getText(),
                 Toast.LENGTH_SHORT).show();
         mMessages.add(message);
         mAdapter.notifyDataSetChanged();
@@ -173,4 +193,163 @@ public class ChatActivity extends ActionBarActivity {
 
         }
     };
+
+
+    public void attachFile() {
+        final CharSequence[] items = {getString(R.string.photo_from_camera),
+                getString(R.string.video_from_camera), getString(R.string.photo),
+                getString(R.string.video), getString(R.string.file), getString(R.string.cancel)};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle(getString(R.string.select_file));
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                Intent intent;
+                if (items[item].equals(getString(R.string.photo))) {
+                    intent = new Intent(
+                            Intent.ACTION_PICK,
+                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    intent.setType("image/*");
+                    startActivityForResult(Intent.createChooser(intent, "Select Image"),
+                            SELECT_GALARY_PHOTO);
+                } else if (items[item].equals(getString(R.string.video))) {
+                    intent = new Intent(
+                            Intent.ACTION_PICK,
+                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    intent.setType("video/*");
+                    startActivityForResult(Intent.createChooser(intent, "Select Video"),
+                            SELECT_GALARY_PHOTO);
+                } else if (items[item].equals(getString(R.string.file))) {
+                    intent = new Intent(Intent.ACTION_GET_CONTENT);
+                    intent.setType("*/*");
+                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+                    try {
+                        startActivityForResult(
+                                Intent.createChooser(intent, "Select a File to Upload"),
+                                SELECT_GALARY_PHOTO);
+                    } catch (android.content.ActivityNotFoundException ex) {
+                        // Potentially direct the user to the Market with a Dialog
+                        Toast.makeText(mContext, "Please install a File Manager.",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                } else if (items[item].equals(getString(R.string.photo_from_camera))) {
+                    Intent cameraIntent = new Intent(
+                            MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(cameraIntent, REQUEST_CAMERA_IMAGE);
+                } else if (items[item].equals(getString(R.string.video_from_camera))) {
+                    Intent cameraIntent = new Intent(
+                            android.provider.MediaStore.ACTION_VIDEO_CAPTURE);
+                    cameraIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 15);
+                    startActivityForResult(cameraIntent, REQUEST_CAMERA_VIDEO);
+                } else if (items[item].equals(getString(R.string.cancel))) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    private final int REQUEST_CAMERA_IMAGE = 1;
+
+    private final int REQUEST_CAMERA_VIDEO = 2;
+
+    private final int SELECT_GALARY_PHOTO = 3;
+
+    private final int SELECT_GALARY_VIDEO = 4;
+
+    private final int SELECT_GALARY_FILE = 5;
+
+    private String postType;
+
+    private String selectedPhotoPath, selectedVideoPath;
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+
+            if (requestCode == REQUEST_CAMERA_IMAGE) {
+                File f = new File(Environment.getExternalStorageDirectory()
+                        .toString());
+                for (File temp : f.listFiles()) {
+                    if (temp.getName().equals("temp.jpg")) {
+                        f = temp;
+                        break;
+                    }
+                }
+                try {
+                    Bitmap bm;
+                    BitmapFactory.Options btmapOptions = new BitmapFactory.Options();
+                    btmapOptions.inSampleSize = 2;
+                    bm = BitmapFactory.decodeFile(f.getAbsolutePath(),
+                            btmapOptions);
+
+                    selectedPhotoPath = f.getAbsolutePath();
+                    postType = "photo";
+
+//                    ivPreview.setImageBitmap(bm);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (requestCode == SELECT_GALARY_PHOTO) {
+                Uri selectedImageUri = data.getData();
+
+                selectedPhotoPath = getPath(selectedImageUri);
+
+                Bitmap bm;
+                BitmapFactory.Options btmapOptions = new BitmapFactory.Options();
+                btmapOptions.inSampleSize = 2;
+                bm = BitmapFactory.decodeFile(selectedPhotoPath, btmapOptions);
+
+                postType = "photo";
+//                ivPreview.setImageBitmap(bm);
+            } else if (requestCode == SELECT_GALARY_VIDEO) {
+                System.out.println("SELECT_VIDEO");
+                Uri selectedVideoUri = data.getData();
+                String selectedPath = getPath(selectedVideoUri);
+                System.out.println("SELECT_VIDEO Path : " + selectedPath);
+                Bitmap bm = ThumbnailUtils
+                        .createVideoThumbnail(selectedPath, 0);
+                try {
+                    selectedPhotoPath = getFilePath(bm);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                selectedVideoPath = selectedPath;
+                postType = "video";
+                // uploadVideo(selectedPath);
+            }
+
+        }
+    }
+
+    public String getFilePath(Bitmap bm) throws IOException {
+        // create a file to write bitmap data
+        File f = new File(mContext.getCacheDir(), "f.jpg");
+        f.createNewFile();
+
+        // Convert bitmap to byte array
+        Bitmap bitmap = bm;
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 0 /* ignored for PNG */, bos);
+        byte[] bitmapdata = bos.toByteArray();
+
+        // write the bytes in file
+        FileOutputStream fos = new FileOutputStream(f);
+        fos.write(bitmapdata);
+        fos.flush();
+        fos.close();
+
+        return f.getPath();
+    }
+
+    public String getPath(Uri uri) {
+        String[] projection = {MediaStore.MediaColumns.DATA};
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
 }

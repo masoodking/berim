@@ -3,12 +3,17 @@ package ir.ac.ut.network;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
+import com.koushikdutta.ion.Response;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.util.Log;
 
+import java.io.File;
 import java.net.URISyntaxException;
 
 import ir.ac.ut.berim.BerimApplication;
@@ -21,15 +26,14 @@ public class NetworkManager {
 
     public static Socket mSocket;
 
+    private static final String SERVER_URL = "http://berim-berimserver.rhcloud.com";
+
     public static void connect() {
         if (!isConnected()) {
             Log.wtf("Socket", "connection Called :)");
             try {
-                mSocket = IO.socket("http://berim-berimserver.rhcloud.com");
+                mSocket = IO.socket(SERVER_URL);
                 mSocket.connect();
-                while (!mSocket.connected()) {
-                    ;
-                }
                 connectMessageReceiver();
             } catch (URISyntaxException e) {
                 Log.wtf("Socket", "connection faild.");
@@ -82,7 +86,6 @@ public class NetworkManager {
     }
 
     public static void connectMessageReceiver() {
-
         mSocket.off("newMessage");
         mSocket.on("newMessage", new Emitter.Listener() {
             @Override
@@ -90,5 +93,15 @@ public class NetworkManager {
                 ChatNetworkListner.sendNetworkResponseBroadcast(args[0]);
             }
         });
+    }
+
+    public static void uploadFile(final Context context, File file,
+            FutureCallback<Response<String>> callback) {
+        Ion.with(context)
+                .load(SERVER_URL + "/upload")
+                .setMultipartFile("file", file)
+                .asString()
+                .withResponse()
+                .setCallback(callback);
     }
 }
