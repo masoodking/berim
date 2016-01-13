@@ -17,7 +17,6 @@ android:layoutDirection="rtl">
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/theirbubble"
         android:orientation="vertical"
         android:layout_gravity="right"
         android:layout_weight="1.00">
@@ -31,7 +30,7 @@ android:layoutDirection="rtl">
             android:textColor="@android:color/black"
             android:textDirection="rtl"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp" />
+            android:paddingRight="10dp"/>
         <TextView
             android:id="@+id/review_description_text_view"
             android:layout_width="wrap_content"
@@ -42,13 +41,6 @@ android:layoutDirection="rtl">
             android:paddingLeft="10dp" />
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/review_icon_image"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:scaleType="fitXY"
-        android:padding="3dp"
-        android:layout_gravity="right"
-        android:src="@drawable/ic_launcher" />
+
 </LinearLayout>
 </RelativeLayout>

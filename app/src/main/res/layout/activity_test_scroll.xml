@@ -28,7 +28,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.25"
-                    android:textSize="44dp"
+                    android:textSize="44sp"
                     android:textAlignment="center"
                     android:text="3.7"/>
             <LinearLayout
@@ -41,14 +41,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Name"
-                        android:textSize="26dp"
+                        android:textSize="26sp"
                         android:textStyle="bold"/>
                 <TextView
                         android:id="@+id/PlaceLocation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Location"
-                        android:textSize="20dp"/>
+                        android:textSize="20sp"/>
             </LinearLayout>
 
             <ImageView

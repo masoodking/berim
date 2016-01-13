@@ -60,25 +60,28 @@ public class PlaceReviewAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         int listViewItemType = getItemViewType(position);
-        PlaceViewHolder viewHolder;
+        PlaceReviewViewHolder reviewViewHolder;
+        PlaceDescriptionViewHolder descriptionViewHolder;
         if (convertView == null) {
             if(listViewItemType==PLACE_DESCRIPTION){
                 convertView = LayoutInflater.from(mContext).inflate(R.layout.item_place_description, parent, false);
+                reviewViewHolder = new PlaceReviewViewHolder(convertView);
+                convertView.setTag(reviewViewHolder);
+                reviewViewHolder.name.setText(reviews[position].getUser().getNickName());
+                reviewViewHolder.description.setText(reviews[position].getDescription());
             }
             else
             {//review
                 convertView = LayoutInflater.from(mContext).inflate(R.layout.item_place_review, parent, false);
+                reviewViewHolder = new PlaceReviewViewHolder(convertView);
+                convertView.setTag(reviewViewHolder);
+                reviewViewHolder.name.setText(reviews[position].getUser().getNickName());
+                reviewViewHolder.description.setText(reviews[position].getDescription());
+                reviewViewHolder.icon.setImageResource(R.drawable.ic_launcher);
             }
-            viewHolder = new PlaceViewHolder(convertView);
-            convertView.setTag(viewHolder);
         } else {
-            viewHolder = (PlaceViewHolder) convertView.getTag();
+            reviewViewHolder = (PlaceReviewViewHolder) convertView.getTag();
         }
-
-        viewHolder.name.setText(reviews[position].getUser().getNickName());
-        viewHolder.description.setText(reviews[position].getDescription());
-        viewHolder.icon.setImageResource(R.drawable.ic_launcher);
-
         return convertView;
     }
     @Override
@@ -93,17 +96,28 @@ public class PlaceReviewAdapter extends BaseAdapter {
         return PLACE_REVIEW;
     }
 
-    class PlaceViewHolder {
+    class PlaceReviewViewHolder {
 
         final TextView name;
         final TextView description;
         final ImageView icon;
 
 
-        PlaceViewHolder(View view) {
+        PlaceReviewViewHolder(View view) {
             name = (TextView) view.findViewById(R.id.reviewer_name_text_view);
             description = (TextView) view.findViewById(R.id.review_description_text_view);
             icon = (ImageView) view.findViewById(R.id.review_icon_image);
+        }
+    }
+    class PlaceDescriptionViewHolder {
+
+        final TextView name;
+        final TextView description;
+
+
+        PlaceDescriptionViewHolder(View view) {
+            name = (TextView) view.findViewById(R.id.reviewer_name_text_view);
+            description = (TextView) view.findViewById(R.id.review_description_text_view);
         }
     }
 }

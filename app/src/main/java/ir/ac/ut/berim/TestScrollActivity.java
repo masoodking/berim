@@ -66,7 +66,7 @@ public class TestScrollActivity extends AppCompatActivity {
                     int totalItemCount) {
                 Log.i("header bot", "" + header.getBottom());
                 if (listView != null && listView.getChildAt(1) != null
-                        && header.getBottom() < DimensionUtils.convertDpToPx(mContext, 90)) {
+                        && header.getBottom() < DimensionUtils.convertDpToPx(mContext, 60)) {
                     mStickyHeader.setVisibility(View.VISIBLE);
                 } else {
                     mStickyHeader.setVisibility(View.GONE);

@@ -27,9 +27,9 @@ public class NetworkManager {
             try {
                 mSocket = IO.socket("http://berim-berimserver.rhcloud.com");
                 mSocket.connect();
-                while (!mSocket.connected()) {
-                    ;
-                }
+//                while (!mSocket.connected()) {
+//                    ;
+//                }
                 connectMessageReceiver();
             } catch (URISyntaxException e) {
                 Log.wtf("Socket", "connection faild.");
