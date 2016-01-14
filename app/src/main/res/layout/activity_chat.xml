@@ -16,6 +16,7 @@
             android:id="@+id/relLayout"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:background="@android:color/white"
             android:layout_alignParentBottom="true">
 
         <ImageButton
@@ -23,8 +24,9 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/ic_action_attach"
-                android:padding="5dp"
+                android:tint="@color/primary_dark"
                 android:background="@android:color/white"
+                android:padding="5dp"
                 android:layout_alignParentRight="true"/>
 
         <EditText
@@ -32,7 +34,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:padding="5dp"
-                android:background="@android:color/white"
                 android:layout_toLeftOf="@id/send_button"/>
 
     </RelativeLayout>

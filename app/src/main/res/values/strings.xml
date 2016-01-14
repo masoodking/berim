@@ -46,5 +46,14 @@
     <string name="an_error_occurred">یه جایی یه مشکلی هست.</string>
 
     <string name="welcome">خوش آمدید :)</string>
+
+    <string name="select_file">انتخاب فایل</string>
+    <string name="photo_from_camera">عکس (دوربین)</string>
+    <string name="video_from_camera">فیلم (دوربین)</string>
+    <string name="photo">عکس</string>
+    <string name="video">فیلم</string>
+    <string name="file">فایل</string>
+    <string name="cancel">لغو</string>
+
     <string name="review_hint">یک نظر وارد کنید!</string>
 </resources>
