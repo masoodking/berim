@@ -18,9 +18,9 @@ import android.widget.Toast;
 
 import ir.ac.ut.adapter.ChatsListAdapter;
 import ir.ac.ut.adapter.PlacesListAdapter;
-import ir.ac.ut.berim.LoginActivity;
 import ir.ac.ut.berim.ProfileUtils;
 import ir.ac.ut.berim.R;
+import ir.ac.ut.berim.RegisterActivity;
 import ir.ac.ut.berim.TestScrollActivity;
 import ir.ac.ut.models.Place;
 import ir.ac.ut.network.BerimNetworkException;
@@ -58,7 +58,7 @@ public class PlaceListFragment extends BaseFragment {
         View rootView = inflater.inflate(R.layout.fragment_places_list, null);
         mContext = this;
 
-        PlacesGridView = (GridView) rootView.findViewById(R.id.gridView_places);
+        PlacesGridView = (GridView) rootView.findViewById(R.id.grid_view_places);
 
         getPlaces();
 
@@ -67,7 +67,7 @@ public class PlaceListFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 ProfileUtils.logoutUser(getActivity());//todo do we need this?
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                Intent intent = new Intent(getActivity(), RegisterActivity.class);
                 getActivity().startActivity(intent);
                 getActivity().finish();
             }

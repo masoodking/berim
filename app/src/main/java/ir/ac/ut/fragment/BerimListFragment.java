@@ -40,7 +40,7 @@ public class BerimListFragment extends BaseFragment {
         View rootView = inflater.inflate(R.layout.fragment_berims_list, null);
         mContext = this;
 
-        PlacesGridView = (GridView) rootView.findViewById(R.id.gridView_places);
+        PlacesGridView = (GridView) rootView.findViewById(R.id.grid_view_places);
 
         getBerims();
 

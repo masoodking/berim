@@ -5,7 +5,7 @@ package ir.ac.ut.network;
  */
 public class MethodsName {
 
-    public final static String SIGN_UP = "signUp";
+    public final static String LOGIN = "logIn";
 
     public final static String ACTIVE_USER = "activeUser";
 

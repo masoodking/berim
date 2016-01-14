@@ -44,7 +44,7 @@ public class ChatsListFragment extends BaseFragment {
         View rootView = inflater.inflate(R.layout.fragment_places_list, null);
         mContext = this;
 
-        PlacesGridView = (GridView) rootView.findViewById(R.id.gridView_places);
+        PlacesGridView = (GridView) rootView.findViewById(R.id.grid_view_places);
 
         getChats();
 

@@ -63,7 +63,7 @@ public class NetworkManager {
                 .once(methodName + "Response", new Emitter.Listener() {
                     @Override
                     public void call(final Object... args) {
-                        Log.wtf("Socket", "result of <<" + methodName + ">> received.");
+                        Log.wtf("Socket", "result of <<" + methodName + ">> received. : " + args[0].toString());
                         JSONObject jsonObject = (JSONObject) args[0];
                         try {
                             if (jsonObject.has("error") && jsonObject.getBoolean("error") == true) {
