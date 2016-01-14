@@ -42,7 +42,7 @@ public class ChatAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public Message getItem(int position) {
         return mMessages.get(position);
     }
 
@@ -64,7 +64,7 @@ public class ChatAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        Message chatMessage = (Message) getItem(position);
+        Message chatMessage = getItem(position);
         MessageViewHolder viewHolder;
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_chat_message, parent, false);

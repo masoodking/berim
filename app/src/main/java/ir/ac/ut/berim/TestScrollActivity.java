@@ -2,16 +2,22 @@ package ir.ac.ut.berim;
 
 import com.github.ksoichiro.android.observablescrollview.ObservableListView;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import ir.ac.ut.adapter.PlaceReviewAdapter;
+import ir.ac.ut.models.Review;
+import ir.ac.ut.models.User;
+import ir.ac.ut.utils.DimensionUtils;
 
 public class TestScrollActivity extends AppCompatActivity {
 
@@ -23,6 +29,8 @@ public class TestScrollActivity extends AppCompatActivity {
 
     TextView mtextView;
 
+    Context mContext;
+
     String temp;
 
     private View mStickyHeader;
@@ -31,35 +39,38 @@ public class TestScrollActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_scroll);
+        mContext = this;
 
         listView = (ObservableListView) findViewById(R.id.list);
+        listView.setDivider(null);
         mStickyHeader = findViewById(R.id.placeHeaderMenuSticky);
-        ArrayList<String> items = new ArrayList<String>();
+        ArrayList<Review> items = new ArrayList<Review>();
         for (int i = 1; i <= 100; i++) {
-            items.add("Item " + i);
+            User u = new User("user" + i);
+            items.add(new Review(u, "Review\nReview\nReview\nReview\n" + i));
         }
-        listView.setAdapter(new ArrayAdapter<String>(
-                this, android.R.layout.simple_list_item_1, items));
+        PlaceReviewAdapter placeReviewAdapter = new PlaceReviewAdapter(mContext, items);
+        listView.setAdapter(placeReviewAdapter);
         LayoutInflater inflater = getLayoutInflater();
-        ViewGroup header = (ViewGroup) inflater.inflate(R.layout.place_header, listView,
+        final ViewGroup header = (ViewGroup) inflater.inflate(R.layout.place_header, listView,
                 false);
         listView.addHeaderView(header, null, false);
 
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                if (listView != null && listView.getChildAt(1) != null
-                        && listView.getChildAt(1).getTop() < 85) {
-                    mStickyHeader.setVisibility(View.VISIBLE);
-                } else {
-                    mStickyHeader.setVisibility(View.GONE);
-                }
             }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
                     int totalItemCount) {
-
+                Log.i("header bot", "" + header.getBottom());
+                if (listView != null && listView.getChildAt(1) != null
+                        && header.getBottom() < DimensionUtils.convertDpToPx(mContext, 60)) {
+                    mStickyHeader.setVisibility(View.VISIBLE);
+                } else {
+                    mStickyHeader.setVisibility(View.GONE);
+                }
             }
         });
     }

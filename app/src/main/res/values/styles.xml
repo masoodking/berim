@@ -19,11 +19,11 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="MyNavigationDrawerTheme" parent="MaterialNavigationDrawerTheme">
-        <item name="colorPrimary">#8bc34a</item>
-        <item name="colorPrimaryDark">#558b2f</item>
-        <item name="colorAccent">#FFFFFF</item>
-        <item name="singleAccount">true</item>
-    </style>
+    <!--<style name="MyNavigationDrawerTheme" parent="MaterialNavigationDrawerTheme">-->
+        <!--<item name="colorPrimary">#8bc34a</item>-->
+        <!--<item name="colorPrimaryDark">#558b2f</item>-->
+        <!--<item name="colorAccent">#FFFFFF</item>-->
+        <!--<item name="singleAccount">true</item>-->
+    <!--</style>-->
 
 </resources>

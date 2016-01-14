@@ -57,7 +57,7 @@
     </LinearLayout>
     <TextView
         android:id="@+id/placeDescription"
-        android:text="کس‌شععر \n کسشعر \n کسشعر"
+        android:text="placeList Description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/placeHeaderMenu"/>

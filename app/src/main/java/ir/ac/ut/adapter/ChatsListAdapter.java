@@ -57,7 +57,7 @@ public class ChatsListAdapter extends BaseAdapter {
 
         PlaceViewHolder viewHolder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_place_row, parent, false);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_chat_row, parent, false);
             viewHolder = new PlaceViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {

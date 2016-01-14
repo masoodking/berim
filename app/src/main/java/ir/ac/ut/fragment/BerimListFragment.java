@@ -37,7 +37,7 @@ public class BerimListFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View rootView = inflater.inflate(R.layout.fragment_places_list, null);
+        View rootView = inflater.inflate(R.layout.fragment_berims_list, null);
         mContext = this;
 
         PlacesGridView = (GridView) rootView.findViewById(R.id.gridView_places);
