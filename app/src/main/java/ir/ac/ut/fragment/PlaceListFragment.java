@@ -66,7 +66,7 @@ public class PlaceListFragment extends BaseFragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileUtils.logoutUser(getActivity());
+                ProfileUtils.logoutUser(getActivity());//todo do we need this?
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 getActivity().startActivity(intent);
                 getActivity().finish();
@@ -79,9 +79,8 @@ public class PlaceListFragment extends BaseFragment {
 
     public void getPlaces() {
         NetworkManager
-                .sendRequest(MethodsName.GET_ROOMS, new JSONObject(), mNetworkReceiver);
+                .sendRequest(MethodsName.GET_ROOMS, new JSONObject(), mNetworkReceiver);//todo change this to get_places
     }
-
 
     private NetworkReceiver<JSONArray> mNetworkReceiver = new NetworkReceiver<JSONArray>() {
         @Override
