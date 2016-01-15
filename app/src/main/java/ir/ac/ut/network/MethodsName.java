@@ -17,6 +17,9 @@ public class MethodsName {
 
     public final static String GET_ROOMS = "getRooms";
 
+    public final static String GET_PLACES = "getPlaces";
+
+
     public final static String GET_CHAT_LIST = "getChatList";
 
 }

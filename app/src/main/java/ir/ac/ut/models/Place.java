@@ -1,5 +1,8 @@
 package ir.ac.ut.models;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 /**
@@ -10,20 +13,50 @@ public class Place {
     private String id;
     private ArrayList<Review> reviews;
     private String name;
-    private String location;
+    private String address;
     private String description;
-    private int voteNumber;
+    private int rate;
+    private String category;
+    private String longitude;
+    private String latitude;
+    private String avatar;
 
-    public Place(String id, String name, String description, int voteNumber) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.voteNumber = voteNumber;
+    public Place() {
     }
 
-    public Place(String id, String name) {
-        this.id = id;
-        this.name = name;
+    public static Place createFromJson(JSONObject jsonObject) throws JSONException{
+        Place place = new Place();
+        if(jsonObject.has("id")){
+            place.setId(jsonObject.getString("id"));
+        }
+        if(jsonObject.has("name")){
+            place.setName(jsonObject.getString("name"));
+        }
+        if(jsonObject.has("address")){
+            place.setAddress(jsonObject.getString("address"));
+        }
+        if(jsonObject.has("description")){
+            place.setDescription(jsonObject.getString("description"));
+        }
+        if(jsonObject.has("rate")){
+            place.setRate(jsonObject.optInt("rate"));
+        }
+        if(jsonObject.has("category")){
+            place.setCategory(jsonObject.getString("category"));
+        }
+        if(jsonObject.has("longitude")){
+            place.setLongitude(jsonObject.getString("longitude"));
+        }
+        if(jsonObject.has("latitude")){
+            place.setLatitude(jsonObject.getString("latitude"));
+        }
+        if(jsonObject.has("avatar")){
+            place.setAvatar(jsonObject.getString("avatar"));
+        }
+
+        //todo add reviews
+        place.reviews = new ArrayList<>();
+        return place;
     }
 
     public String getId() {
@@ -34,12 +67,28 @@ public class Place {
         this.id = id;
     }
 
+    public ArrayList<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(ArrayList<Review> reviews) {
+        this.reviews = reviews;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getDescription() {
@@ -50,27 +99,43 @@ public class Place {
         this.description = description;
     }
 
-    public ArrayList<Review> getReviews() {
-        return reviews;
+    public int getRate() {
+        return rate;
     }
 
-    public void setReviews(ArrayList<Review> reviews) {
-        this.reviews = reviews;
+    public void setRate(int rate) {
+        this.rate = rate;
     }
 
-    public String getLocation() {
-        return location;
+    public String getCategory() {
+        return category;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public int getVoteNumber() {
-        return voteNumber;
+    public String getLongitude() {
+        return longitude;
     }
 
-    public void setVoteNumber(int voteNumber) {
-        this.voteNumber = voteNumber;
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

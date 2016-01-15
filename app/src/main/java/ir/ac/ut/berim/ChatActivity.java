@@ -57,7 +57,7 @@ public class ChatActivity extends ActionBarActivity {
 
     private ChatAdapter mAdapter;
 
-    private ImageButton mSendAttachButton;
+    private ImageButton mSendOrAttachButton;
 
     private User mMe;
 
@@ -78,7 +78,7 @@ public class ChatActivity extends ActionBarActivity {
         mAdapter = new ChatAdapter(this, mMessages);
         mListView.setAdapter(mAdapter);
         mListView.setDivider(null);
-        mSendAttachButton = (ImageButton) findViewById(R.id.send_button);
+        mSendOrAttachButton = (ImageButton) findViewById(R.id.send_button);
 
         mMessageInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -94,23 +94,23 @@ public class ChatActivity extends ActionBarActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if (TextUtils.isEmpty(s.toString())) {
-                    mSendAttachButton.setImageResource(R.drawable.ic_action_attach);
+                    mSendOrAttachButton.setImageResource(R.drawable.ic_action_attach);
                 } else {
-                    mSendAttachButton.setImageResource(R.drawable.send_icon);
+                    mSendOrAttachButton.setImageResource(R.drawable.send_icon);
                 }
             }
         });
 
         setTitle(mTalkee.getNickName());
 
-        mSendAttachButton.setOnClickListener(new View.OnClickListener() {
+        mSendOrAttachButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(mMessageInput.getText().toString())) {
                     Message message = new Message();
                     message.setText(mMessageInput.getText().toString());
                     message.setRoomId(mTalkee.getRoomId());
-                    message.setSender(mTalkee.getRoomId());
+                    message.setSender(mMe);
                     message.setStatus(Message.MessageStatus.SENT);
                     try {
                         sendMessage(message);
@@ -128,6 +128,7 @@ public class ChatActivity extends ActionBarActivity {
         JSONObject json = new JSONObject();
         json.put("text", message.getText());
         json.put("roomId", message.getRoomId());
+        json.put("file", "");
         NetworkManager.sendRequest(MethodsName.SEND_MESSAGE, json, new NetworkReceiver() {
             @Override
             public void onResponse(Object response) {
@@ -150,8 +151,6 @@ public class ChatActivity extends ActionBarActivity {
 
     public void addMessage(Message message) {
         //add message to list
-        Toast.makeText(mContext, message.getSender() + ": " + message.getText(),
-                Toast.LENGTH_SHORT).show();
         mMessages.add(message);
         mAdapter.notifyDataSetChanged();
         mMessageInput.setText("");
