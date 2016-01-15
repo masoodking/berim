@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -36,15 +37,68 @@ public class RegisterActivity extends AppCompatActivity {
 
     private EditText mActivateInput;
 
-    private EditText mNickName;
-
     private EditText mPhoneNumber;
 
-    private EditText mPassword;
+    private String DEVICE_ID;
 
     private Context mContext;
 
-    private String mActivationCode, mUserId; //todo should be deleted
+    private String mActivationCode; //todo should be deleted
+
+    private NetworkReceiver mNetworkReceiver = new NetworkReceiver<JSONObject>() {
+        @Override
+        public void onResponse(final JSONObject response) {
+            ((Activity) mContext).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mProgressDialog.dismiss();
+                    try {
+                        if (response.has("activationCode")) {
+                            Toast.makeText(mContext,
+                                    "activation code is: " + response
+                                            .getString("activationCode"),
+                                    Toast.LENGTH_SHORT)
+                                    .show();
+                            mActivationCode = response
+                                    .getString("activationCode");
+                            mActivateInput.setText(mActivationCode);
+                            showActivationPan();
+                        } else {
+                            User user = User.createFromJson(response);
+                            ProfileUtils.loginUser(mContext, user);
+                            Toast.makeText(mContext,
+                                    getString(R.string.welcome),
+                                    Toast.LENGTH_SHORT)
+                                    .show();
+                            mContext.startActivity(
+                                    new Intent(mContext, MainActivity.class));
+                            finish();
+                        }
+                    } catch (JSONException e) {
+                        Toast.makeText(mContext,
+                                getString(R.string.an_error_occurred),
+                                Toast.LENGTH_SHORT).show();
+                        showRegisterPan();
+                    }
+                }
+            });
+
+        }
+
+        @Override
+        public void onErrorResponse(final BerimNetworkException error) {
+            ((Activity) mContext).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(mContext, error.getMessage(),
+                            Toast.LENGTH_SHORT)
+                            .show();
+                    mProgressDialog.dismiss();
+                    showRegisterPan();
+                }
+            });
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,11 +107,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         mContext = this;
 
-        if (ProfileUtils.isLogin(this)) {
-            Toast.makeText(mContext, "you are already logged in :|", Toast.LENGTH_SHORT)
-                    .show();
-            finish();
-        }
+        DEVICE_ID = Settings.Secure.getString(this.getContentResolver(),
+                Settings.Secure.ANDROID_ID);
 
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setTitle(getString(R.string.please_wait));
@@ -67,66 +118,40 @@ public class RegisterActivity extends AppCompatActivity {
         mActivatePan = (LinearLayout) findViewById(R.id.activation_pan);
 
         mActivateInput = (EditText) findViewById(R.id.activation_input);
-        mNickName = (EditText) findViewById(R.id.nickname);
         mPhoneNumber = (EditText) findViewById(R.id.phone_number);
-        mPassword = (EditText) findViewById(R.id.password);
 
         mActivateButton = (Button) this.findViewById(R.id.button_activate);
         mRegisterButton = (Button) this.findViewById(R.id.button_register);
+
+        if (ProfileUtils.isLogin(this)) {
+            mProgressDialog.show();
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("deviceId", DEVICE_ID);
+                jsonObject.put("phoneNumber", ProfileUtils.getUser(this).getPhoneNumber());
+            } catch (JSONException e) {
+                return;
+            }
+            NetworkManager.sendRequest(MethodsName.LOGIN, jsonObject, mNetworkReceiver);
+        }
+
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(mNickName.getText().toString()) ||
-                        TextUtils.isEmpty(mPassword.getText().toString()) ||
-                        TextUtils.isEmpty(mPhoneNumber.getText().toString())) {
-                    Toast.makeText(mContext, getString(R.string.fill_all_inputs), Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(mPhoneNumber.getText().toString())) {
+                    Toast.makeText(mContext, getString(R.string.fill_all_inputs),
+                            Toast.LENGTH_SHORT).show();
                     return;
                 }
                 mProgressDialog.show();
                 JSONObject jsonObject = new JSONObject();
                 try {
-                    jsonObject.put("nickName", mNickName.getText().toString());
-                    jsonObject.put("password", mPassword.getText().toString());
                     jsonObject.put("phoneNumber", mPhoneNumber.getText().toString());
+                    jsonObject.put("deviceId", DEVICE_ID);
                 } catch (JSONException e) {
-                    return;
+                    e.printStackTrace();
                 }
-                NetworkManager.sendRequest(MethodsName.SIGN_UP, jsonObject, new NetworkReceiver<JSONObject>() {
-                    @Override
-                    public void onResponse(final JSONObject response) {
-                        ((Activity) mContext).runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                mProgressDialog.dismiss();
-                                try {
-                                    Toast.makeText(mContext, "activation code is: " + response
-                                            .getString("activationCode"), Toast.LENGTH_SHORT).show();
-                                    mActivationCode = response.getString("activationCode");
-                                    mUserId = response.getString("id");
-                                    mActivateInput.setText(mActivationCode);
-                                    showActivationPan();
-                                }catch (JSONException e){
-                                    Toast.makeText(mContext, getString(R.string.an_error_occurred), Toast.LENGTH_SHORT).show();
-                                    showRegisterPan();
-                                }
-                            }
-                        });
-
-                    }
-
-                    @Override
-                    public void onErrorResponse(final BerimNetworkException error) {
-                        ((Activity) mContext).runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(mContext, error.getMessage(), Toast.LENGTH_SHORT)
-                                        .show();
-                                mProgressDialog.dismiss();
-                                showRegisterPan();
-                            }
-                        });
-                    }
-                });
+                NetworkManager.sendRequest(MethodsName.LOGIN, jsonObject, mNetworkReceiver);
 
             }
         });
@@ -135,62 +160,62 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(mActivateInput.getText().toString())) {
-                    Toast.makeText(mContext, getString(R.string.fill_all_inputs), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, getString(R.string.fill_all_inputs),
+                            Toast.LENGTH_SHORT).show();
                     return;
                 }
                 JSONObject jsonObject = new JSONObject();
                 try {
                     jsonObject.put("activationCode", mActivateInput.getText().toString());
-                    jsonObject.put("userId", mUserId);
+                    jsonObject.put("phoneNumber", mPhoneNumber.getText());
+                    jsonObject.put("deviceId", DEVICE_ID);
                 } catch (JSONException e) {
                     return;
                 }
-                NetworkManager.sendRequest(MethodsName.ACTIVE_USER, jsonObject, new NetworkReceiver<JSONObject>() {
-                    @Override
-                    public void onResponse(final JSONObject response) {
-                        ((Activity) mContext).runOnUiThread(new Runnable() {
+                NetworkManager.sendRequest(MethodsName.ACTIVE_USER, jsonObject,
+                        new NetworkReceiver<JSONObject>() {
                             @Override
-                            public void run() {
-                                try {
-                                    User user = User.createFromJson(response);
-                                    ProfileUtils.loginUser(mContext, user);
-                                } catch (JSONException e) {
-                                }
-                                Toast.makeText(mContext, getString(R.string.welcome), Toast.LENGTH_SHORT)
-                                        .show();
-                                mContext.startActivity(new Intent(mContext, MainActivity.class));
-                                finish();
+                            public void onResponse(final JSONObject response) {
+                                ((Activity) mContext).runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            User user = User.createFromJson(response);
+                                            ProfileUtils.loginUser(mContext, user);
+                                        } catch (JSONException e) {
+                                        }
+                                        Toast.makeText(mContext, getString(R.string.welcome),
+                                                Toast.LENGTH_SHORT)
+                                                .show();
+                                        mContext.startActivity(
+                                                new Intent(mContext, MainActivity.class));
+                                        finish();
+                                    }
+                                });
                             }
-                        });
-                    }
 
-                    @Override
-                    public void onErrorResponse(final BerimNetworkException error) {
-                        ((Activity) mContext).runOnUiThread(new Runnable() {
                             @Override
-                            public void run() {
-                                Toast.makeText(mContext, error.getMessage(), Toast.LENGTH_SHORT)
-                                        .show();
+                            public void onErrorResponse(final BerimNetworkException error) {
+                                ((Activity) mContext).runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(mContext, error.getMessage(),
+                                                Toast.LENGTH_SHORT)
+                                                .show();
+                                    }
+                                });
                             }
                         });
-                    }
-                });
             }
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        startActivity(new Intent(this, LoginActivity.class));
-        finish();
-    }
-
-    public void showRegisterPan(){
+    public void showRegisterPan() {
         mRegisterPan.setVisibility(View.VISIBLE);
         mActivatePan.setVisibility(View.GONE);
     }
 
-    public void showActivationPan(){
+    public void showActivationPan() {
         mRegisterPan.setVisibility(View.GONE);
         mActivatePan.setVisibility(View.VISIBLE);
     }

@@ -1,5 +1,8 @@
 package ir.ac.ut.berim;
 
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Response;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -69,13 +72,10 @@ public class ChatActivity extends ActionBarActivity {
         mMe = ProfileUtils.getUser(mContext);
 
         mTalkee = (User) getIntent().getSerializableExtra("user");
-
         mMessageInput = (EditText) findViewById(R.id.chat_text);
         mListView = (ListView) findViewById(R.id.listview);
-
         mMessages = new ArrayList<>();
         mAdapter = new ChatAdapter(this, mMessages);
-
         mListView.setAdapter(mAdapter);
         mListView.setDivider(null);
         mSendAttachButton = (ImageButton) findViewById(R.id.send_button);
@@ -298,10 +298,11 @@ public class ChatActivity extends ActionBarActivity {
 
                 selectedPhotoPath = getPath(selectedImageUri);
 
-                Bitmap bm;
-                BitmapFactory.Options btmapOptions = new BitmapFactory.Options();
-                btmapOptions.inSampleSize = 2;
-                bm = BitmapFactory.decodeFile(selectedPhotoPath, btmapOptions);
+                uploadFile(selectedPhotoPath);
+//                Bitmap bm;
+//                BitmapFactory.Options btmapOptions = new BitmapFactory.Options();
+//                btmapOptions.inSampleSize = 2;
+//                bm = BitmapFactory.decodeFile(selectedPhotoPath, btmapOptions);
 
                 postType = "photo";
 //                ivPreview.setImageBitmap(bm);
@@ -351,5 +352,14 @@ public class ChatActivity extends ActionBarActivity {
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
         cursor.moveToFirst();
         return cursor.getString(column_index);
+    }
+
+    public void uploadFile(String filePath){
+        NetworkManager.uploadFile(mContext, new File(filePath), new FutureCallback<Response<String>>() {
+            @Override
+            public void onCompleted(Exception e, Response<String> result) {
+                Log.wtf("FILE UPLOADED", result.toString());
+            }
+        });
     }
 }

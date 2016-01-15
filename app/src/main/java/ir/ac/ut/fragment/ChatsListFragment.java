@@ -18,8 +18,9 @@ public class ChatsListFragment extends BaseFragment {
 
     private static ChatsListFragment mContext;
 
-    private GridView chatsGridView;
+    private GridView PlacesGridView;
 
+    private PlacesListAdapter mAdapter;
 
     private ChatsListAdapter mChatAdapter;
 
@@ -40,10 +41,10 @@ public class ChatsListFragment extends BaseFragment {
             Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        View rootView = inflater.inflate(R.layout.fragment_chats_list, null);
+        View rootView = inflater.inflate(R.layout.fragment_places_list, null);
         mContext = this;
 
-        chatsGridView = (GridView) rootView.findViewById(R.id.gridView_chats);
+        PlacesGridView = (GridView) rootView.findViewById(R.id.grid_view_places);
 
         getChats();
 
@@ -55,8 +56,8 @@ public class ChatsListFragment extends BaseFragment {
 //        NetworkManager
 //                .sendRequest(MethodsName.GET_ROOMS, new JSONObject(), mNetworkReceiver);
 //        mChatAdapter = new ChatsListAdapter(getActivity(), chats);
-        chatsGridView.setAdapter(mChatAdapter);
-        chatsGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        PlacesGridView.setAdapter(mChatAdapter);
+        PlacesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), ChatActivity.class);
