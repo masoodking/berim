@@ -97,11 +97,9 @@ public class PlaceReviewAdapter extends BaseAdapter {
     }
 
     class PlaceReviewViewHolder {
-
         final TextView name;
         final TextView description;
         final ImageView icon;
-
 
         PlaceReviewViewHolder(View view) {
             name = (TextView) view.findViewById(R.id.reviewer_name_text_view);
