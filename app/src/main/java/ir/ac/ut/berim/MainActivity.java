@@ -41,12 +41,18 @@ public class MainActivity extends FragmentActivity {
 
         mContext = this;
         mBerimHeader = (BerimHeader) findViewById(R.id.berim_header);
-        mBerimHeader.showNewUserIcon(R.drawable.ic_action_new_user, new View.OnClickListener() {
+        mBerimHeader.showRightAction(R.drawable.ic_action_user_default, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(mContext, SearchUserActivity.class));
+                startActivity(new Intent(mContext, ProfileActivity.class));
             }
         });
+//        mBerimHeader.showRightAction(R.drawable.ic_action_new_user, new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(mContext, SearchUserActivity.class));
+//            }
+//        });
 
         mTabBar = (SlidingTabBar) findViewById(R.id.tab_bar);
         initTabBar();

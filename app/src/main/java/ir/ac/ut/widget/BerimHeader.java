@@ -46,13 +46,13 @@ public class BerimHeader extends RelativeLayout {
         mNewUserIcon = (ImageView) mRootView.findViewById(R.id.header_new_user);
     }
 
-    public void showNewUserIcon(int iconDrawable, OnClickListener onClickListener){
+    public void showRightAction(int iconDrawable, OnClickListener onClickListener){
         mNewUserIcon.setImageResource(iconDrawable);
         mNewUserIcon.setOnClickListener(onClickListener);
         mNewUserIcon.setVisibility(VISIBLE);
     }
 
-    public void hideNewUserIcon(){
+    public void hideRightAction(){
         mNewUserIcon.setVisibility(GONE);
     }
 }

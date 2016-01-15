@@ -82,7 +82,7 @@ public class PlacesListAdapter extends BaseAdapter {
         PlaceViewHolder(View view) {
             name = (TextView) view.findViewById(R.id.place_name_text_view);
             description = (TextView) view.findViewById(R.id.place_description_text_view);
-            icon = (ImageView) view.findViewById(R.id.place_list_icon_image);
+            icon = (ImageView) view.findViewById(R.id.user_avatar);
         }
     }
 }

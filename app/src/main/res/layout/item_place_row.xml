@@ -15,7 +15,7 @@
         <!--android:src="@drawable/ic_launcher" />-->
     <de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/place_list_icon_image"
+        android:id="@+id/user_avatar"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_alignParentLeft="true"
@@ -28,7 +28,7 @@
         android:orientation="vertical"
         android:id="@+id/chat_item_linear_layout"
         android:layout_toLeftOf="@+id/chat_notification_box"
-        android:layout_toRightOf="@+id/place_list_icon_image">
+        android:layout_toRightOf="@+id/user_avatar">
         <TextView
             android:id="@+id/place_name_text_view"
             android:layout_width="wrap_content"
