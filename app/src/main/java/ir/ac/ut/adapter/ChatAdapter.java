@@ -33,9 +33,6 @@ public class ChatAdapter extends BaseAdapter {
     }
 
 
-
-
-
     @Override
     public int getCount() {
         return mMessages.size();
@@ -48,7 +45,7 @@ public class ChatAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return  0;
+        return 0;
     }
 
 //    @Override
@@ -64,25 +61,28 @@ public class ChatAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        Message chatMessage = getItem(position);
+        Message chatMessage = mMessages.get(position);
         MessageViewHolder viewHolder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_chat_message, parent, false);
+            convertView = LayoutInflater.from(mContext)
+                    .inflate(R.layout.item_chat_message, parent, false);
             viewHolder = new MessageViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (MessageViewHolder) convertView.getTag();
         }
 
-        viewHolder.name.setText(mMessages.get(position).getText());
-        LinearLayout chatLayout = (LinearLayout) convertView.findViewById(R.id.chat_background_linear_layout);
-        LinearLayout chatScrennLayout = (LinearLayout) convertView.findViewById(R.id.chat_screen_linear_layout);
+        viewHolder.name.setText(chatMessage.getText());
+        LinearLayout chatLayout = (LinearLayout) convertView
+                .findViewById(R.id.chat_background_linear_layout);
+        LinearLayout chatScrennLayout = (LinearLayout) convertView
+                .findViewById(R.id.chat_screen_linear_layout);
 
-        if(position%2==0) {//todo change this if
+        if (ProfileUtils.getUser(mContext).getId()
+                .equals(chatMessage.getSender().getId())) {
             chatLayout.setBackgroundResource(R.drawable.bubble);
             chatScrennLayout.setGravity(Gravity.RIGHT);
-        }
-        else {
+        } else {
             chatLayout.setBackgroundResource(R.drawable.theirbubble);
             chatScrennLayout.setGravity(Gravity.LEFT);
         }
@@ -90,12 +90,12 @@ public class ChatAdapter extends BaseAdapter {
     }
 
 
-
-
     class MessageViewHolder {
 
         final TextView name;
+
         final TextView description;
+
         final ImageView icon;
 
         MessageViewHolder(View view) {

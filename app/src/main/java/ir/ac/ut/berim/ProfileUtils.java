@@ -28,7 +28,6 @@ public class ProfileUtils {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(USER_ID, user.getId());
         editor.putString(USER_NICKNAME, user.getNickName());
-        editor.putString(USER_PASSWORD, user.getPassword());
         editor.putString(USER_ROOM_ID, user.getRoomId());
         editor.putString(USER_PHONE_NUMBER, user.getPhoneNumber());
         editor.putBoolean(USER_IS_LOGIN, true);
@@ -41,7 +40,6 @@ public class ProfileUtils {
         user.setId(prefs.getString(USER_ID, null));
         user.setRoomId(prefs.getString(USER_ROOM_ID, null));
         user.setPhoneNumber(prefs.getString(USER_PHONE_NUMBER, null));
-        user.setPassword(prefs.getString(USER_PASSWORD, null));
         user.setNickName(prefs.getString(USER_NICKNAME, null));
         return user;
     }

@@ -16,20 +16,21 @@ public class User implements Serializable {
 
     private String phoneNumber;
 
-    private String password;
-
     private String roomId;
 
     private String avatar;
+
+    private int lastSeen;
 
     public static User createFromJson(JSONObject jsonObject) throws JSONException {
         User user = new User();
         user.setId(jsonObject.has("id") ? jsonObject.getString("id") : null);
         user.setNickName(jsonObject.has("nickName") ? jsonObject.getString("nickName") : null);
-        user.setPassword(jsonObject.has("password") ? jsonObject.getString("password") : null);
         user.setPhoneNumber(
                 jsonObject.has("phoneNumber") ? jsonObject.getString("phoneNumber") : null);
         user.setRoomId(jsonObject.has("roomId") ? jsonObject.getString("roomId") : null);
+        user.setAvatar(jsonObject.has("avatar") ? jsonObject.getString("avatar") : null);
+        user.setLastSeen(jsonObject.has("lastSeen") ? jsonObject.getInt("lastSeen") : 0);
         return user;
     }
 
@@ -64,20 +65,28 @@ public class User implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getRoomId() {
         return roomId;
     }
 
     public void setRoomId(String roomId) {
         this.roomId = roomId;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public int getLastSeen() {
+        return lastSeen;
+    }
+
+    public void setLastSeen(int lastSeen) {
+        this.lastSeen = lastSeen;
     }
 
     @Override

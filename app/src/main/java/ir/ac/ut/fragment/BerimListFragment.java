@@ -1,18 +1,14 @@
 package ir.ac.ut.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.GridView;
 
 import ir.ac.ut.adapter.PlacesListAdapter;
-import ir.ac.ut.berim.ChatActivity;
 import ir.ac.ut.berim.R;
-import ir.ac.ut.models.Place;
 
 public class BerimListFragment extends BaseFragment {
 
@@ -50,20 +46,20 @@ public class BerimListFragment extends BaseFragment {
 
     private void getBerims() {
         // todo get from server
-        int count = 20;
-        final Place[] places = new Place[count];
-        for (int i = 0; i < count; i++) {
-            places[i] = new Place(String.valueOf(i), "Berim" + i, "this is berim " + i, 0);
-        }
-        mAdapter = new PlacesListAdapter(getActivity(), places);
-        PlacesGridView.setAdapter(mAdapter);
-        PlacesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), ChatActivity.class);
-                intent.putExtra("placeId", places[position].getId());
-                getActivity().startActivity(intent);
-            }
-        });
+//        int count = 20;
+//        final Place[] places = new Place[count];
+//        for (int i = 0; i < count; i++) {
+//            places[i] = new Place();
+//        }
+//        mAdapter = new PlacesListAdapter(getActivity(), places);
+//        PlacesGridView.setAdapter(mAdapter);
+//        PlacesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Intent intent = new Intent(getActivity(), ChatActivity.class);
+//                intent.putExtra("placeId", places[position].getId());
+//                getActivity().startActivity(intent);
+//            }
+//        });
     }
 }

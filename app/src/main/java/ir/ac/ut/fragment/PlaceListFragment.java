@@ -78,8 +78,8 @@ public class PlaceListFragment extends BaseFragment {
 
 
     public void getPlaces() {
-        NetworkManager
-                .sendRequest(MethodsName.GET_ROOMS, new JSONObject(), mNetworkReceiver);//todo change this to get_places
+        NetworkManager.sendRequest(MethodsName.GET_PLACES, new JSONObject(),
+                mNetworkReceiver);
     }
 
     private NetworkReceiver<JSONArray> mNetworkReceiver = new NetworkReceiver<JSONArray>() {
@@ -91,8 +91,7 @@ public class PlaceListFragment extends BaseFragment {
                     Place[] places = new Place[response.length()];
                     for (int i = 0; i < response.length(); i++) {
                         try {
-                            places[i] = new Place(response.getJSONObject(i).getString("id"),
-                                    response.getJSONObject(i).getString("name"));
+                            places[i] = Place.createFromJson(response.getJSONObject(i));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

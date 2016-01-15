@@ -1,7 +1,5 @@
 package ir.ac.ut.utils;
 
-import android.util.Log;
-
 import ir.ac.ut.widget.TripleDES;
 
 /**
