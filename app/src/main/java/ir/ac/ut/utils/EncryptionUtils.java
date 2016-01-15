@@ -24,7 +24,4 @@ public class EncryptionUtils {
         byte[] decrypted = tripleDES.decrypt(coded,key.getBytes());
         return new String(decrypted);
     }
-
-
-
 }

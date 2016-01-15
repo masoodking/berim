@@ -26,6 +26,7 @@ import ir.ac.ut.network.BerimNetworkException;
 import ir.ac.ut.network.MethodsName;
 import ir.ac.ut.network.NetworkManager;
 import ir.ac.ut.network.NetworkReceiver;
+import ir.ac.ut.utils.EncryptionUtils;
 import ir.ac.ut.widget.TripleDES;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -109,6 +110,11 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        String secretMsg = "سلام عشقم. پیام پنهانی فرستادم واست";
+        String enc = EncryptionUtils.encrypt(secretMsg);
+        Log.v("encrypted: ", enc);
+        Log.v("decrypted: ", EncryptionUtils.decrypt(enc));
 
         mContext = this;
 
