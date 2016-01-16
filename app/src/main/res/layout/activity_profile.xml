@@ -4,14 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary">
-
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_centerVertical="true"
+    android:layout_centerHorizontal="true"
+    android:layout_height="wrap_content">
         <de.hdodenhof.circleimageview.CircleImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/user_avatar"
             android:layout_width="148dp"
             android:layout_height="148dp"
             android:src="@drawable/theirbubble"
-            android:layout_marginTop="40dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
 
@@ -68,5 +71,5 @@
             android:textColor="@color/primary_text"
             android:layout_below="@+id/about_us_button"
             android:layout_centerHorizontal="true" />
-
+    </RelativeLayout>
 </RelativeLayout>
