@@ -30,7 +30,7 @@ public class User implements Serializable {
                 jsonObject.has("phoneNumber") ? jsonObject.getString("phoneNumber") : null);
         user.setRoomId(jsonObject.has("roomId") ? jsonObject.getString("roomId") : null);
         user.setAvatar(jsonObject.has("avatar") ? jsonObject.getString("avatar") : null);
-        user.setLastSeen(jsonObject.has("lastSeen") ? jsonObject.getInt("lastSeen") : 0);
+        user.setLastSeen(jsonObject.has("lastSeen") ? jsonObject.optInt("lastSeen") : 0);
         return user;
     }
 
@@ -51,6 +51,14 @@ public class User implements Serializable {
 
     public String getNickName() {
         return nickName;
+    }
+
+    public String getValidUserName() {
+        if (nickName != null) {
+            return nickName;
+        } else {
+            return phoneNumber;
+        }
     }
 
     public void setNickName(String nickName) {

@@ -101,7 +101,7 @@ public class ChatActivity extends ActionBarActivity {
             }
         });
 
-        setTitle(mTalkee.getNickName());
+        setTitle(mTalkee.getValidUserName());
 
         mSendOrAttachButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -71,7 +71,7 @@ public class ReviewListAdapter extends BaseAdapter {
             viewHolder = (ReviewViewHolder) convertView.getTag();
         }
 
-        viewHolder.name.setText(mReviews[position].getUser().getNickName());
+        viewHolder.name.setText(mReviews[position].getUser().getValidUserName());
         viewHolder.description.setText(mReviews[position].getDescription());
         viewHolder.icon.setImageResource(R.drawable.ic_launcher);
 

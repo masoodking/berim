@@ -11,7 +11,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ir.ac.ut.berim.R;
-import ir.ac.ut.models.Place;
 import ir.ac.ut.models.Review;
 
 /**
@@ -67,7 +66,7 @@ public class PlaceReviewAdapter extends BaseAdapter {
                 convertView = LayoutInflater.from(mContext).inflate(R.layout.item_place_description, parent, false);
                 reviewViewHolder = new PlaceReviewViewHolder(convertView);
                 convertView.setTag(reviewViewHolder);
-                reviewViewHolder.name.setText(reviews[position].getUser().getNickName());
+                reviewViewHolder.name.setText(reviews[position].getUser().getValidUserName());
                 reviewViewHolder.description.setText(reviews[position].getDescription());
             }
             else
@@ -75,7 +74,7 @@ public class PlaceReviewAdapter extends BaseAdapter {
                 convertView = LayoutInflater.from(mContext).inflate(R.layout.item_place_review, parent, false);
                 reviewViewHolder = new PlaceReviewViewHolder(convertView);
                 convertView.setTag(reviewViewHolder);
-                reviewViewHolder.name.setText(reviews[position].getUser().getNickName());
+                reviewViewHolder.name.setText(reviews[position].getUser().getValidUserName());
                 reviewViewHolder.description.setText(reviews[position].getDescription());
                 reviewViewHolder.icon.setImageResource(R.drawable.ic_launcher);
             }

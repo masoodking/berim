@@ -55,7 +55,7 @@ public class UserListAdapter extends BaseAdapter {
             viewHolder = (PlaceViewHolder) convertView.getTag();
         }
         User user = mUsers[position];
-        viewHolder.name.setText(user.getNickName());
+        viewHolder.name.setText(user.getValidUserName());
         viewHolder.description.setText(user.getPhoneNumber());
         viewHolder.icon.setImageResource(R.drawable.ic_action_user_default);
         return convertView;
