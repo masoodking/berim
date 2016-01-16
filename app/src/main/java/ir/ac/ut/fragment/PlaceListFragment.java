@@ -16,11 +16,8 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
-import ir.ac.ut.adapter.ChatsListAdapter;
 import ir.ac.ut.adapter.PlacesListAdapter;
-import ir.ac.ut.berim.ProfileUtils;
 import ir.ac.ut.berim.R;
-import ir.ac.ut.berim.RegisterActivity;
 import ir.ac.ut.berim.TestScrollActivity;
 import ir.ac.ut.models.Place;
 import ir.ac.ut.network.BerimNetworkException;
@@ -36,16 +33,11 @@ public class PlaceListFragment extends BaseFragment {
 
     private PlacesListAdapter mAdapter;
 
-    private ChatsListAdapter mChatAdapter;
-
     public PlaceListFragment() {
     }
 
     public static PlaceListFragment newInstance() {
         PlaceListFragment pf = new PlaceListFragment();
-//        Bundle bundle = new Bundle();
-//        bundle.putInt("type", type);
-//        pf.setArguments(bundle);
         return pf;
     }
 
@@ -66,10 +58,7 @@ public class PlaceListFragment extends BaseFragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileUtils.logoutUser(getActivity());//todo do we need this?
-                Intent intent = new Intent(getActivity(), RegisterActivity.class);
-                getActivity().startActivity(intent);
-                getActivity().finish();
+                //todo add new place
             }
         });
 

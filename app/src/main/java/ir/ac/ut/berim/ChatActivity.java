@@ -8,13 +8,11 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -30,10 +28,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import ir.ac.ut.adapter.ChatAdapter;
@@ -50,6 +45,8 @@ public class ChatActivity extends ActionBarActivity {
     private Context mContext;
 
     private EditText mMessageInput;
+
+    private ProgressDialog mProgressDialog;
 
     private ListView mListView;
 
@@ -70,6 +67,9 @@ public class ChatActivity extends ActionBarActivity {
         mContext = this;
 
         mMe = ProfileUtils.getUser(mContext);
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setTitle(getString(R.string.please_wait));
+        mProgressDialog.setMessage(getString(R.string.please_wait_more));
 
         mTalkee = (User) getIntent().getSerializableExtra("user");
         mMessageInput = (EditText) findViewById(R.id.chat_text);
@@ -128,7 +128,11 @@ public class ChatActivity extends ActionBarActivity {
         JSONObject json = new JSONObject();
         json.put("text", message.getText());
         json.put("roomId", message.getRoomId());
-        json.put("file", "");
+        if (message.getFileAddress() != null && message.getFileAddress().length() > 0) {
+            json.put("file", message.getFileAddress());
+        } else {
+            json.put("file", "");
+        }
         NetworkManager.sendRequest(MethodsName.SEND_MESSAGE, json, new NetworkReceiver() {
             @Override
             public void onResponse(Object response) {
@@ -142,7 +146,6 @@ public class ChatActivity extends ActionBarActivity {
                 Log.wtf("SEND_MESSAGE", error.getMessage());
             }
         });
-//        mAdapter.setSentBy(message.getFrom());
         mMessages.add(message);
         mAdapter.notifyDataSetChanged();
         mMessageInput.setText("");
@@ -226,7 +229,7 @@ public class ChatActivity extends ActionBarActivity {
                     try {
                         startActivityForResult(
                                 Intent.createChooser(intent, "Select a File to Upload"),
-                                SELECT_GALARY_PHOTO);
+                                SELECT_GALARY_FILE);
                     } catch (android.content.ActivityNotFoundException ex) {
                         // Potentially direct the user to the Market with a Dialog
                         Toast.makeText(mContext, "Please install a File Manager.",
@@ -259,10 +262,6 @@ public class ChatActivity extends ActionBarActivity {
 
     private final int SELECT_GALARY_FILE = 5;
 
-    private String postType;
-
-    private String selectedPhotoPath, selectedVideoPath;
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -278,71 +277,24 @@ public class ChatActivity extends ActionBarActivity {
                     }
                 }
                 try {
-                    Bitmap bm;
-                    BitmapFactory.Options btmapOptions = new BitmapFactory.Options();
-                    btmapOptions.inSampleSize = 2;
-                    bm = BitmapFactory.decodeFile(f.getAbsolutePath(),
-                            btmapOptions);
-
-                    selectedPhotoPath = f.getAbsolutePath();
-                    postType = "photo";
-
-//                    ivPreview.setImageBitmap(bm);
-
+                    uploadFile(f.getAbsolutePath());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else if (requestCode == SELECT_GALARY_PHOTO) {
                 Uri selectedImageUri = data.getData();
-
-                selectedPhotoPath = getPath(selectedImageUri);
-
-                uploadFile(selectedPhotoPath);
-//                Bitmap bm;
-//                BitmapFactory.Options btmapOptions = new BitmapFactory.Options();
-//                btmapOptions.inSampleSize = 2;
-//                bm = BitmapFactory.decodeFile(selectedPhotoPath, btmapOptions);
-
-                postType = "photo";
-//                ivPreview.setImageBitmap(bm);
+                uploadFile(getPath(selectedImageUri));
             } else if (requestCode == SELECT_GALARY_VIDEO) {
-                System.out.println("SELECT_VIDEO");
                 Uri selectedVideoUri = data.getData();
                 String selectedPath = getPath(selectedVideoUri);
-                System.out.println("SELECT_VIDEO Path : " + selectedPath);
-                Bitmap bm = ThumbnailUtils
-                        .createVideoThumbnail(selectedPath, 0);
-                try {
-                    selectedPhotoPath = getFilePath(bm);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                selectedVideoPath = selectedPath;
-                postType = "video";
-                // uploadVideo(selectedPath);
+                uploadFile(selectedPath);
+            } else if (requestCode == SELECT_GALARY_FILE) {
+                Uri selectedVideoUri = data.getData();
+                String selectedPath = getPath(selectedVideoUri);
+                uploadFile(selectedPath);
             }
 
         }
-    }
-
-    public String getFilePath(Bitmap bm) throws IOException {
-        // create a file to write bitmap data
-        File f = new File(mContext.getCacheDir(), "f.jpg");
-        f.createNewFile();
-
-        // Convert bitmap to byte array
-        Bitmap bitmap = bm;
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 0 /* ignored for PNG */, bos);
-        byte[] bitmapdata = bos.toByteArray();
-
-        // write the bytes in file
-        FileOutputStream fos = new FileOutputStream(f);
-        fos.write(bitmapdata);
-        fos.flush();
-        fos.close();
-
-        return f.getPath();
     }
 
     public String getPath(Uri uri) {
@@ -353,12 +305,41 @@ public class ChatActivity extends ActionBarActivity {
         return cursor.getString(column_index);
     }
 
-    public void uploadFile(String filePath){
-        NetworkManager.uploadFile(mContext, new File(filePath), new FutureCallback<Response<String>>() {
-            @Override
-            public void onCompleted(Exception e, Response<String> result) {
-                Log.wtf("FILE UPLOADED", result.toString());
-            }
-        });
+    public void uploadFile(String filePath) {
+        mProgressDialog.show();
+        NetworkManager
+                .uploadFile(mContext, new File(filePath), new FutureCallback<Response<String>>() {
+                    @Override
+                    public void onCompleted(Exception e, Response<String> result) {
+                        mProgressDialog.dismiss();
+                        if (result == null) {
+                            Toast.makeText(mContext,
+                                    getString(R.string.an_error_occurred_try_again),
+                                    Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        } else {
+                            Log.wtf("FILE UPLOADED", result.getResult().toString());
+                            try {
+                                JSONObject jsonObject = new JSONObject(result.getResult());
+                                if (jsonObject.getBoolean("error")) {
+                                    Toast.makeText(mContext,
+                                            getString(R.string.an_error_occurred_try_again) + ": "
+                                                    + jsonObject.getString("errorMessage"),
+                                            Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Message message = new Message();
+                                    message.setText("");
+                                    message.setRoomId(mTalkee.getRoomId());
+                                    message.setFileAddress(jsonObject.getString("fileAddress"));
+                                    sendMessage(message);
+                                }
+                            } catch (JSONException ex) {
+
+                            }
+
+                        }
+                    }
+                });
     }
+
 }

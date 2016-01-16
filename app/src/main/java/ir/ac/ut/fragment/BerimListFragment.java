@@ -1,14 +1,22 @@
 package ir.ac.ut.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
-import ir.ac.ut.adapter.PlacesListAdapter;
+import java.util.ArrayList;
+
+import ir.ac.ut.adapter.ChatsListAdapter;
+import ir.ac.ut.berim.ChatActivity;
 import ir.ac.ut.berim.R;
+import ir.ac.ut.database.DatabaseHelper;
+import ir.ac.ut.models.Room;
 
 public class BerimListFragment extends BaseFragment {
 
@@ -16,7 +24,7 @@ public class BerimListFragment extends BaseFragment {
 
     private GridView PlacesGridView;
 
-    private PlacesListAdapter mAdapter;
+    private ChatsListAdapter mAdapter;
 
     public BerimListFragment() {
     }
@@ -45,21 +53,22 @@ public class BerimListFragment extends BaseFragment {
 
 
     private void getBerims() {
-        // todo get from server
-//        int count = 20;
-//        final Place[] places = new Place[count];
-//        for (int i = 0; i < count; i++) {
-//            places[i] = new Place();
-//        }
-//        mAdapter = new PlacesListAdapter(getActivity(), places);
-//        PlacesGridView.setAdapter(mAdapter);
-//        PlacesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent(getActivity(), ChatActivity.class);
-//                intent.putExtra("placeId", places[position].getId());
-//                getActivity().startActivity(intent);
-//            }
-//        });
+        ArrayList<Room> rooms = DatabaseHelper.getInstance(getActivity())
+                .getRoom(DatabaseHelper.MAX_USER_COUNT + "!='1'");
+        mAdapter = new ChatsListAdapter(getActivity(), rooms);
+        PlacesGridView.setAdapter(mAdapter);
+        PlacesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (mAdapter.getItem(position).getMaxUserCount() == 1) {
+                    Intent intent = new Intent(getActivity(), ChatActivity.class);
+                    intent.putExtra("user",
+                            mAdapter.getItem(position).getLastMessage().getSender());
+                    getActivity().startActivity(intent);
+                } else {
+                    Toast.makeText(getActivity(), "group chat", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

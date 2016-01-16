@@ -1,5 +1,7 @@
 package ir.ac.ut.fragment;
 
+import com.melnykov.fab.FloatingActionButton;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,19 +10,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import ir.ac.ut.adapter.ChatsListAdapter;
-import ir.ac.ut.adapter.PlacesListAdapter;
 import ir.ac.ut.berim.ChatActivity;
 import ir.ac.ut.berim.R;
+import ir.ac.ut.berim.SearchUserActivity;
+import ir.ac.ut.database.DatabaseHelper;
+import ir.ac.ut.models.Room;
 
 public class ChatsListFragment extends BaseFragment {
 
     private static ChatsListFragment mContext;
 
-    private GridView PlacesGridView;
-
-    private PlacesListAdapter mAdapter;
+    private GridView ChatsGridView;
 
     private ChatsListAdapter mChatAdapter;
 
@@ -41,28 +46,44 @@ public class ChatsListFragment extends BaseFragment {
             Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        View rootView = inflater.inflate(R.layout.fragment_places_list, null);
         mContext = this;
+        View rootView = inflater.inflate(R.layout.fragment_chats_list, null);
 
-        PlacesGridView = (GridView) rootView.findViewById(R.id.grid_view_places);
+        ChatsGridView = (GridView) rootView.findViewById(R.id.grid_view_chats);
 
-        getChats();
-
+        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.chats_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), SearchUserActivity.class);
+                getActivity().startActivity(intent);
+            }
+        });
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getChats();
+    }
 
     private void getChats() {
-//        NetworkManager
-//                .sendRequest(MethodsName.GET_ROOMS, new JSONObject(), mNetworkReceiver);
-//        mChatAdapter = new ChatsListAdapter(getActivity(), chats);
-        PlacesGridView.setAdapter(mChatAdapter);
-        PlacesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        ArrayList<Room> rooms = DatabaseHelper.getInstance(getActivity())
+                .getRoom(DatabaseHelper.MAX_USER_COUNT + "='1'");
+        mChatAdapter = new ChatsListAdapter(getActivity(), rooms);
+        ChatsGridView.setAdapter(mChatAdapter);
+        ChatsGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), ChatActivity.class);
-//                intent.putExtra("placeId", chats[position].getId());
-                getActivity().startActivity(intent);
+                if (mChatAdapter.getItem(position).getMaxUserCount() == 1) {
+                    Intent intent = new Intent(getActivity(), ChatActivity.class);
+                    intent.putExtra("user",
+                            mChatAdapter.getItem(position).getLastMessage().getSender());
+                    getActivity().startActivity(intent);
+                } else {
+                    Toast.makeText(getActivity(), "group chat", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

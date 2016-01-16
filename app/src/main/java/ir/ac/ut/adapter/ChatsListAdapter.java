@@ -9,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import ir.ac.ut.berim.R;
 import ir.ac.ut.models.Room;
 
@@ -20,21 +22,25 @@ public class ChatsListAdapter extends BaseAdapter {
 
     private Context mContext;
 
-    private Room[] mRooms;
+    private ArrayList<Room> mRooms;
 
-    public ChatsListAdapter(FragmentActivity context, Room[] data) {
+    private LayoutInflater mLayoutInflater;
+
+    public ChatsListAdapter(FragmentActivity context, ArrayList<Room> data) {
         mContext = context;
         mRooms = data;
+        mLayoutInflater = (LayoutInflater) context.
+                getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        return mRooms.length;
+        return mRooms.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return mRooms[position];
+    public Room getItem(int position) {
+        return mRooms.get(position);
     }
 
     @Override
@@ -57,16 +63,15 @@ public class ChatsListAdapter extends BaseAdapter {
 
         PlaceViewHolder viewHolder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_chat_row, parent, false);
+            convertView = mLayoutInflater.inflate(R.layout.item_place_row, parent, false);
             viewHolder = new PlaceViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (PlaceViewHolder) convertView.getTag();
         }
 
-        viewHolder.name.setText(mRooms[position].getTitle());
+        viewHolder.name.setText(mRooms.get(position).getValidName());
         viewHolder.icon.setImageResource(R.drawable.ic_launcher);
-
         return convertView;
     }
 
@@ -76,11 +81,10 @@ public class ChatsListAdapter extends BaseAdapter {
         final TextView description;
         final ImageView icon;
 
-
         PlaceViewHolder(View view) {
             name = (TextView) view.findViewById(R.id.place_name_text_view);
             description = (TextView) view.findViewById(R.id.place_description_text_view);
-            icon = (ImageView) view.findViewById(R.id.list_icon_image);
+            icon = (ImageView) view.findViewById(R.id.user_avatar);
         }
     }
 }

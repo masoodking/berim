@@ -54,7 +54,7 @@ public class User implements Serializable {
     }
 
     public String getValidUserName() {
-        if (nickName != null) {
+        if (nickName != null && !nickName.equals("null")) {
             return nickName;
         } else {
             return phoneNumber;

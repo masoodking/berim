@@ -67,7 +67,7 @@ public class PlacesListAdapter extends BaseAdapter {
 
         viewHolder.name.setText(mPlaces[position].getName());
         viewHolder.description.setText(mPlaces[position].getDescription());
-        viewHolder.icon.setImageResource(R.drawable.theirbubble);
+        viewHolder.icon.setImageResource(R.drawable.ic_launcher);
 
         return convertView;
     }

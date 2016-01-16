@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ir.ac.ut.models.Message;
+import ir.ac.ut.models.Room;
 import ir.ac.ut.models.User;
 
 /**
@@ -57,6 +58,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String UPDATE_STATUS = "updateStatus";
 
 
+    /**
+     * rooms
+     */
+    public static final String ROOM_TABLE_NAME = "rooms";
+
+    public static final String NAME = "name";
+
+    public static final String PLACE_ID = "place_id";
+
+    public static final String LAST_MESSAGE_ID = "last_message";
+
+    public static final String MAX_USER_COUNT = "max_user_count";
+
+    public static final String CREATE_DATE = "create_date";
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, VERSION);
     }
@@ -83,16 +99,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         SENDER_LAST_SEEN, SENDER_NICKNAME, SENDER_ROOM_ID, SENDER_PHONE_NUMBER,
                         SENDER_ID, SENDER_AVATAR, STATUS, TEXT, UPDATE_STATUS);
 
+        String CREATE_ROOM_TABLE = String.format("CREATE TABLE IF NOT EXISTS %s ("
+                        + "%s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT)",
+                ROOM_TABLE_NAME, ID, NAME, PLACE_ID, LAST_MESSAGE_ID, MAX_USER_COUNT,
+                CREATE_DATE);
         db.execSQL(CREATE_MESSAGES_TABLE);
+        db.execSQL(CREATE_ROOM_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int arg1, int arg2) {
     }
 
-    public void InsertMessage(SQLiteDatabase db, List<Message> messages) {
+    public void InsertMessage(List<Message> messages) {
         for (int i = 0; i < messages.size(); i++) {
-            String where = ID + "=" + messages.get(i).getId();
+            String where = ID + "='" + messages.get(i).getId() + "'";
             if (db.update(MESSAGE_TABLE_NAME,
                     convertMessageToContentValues(messages.get(i)), where, null) == 0) {
                 db.insert(MESSAGE_TABLE_NAME, null,
@@ -101,25 +122,67 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public List<Message> getMessage(String where) {
+    public Message getMessageById(String id) {
+        String where = ID + "='" + id + "'";
+        ArrayList<Message> messages = convertCursorToMessage(getReadableDatabase().query(
+                MESSAGE_TABLE_NAME, null, where, null, null, null, null));
+        return messages.size() > 0 ? messages.get(0) : null;
+    }
+
+    public ArrayList<Message> getMessage(String where) {
         return convertCursorToMessage(getReadableDatabase().query(
                 MESSAGE_TABLE_NAME, null, where, null, null, null, null));
     }
 
-    public void getChatList() {
-        Cursor cursor = db.query(
-        /* FROM */ MESSAGE_TABLE_NAME,
-        /* SELECT */ new String[]{"*", "COUNT(" + STATUS + ") AS count"},
-        /* WHERE */ null,
-        /* WHERE args */ null,
-        /* GROUP BY */ SENDER_ID,
-        /* HAVING */ null,
-        /* ORDER BY */ DATE + " DESC"
-        );
+    public void InsertRoom(List<Room> messages) {
+        for (int i = 0; i < messages.size(); i++) {
+            String where = ID + "='" + messages.get(i).getId() + "'";
+            if (db.update(ROOM_TABLE_NAME,
+                    convertRoomToContentValues(messages.get(i)), where, null) == 0) {
+                db.insert(ROOM_TABLE_NAME, null,
+                        convertRoomToContentValues(messages.get(i)));
+            }
+        }
     }
 
-    public List<Message> convertCursorToMessage(Cursor cursor) {
-        List<Message> list = new ArrayList<Message>();
+    public ArrayList<Room> getRoom(String where) {
+        return convertCursorToRoom(getReadableDatabase().query(
+                ROOM_TABLE_NAME, null, where, null, null, null, null));
+    }
+
+    public Room getRoomById(String id) {
+        String where = ID + "='" + id + "'";
+        ArrayList<Room> rooms = convertCursorToRoom(getReadableDatabase().query(
+                ROOM_TABLE_NAME, null, where, null, null, null, null));
+        return rooms.get(0);
+    }
+
+//    public ArrayList<Room> getChatList() {
+//        Cursor cursor = db.query(
+//        /* FROM */ MESSAGE_TABLE_NAME,
+//        /* SELECT */ new String[]{"*", "COUNT(" + STATUS + ") AS count"},
+//        /* WHERE */ null,
+//        /* WHERE args */ null,
+//        /* GROUP BY */ ROOM_ID,
+//        /* HAVING */ null,
+//        /* ORDER BY */ DATE + " DESC"
+//        );
+//        ArrayList<Message> messages = convertCursorToMessage(cursor);
+//        ArrayList<Room> rooms = new ArrayList<>();
+//        for (Message msg : messages) {
+//            Room room = new Room();
+//            room.setRoomId(msg.getRoomId());
+//            room.setLastText(msg.getText());
+//            room.setLastUpdate(msg.getDate());
+//            room.setTalkee(msg.getSender());
+//            room.setTitle(msg.getSender().getValidUserName());
+//            rooms.add(room);
+//        }
+//        return rooms;
+//    }
+
+    public ArrayList<Message> convertCursorToMessage(Cursor cursor) {
+        ArrayList<Message> list = new ArrayList<Message>();
         while (cursor.moveToNext()) {
 
             User user = new User();
@@ -142,6 +205,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     cursor.getString(cursor.getColumnIndex(DATE))
             ));
 
+        }
+        cursor.close();
+        return list;
+    }
+
+    public ArrayList<Room> convertCursorToRoom(Cursor cursor) {
+        ArrayList<Room> list = new ArrayList<Room>();
+        while (cursor.moveToNext()) {
+            Message lastMessage = getMessageById(
+                    cursor.getString(cursor.getColumnIndex(LAST_MESSAGE_ID)));
+
+            Room room = new Room();
+            room.setId(cursor.getString(cursor.getColumnIndex(ID)));
+            room.setName(cursor.getString(cursor.getColumnIndex(NAME)));
+            room.setLastMessage(lastMessage);
+            room.setPlaceId(cursor.getString(cursor.getColumnIndex(PLACE_ID)));
+            room.setMaxUserCount(
+                    Integer.parseInt(cursor.getString(cursor.getColumnIndex(MAX_USER_COUNT))));
+            room.setCreatedDate(cursor.getString(cursor.getColumnIndex(CREATE_DATE)));
+
+            list.add(room);
         }
         cursor.close();
         return list;
@@ -172,6 +256,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(FILE_ADDRESS, message.getFileAddress());
         values.put(DATE, message.getDate());
 
+        return values;
+    }
+
+    private ContentValues convertRoomToContentValues(Room room) {
+        ContentValues values = new ContentValues();
+        values.put(ID, room.getId());
+        values.put(CREATE_DATE, room.getCreatedDate());
+        values.put(MAX_USER_COUNT, room.getMaxUserCount());
+        values.put(NAME, room.getName());
+        values.put(PLACE_ID, room.getPlaceId());
+        if (room.getLastMessage() != null) {
+            values.put(LAST_MESSAGE_ID, room.getLastMessage().getId());
+        }
         return values;
     }
 }

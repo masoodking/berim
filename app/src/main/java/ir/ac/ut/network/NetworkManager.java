@@ -98,7 +98,7 @@ public class NetworkManager {
     public static void uploadFile(final Context context, File file,
             FutureCallback<Response<String>> callback) {
         Ion.with(context)
-                .load(SERVER_URL + "/upload")
+                .load(SERVER_URL + "/uploads")
                 .setMultipartFile("file", file)
                 .asString()
                 .withResponse()

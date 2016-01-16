@@ -7,9 +7,9 @@ public class MethodsName {
 
     public final static String LOGIN = "logIn";
 
-    public final static String ACTIVE_USER = "activeUser";
+    public final static String LOGOUT = "logOut";
 
-    public final static String SIGN_IN = "signIn";
+    public final static String ACTIVE_USER = "activeUser";
 
     public static final String SEND_MESSAGE = "sendMessage";
 

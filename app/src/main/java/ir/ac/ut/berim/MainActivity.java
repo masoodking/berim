@@ -1,5 +1,6 @@
 package ir.ac.ut.berim;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,9 +15,15 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import ir.ac.ut.database.DatabaseHelper;
 import ir.ac.ut.fragment.BerimListFragment;
 import ir.ac.ut.fragment.ChatsListFragment;
 import ir.ac.ut.fragment.PlaceListFragment;
+import ir.ac.ut.models.Message;
+import ir.ac.ut.models.Room;
 import ir.ac.ut.network.BerimNetworkException;
 import ir.ac.ut.network.ChatNetworkListner;
 import ir.ac.ut.network.MethodsName;
@@ -56,39 +63,78 @@ public class MainActivity extends FragmentActivity {
 
         mTabBar = (SlidingTabBar) findViewById(R.id.tab_bar);
         initTabBar();
+        getData();
+    }
 
-
+    private void getData() {
         try {
             JSONObject json = new JSONObject();
             json.put("messageId", "");
-            NetworkManager.sendRequest(MethodsName.GET_CHAT_LIST, new JSONObject(), new NetworkReceiver() {
-                @Override
-                public void onResponse(Object response) {
-                    Log.wtf("CHAT_LIST", response.toString());
-                }
+            NetworkManager.sendRequest(MethodsName.GET_CHAT_LIST, new JSONObject(),
+                    new NetworkReceiver<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            Log.wtf("CHAT_LIST", response.toString());
+                            List<Message> messages = new ArrayList<Message>();
+                            for (int i = 0; i < response.length(); i++) {
+                                try {
+                                    Message message = Message
+                                            .createFromJson(response.getJSONObject(i));
+                                    messages.add(message);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            DatabaseHelper.getInstance(mContext).InsertMessage(messages);
+                        }
 
-                @Override
-                public void onErrorResponse(BerimNetworkException error) {
-                    Log.wtf("CHAT_LIST", error.getMessage());
-                }
-            });
-        }catch (JSONException e){
+                        @Override
+                        public void onErrorResponse(BerimNetworkException error) {
+                            Log.wtf("CHAT_LIST", error.getMessage());
+                        }
+                    });
+        } catch (JSONException e) {
         }
+
+        NetworkManager.sendRequest(MethodsName.GET_ROOMS, new JSONObject(),
+                new NetworkReceiver<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.wtf("CHAT_ROOMS", response.toString());
+                        List<Room> rooms = new ArrayList<Room>();
+                        for (int i = 0; i < response.length(); i++) {
+                            try {
+                                Room room = Room
+                                        .createFromJson(response.getJSONObject(i));
+                                rooms.add(room);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        DatabaseHelper.getInstance(mContext).InsertRoom(rooms);
+                    }
+
+                    @Override
+                    public void onErrorResponse(BerimNetworkException error) {
+                        Log.wtf("CHAT_LIST", error.getMessage());
+                    }
+                });
     }
 
-    private void initTabBar(){
+    private void initTabBar() {
         String[] titles = {getString(R.string.places),
                 getString(R.string.chats), getString(R.string.berims)};
         TabPagerAdapter mTabAdapter = new TabPagerAdapter(titles);
 
-        final AppPagerAdapter mFragmentPagerAdapter = new AppPagerAdapter(getSupportFragmentManager());
+        final AppPagerAdapter mFragmentPagerAdapter = new AppPagerAdapter(
+                getSupportFragmentManager());
 
         final ViewPager fragmentPager = (ViewPager) findViewById(R.id.list_pager);
 //        fragmentPager.setAnimationCacheEnabled(true);
         mTabBar.setOnTabChangeListener(new SlidingTabBar.OnTabChangeListener() {
             @Override
             public void onTabChange(int position) {
-                fragmentPager.setCurrentItem(position,true);
+                fragmentPager.setCurrentItem(position, true);
             }
         });
         mTabBar.setAdapter(mTabAdapter, true);
@@ -96,6 +142,7 @@ public class MainActivity extends FragmentActivity {
 
         fragmentPager.setAdapter(mFragmentPagerAdapter);
     }
+
     public class TabPagerAdapter extends SlidingTabBar.TabAdapter {
 
         private final TabInfo[] mAppLists;
@@ -139,9 +186,9 @@ public class MainActivity extends FragmentActivity {
                 case 0:
                     return PlaceListFragment.newInstance();
                 case 1:
-                    return BerimListFragment.newInstance();
-                case 2:
                     return ChatsListFragment.newInstance();
+                case 2:
+                    return BerimListFragment.newInstance();
                 default:
                     return PlaceListFragment.newInstance();
             }

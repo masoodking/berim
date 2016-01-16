@@ -42,8 +42,9 @@
     <string name="please_wait">شکیبا باشید</string>
     <string name="please_wait_more">در حال اتصال به سرور...</string>
     <string name="fill_all_inputs">لطفا همه ورودی‌ها را وارد کنید.</string>
-    
+
     <string name="an_error_occurred">یه جایی یه مشکلی هست.</string>
+    <string name="an_error_occurred_try_again">یه جایی یه مشکلی هست. دوباره تلاش کنید.</string>
 
     <string name="welcome">خوش آمدید :)</string>
 
@@ -56,4 +57,6 @@
     <string name="cancel">لغو</string>
 
     <string name="review_hint">یک نظر وارد کنید!</string>
+
+    <string name="cant_logout">خطایی پیش آمده، لطفا دوباره تلاش کنید.</string>
 </resources>
