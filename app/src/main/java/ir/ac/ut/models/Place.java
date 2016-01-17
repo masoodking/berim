@@ -3,59 +3,71 @@ package ir.ac.ut.models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Masood on 10/1/2015 AD.
  */
-public class Place {
+public class Place implements Serializable {
 
     private String id;
+
     private ArrayList<Review> reviews;
+
     private String name;
+
     private String address;
+
     private String description;
+
     private int rate;
+
     private String category;
+
     private String longitude;
+
     private String latitude;
+
     private String avatar;
 
     public Place() {
     }
 
-    public static Place createFromJson(JSONObject jsonObject) throws JSONException{
+    public static Place createFromJson(JSONObject jsonObject) throws JSONException {
         Place place = new Place();
-        if(jsonObject.has("id")){
+        if (jsonObject.has("id")) {
             place.setId(jsonObject.getString("id"));
         }
-        if(jsonObject.has("name")){
+        if (jsonObject.has("name")) {
             place.setName(jsonObject.getString("name"));
         }
-        if(jsonObject.has("address")){
+        if (jsonObject.has("address")) {
             place.setAddress(jsonObject.getString("address"));
         }
-        if(jsonObject.has("description")){
+        if (jsonObject.has("description")) {
             place.setDescription(jsonObject.getString("description"));
         }
-        if(jsonObject.has("rate")){
+        if (jsonObject.has("rate")) {
             place.setRate(jsonObject.optInt("rate"));
         }
-        if(jsonObject.has("category")){
+        if (jsonObject.has("category")) {
             place.setCategory(jsonObject.getString("category"));
         }
-        if(jsonObject.has("longitude")){
+        if (jsonObject.has("longitude")) {
             place.setLongitude(jsonObject.getString("longitude"));
         }
-        if(jsonObject.has("latitude")){
+        if (jsonObject.has("latitude")) {
             place.setLatitude(jsonObject.getString("latitude"));
         }
-        if(jsonObject.has("avatar")){
+        if (jsonObject.has("avatar")) {
             place.setAvatar(jsonObject.getString("avatar"));
         }
 
-        //todo add reviews
-        place.reviews = new ArrayList<>();
+        for (int i = 0; i < jsonObject.getJSONArray("reviews").length(); i++) {
+            place.reviews.add(
+                    Review.createFromJson(jsonObject.getJSONArray("reviews").getJSONObject(i)));
+        }
         return place;
     }
 

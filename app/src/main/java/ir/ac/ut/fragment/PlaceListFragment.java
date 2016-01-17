@@ -47,14 +47,10 @@ public class PlaceListFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-
         View rootView = inflater.inflate(R.layout.fragment_places_list, null);
         mContext = this;
-
         PlacesGridView = (GridView) rootView.findViewById(R.id.grid_view_places);
-
         getPlaces();
-
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.places_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +59,6 @@ public class PlaceListFragment extends BaseFragment {
                 getActivity().startActivity(intent);
             }
         });
-
         return rootView;
     }
 
@@ -79,7 +74,7 @@ public class PlaceListFragment extends BaseFragment {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Place[] places = new Place[response.length()];
+                    final Place[] places = new Place[response.length()];
                     for (int i = 0; i < response.length(); i++) {
                         try {
                             places[i] = Place.createFromJson(response.getJSONObject(i));
@@ -96,7 +91,7 @@ public class PlaceListFragment extends BaseFragment {
                                             int position, long id) {
                                         Intent intent = new Intent(getActivity(),
                                                 TestScrollActivity.class);//0544250
-//                                        intent.putExtra("placeId", places[position].getId());
+                                        intent.putExtra("place", places[position]);
                                         getActivity().startActivity(intent);
                                     }
                                 });
