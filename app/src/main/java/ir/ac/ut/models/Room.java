@@ -66,7 +66,7 @@ public class Room {
 
     public String getValidName(){
         try {
-            if (name != null && !name.equals("null")) {
+            if (name != null && !name.equals("null") && name.length() > 0) {
                 return name;
             } else {
                 return lastMessage.getSender().getValidUserName();

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import ir.ac.ut.berim.R;
 import ir.ac.ut.models.User;
+import ir.ac.ut.utils.ImageLoader;
 
 /**
  * Created by masood on 10/1/15.
@@ -57,7 +58,9 @@ public class UserListAdapter extends BaseAdapter {
         User user = mUsers[position];
         viewHolder.name.setText(user.getValidUserName());
         viewHolder.description.setText(user.getPhoneNumber());
-        viewHolder.icon.setImageResource(R.drawable.ic_action_user_default);
+//        viewHolder.icon.setImageResource(R.drawable.ic_action_user_default);
+        ImageLoader.getInstance().display(user.getAvatar(),
+                viewHolder.icon, R.drawable.ic_action_user_default);
         return convertView;
     }
 

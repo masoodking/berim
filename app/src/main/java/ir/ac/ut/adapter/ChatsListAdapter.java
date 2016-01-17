@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import ir.ac.ut.berim.R;
 import ir.ac.ut.models.Room;
+import ir.ac.ut.utils.ImageLoader;
 
 /**
  * Created by saeed on 11/24/2015.
@@ -60,7 +61,6 @@ public class ChatsListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         PlaceViewHolder viewHolder;
         if (convertView == null) {
             convertView = mLayoutInflater.inflate(R.layout.item_place_row, parent, false);
@@ -71,14 +71,21 @@ public class ChatsListAdapter extends BaseAdapter {
         }
 
         viewHolder.name.setText(mRooms.get(position).getValidName());
-        viewHolder.icon.setImageResource(R.drawable.ic_launcher);
+        if (mRooms.get(position).getLastMessage() != null
+                && mRooms.get(position).getLastMessage().getSender() != null) {
+            ImageLoader.getInstance()
+                    .display(mRooms.get(position).getLastMessage().getSender().getAvatar(),
+                            viewHolder.icon, R.drawable.ic_launcher);
+        }
         return convertView;
     }
 
     class PlaceViewHolder {
 
         final TextView name;
+
         final TextView description;
+
         final ImageView icon;
 
         PlaceViewHolder(View view) {
