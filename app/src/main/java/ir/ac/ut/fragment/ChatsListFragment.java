@@ -69,8 +69,9 @@ public class ChatsListFragment extends BaseFragment {
     }
 
     private void getChats() {
-        ArrayList<Room> rooms = DatabaseHelper.getInstance(getActivity())
-                .getRoom(DatabaseHelper.MAX_USER_COUNT + "='1'");
+//        ArrayList<Room> rooms = DatabaseHelper.getInstance(getActivity())
+//                .getRoom(DatabaseHelper.MAX_USER_COUNT + "='1'");
+        ArrayList<Room> rooms = DatabaseHelper.getInstance(getActivity()).getChatList();
         mChatAdapter = new ChatsListAdapter(getActivity(), rooms);
         ChatsGridView.setAdapter(mChatAdapter);
         ChatsGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

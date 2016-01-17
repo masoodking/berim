@@ -14,10 +14,9 @@
         android:id="@+id/placeBackgroundImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/screenshot"/>
+        android:src="@drawable/default_place"/>
 
     <TextView
-        android:text="کس‌شععر \n کسشعر \n کسشعر"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

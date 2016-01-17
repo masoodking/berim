@@ -157,29 +157,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rooms.get(0);
     }
 
-//    public ArrayList<Room> getChatList() {
-//        Cursor cursor = db.query(
-//        /* FROM */ MESSAGE_TABLE_NAME,
-//        /* SELECT */ new String[]{"*", "COUNT(" + STATUS + ") AS count"},
-//        /* WHERE */ null,
-//        /* WHERE args */ null,
-//        /* GROUP BY */ ROOM_ID,
-//        /* HAVING */ null,
-//        /* ORDER BY */ DATE + " DESC"
-//        );
-//        ArrayList<Message> messages = convertCursorToMessage(cursor);
-//        ArrayList<Room> rooms = new ArrayList<>();
-//        for (Message msg : messages) {
-//            Room room = new Room();
-//            room.setRoomId(msg.getRoomId());
-//            room.setLastText(msg.getText());
-//            room.setLastUpdate(msg.getDate());
-//            room.setTalkee(msg.getSender());
-//            room.setTitle(msg.getSender().getValidUserName());
-//            rooms.add(room);
-//        }
-//        return rooms;
-//    }
+    public ArrayList<Room> getChatList() {
+        Cursor cursor = db.query(
+        /* FROM */ MESSAGE_TABLE_NAME,
+        /* SELECT */ new String[]{"*", "COUNT(" + STATUS + ") AS count"},
+        /* WHERE */ null,
+        /* WHERE args */ null,
+        /* GROUP BY */ SENDER_ROOM_ID,
+        /* HAVING */ null,
+        /* ORDER BY */ DATE + " DESC"
+        );
+        ArrayList<Message> messages = convertCursorToMessage(cursor);
+        ArrayList<Room> rooms = new ArrayList<>();
+        for (Message msg : messages) {
+            Room room = new Room();
+            room.setId(msg.getRoomId());
+            room.setLastMessage(msg);
+            room.setMaxUserCount(1);
+            room.setName(msg.getSender().getValidUserName());
+            rooms.add(room);
+        }
+        return rooms;
+    }
 
     public ArrayList<Message> convertCursorToMessage(Cursor cursor) {
         ArrayList<Message> list = new ArrayList<Message>();
