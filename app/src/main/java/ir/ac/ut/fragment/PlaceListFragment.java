@@ -17,6 +17,7 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import ir.ac.ut.adapter.PlacesListAdapter;
+import ir.ac.ut.berim.AddPlaceActivity;
 import ir.ac.ut.berim.R;
 import ir.ac.ut.berim.SearchUserActivity;
 import ir.ac.ut.berim.TestScrollActivity;
@@ -55,7 +56,7 @@ public class PlaceListFragment extends BaseFragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), addPlaceActivity.class);
+                Intent intent = new Intent(getActivity(), AddPlaceActivity.class);
                 getActivity().startActivity(intent);
             }
         });

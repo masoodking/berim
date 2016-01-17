@@ -17,7 +17,7 @@
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".PlaceActivity"
+            android:name=".AddPlaceActivity"
             android:label="@string/title_activity_place" >
         </activity>
         <activity
@@ -56,10 +56,6 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".AddPlaceActivity"
-            android:label="@string/title_activity_add_place" >
         </activity>
     </application>
 
