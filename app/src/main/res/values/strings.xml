@@ -59,4 +59,9 @@
     <string name="review_hint">یک نظر وارد کنید!</string>
 
     <string name="cant_logout">خطایی پیش آمده، لطفا دوباره تلاش کنید.</string>
+    <string name="change_nickname">نامتان را تغییر دهید</string>
+    <string name="ok">قبول</string>
+    <string name="no_nickname">یک نام برای خود وارد کنید</string>
+    <string name="profile_updated">تغییرات ثبت شد</string>
+    <string name="unsuccessful">ببخشید! مشکلی پیش آمده. تغییرات شما ذخیره نشد</string>
 </resources>
