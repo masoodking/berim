@@ -30,6 +30,15 @@
             android:textColor="#000"
             android:padding="10dp"/>
         <TextView
+            android:id="@+id/place_address_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="desc"
+            android:lines="1"
+            android:textColor="@android:color/darker_gray"
+            android:padding="10dp"/>
+        <TextView
             android:id="@+id/place_description_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
