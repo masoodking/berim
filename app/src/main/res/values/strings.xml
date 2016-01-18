@@ -132,4 +132,5 @@
     <string name="place_desc">توضیحات</string>
     <string name="submit">ثبت</string>
     <string name="send">ارسال</string>
+    <string name="successful">با موفقیت انجام شد!</string>
 </resources>

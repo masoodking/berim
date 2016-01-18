@@ -140,7 +140,7 @@ public class TestScrollActivity extends AppCompatActivity {
         mAddReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, PlaceReviewAdapter.class);
+                Intent intent = new Intent(mContext, AddReviewActivity.class);
                 intent.putExtra("id", mPlace.getId());
                 mContext.startActivity(intent);
             }

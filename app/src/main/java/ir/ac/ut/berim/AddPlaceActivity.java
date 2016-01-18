@@ -71,9 +71,6 @@ public class AddPlaceActivity extends BerimActivity {
                                     public void run() {
                                         try {
                                             User user = User.createFromJson(response);
-//                                            mNickName.setText(user.getNickName());
-//                                            ImageLoader.getInstance()
-//                                                    .display(user.getAvatar(), mAvatar, R.drawable.default_avatar);
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -93,6 +90,7 @@ public class AddPlaceActivity extends BerimActivity {
                                 });
                             }
                         });
+
             }
         });
     }

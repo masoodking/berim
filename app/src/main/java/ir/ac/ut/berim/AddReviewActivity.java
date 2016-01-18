@@ -15,6 +15,7 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ir.ac.ut.models.Review;
 import ir.ac.ut.models.User;
 import ir.ac.ut.network.BerimNetworkException;
 import ir.ac.ut.network.MethodsName;
@@ -46,13 +47,9 @@ public class AddReviewActivity extends AppCompatActivity {
             public void onClick(View v) {
                 JSONObject jsonObject = new JSONObject();
                 try {
-                    jsonObject.put("id",placeId);
+                    jsonObject.put("placeId",placeId);
                     jsonObject.put("rate", mRatingBar.getNumStars());
-                    if (!TextUtils.isEmpty(userReview.getText().toString())) {
-                        jsonObject.put("text",userReview.getText().toString());
-                    }
-
-
+                    jsonObject.put("text", userReview.getText().toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -63,14 +60,9 @@ public class AddReviewActivity extends AppCompatActivity {
                                 ((Activity) mContext).runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        try {
-                                            User user = User.createFromJson(response);
-//                                            mNickName.setText(user.getNickName());
-//                                            ImageLoader.getInstance()
-//                                                    .display(user.getAvatar(), mAvatar, R.drawable.default_avatar);
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
+                                        Toast.makeText(mContext, getString(R.string.successful),
+                                                Toast.LENGTH_SHORT)
+                                                .show();
                                     }
                                 });
                             }
