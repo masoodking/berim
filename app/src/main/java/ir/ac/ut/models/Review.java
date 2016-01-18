@@ -3,10 +3,12 @@ package ir.ac.ut.models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 /**
  * Created by saeed on 11/7/2015.
  */
-public class Review {
+public class Review implements Serializable {
 
     private User user;
 
