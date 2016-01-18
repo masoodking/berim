@@ -60,14 +60,24 @@
             android:layout_below="@+id/checkBox"
             android:layout_centerHorizontal="true" />
 
-        <Button
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/buy_vip"
+            android:id="@+id/buy_vip_button"
+            android:background="@color/primary"
+            android:textColor="@color/primary_text"
+            android:layout_below="@+id/about_us_button"
+            android:layout_centerHorizontal="true" />
+
+    <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="خروج"
             android:id="@+id/logout_button"
             android:background="@color/primary"
             android:textColor="@color/primary_text"
-            android:layout_below="@+id/about_us_button"
+            android:layout_below="@+id/buy_vip_button"
             android:layout_centerHorizontal="true" />
     </RelativeLayout>
 </RelativeLayout>

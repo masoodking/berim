@@ -42,8 +42,6 @@ import ir.ac.ut.utils.ImageLoader;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private Button logoutButton;
-
     private Context mContext;
 
     private ProgressDialog mProgressDialog;
@@ -53,6 +51,10 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView mNickName;
 
     private ImageView mAvatar;
+
+    private Button logoutButton;
+
+    private Button mBuyVIPButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,7 @@ public class ProfileActivity extends AppCompatActivity {
         mNickName = (TextView) findViewById(R.id.nickname_textView);
         mAvatar = (ImageView) findViewById(R.id.user_avatar);
         mMobile.setText(ProfileUtils.getUser(mContext).getPhoneNumber());
+        mBuyVIPButton = (Button) findViewById(R.id.buy_vip_button);
 
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setTitle(getString(R.string.please_wait));
@@ -115,6 +118,13 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 });
                 alert.show();
+            }
+        });
+
+        mBuyVIPButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mContext, PaymentActivity.class));
             }
         });
     }
