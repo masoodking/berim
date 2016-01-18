@@ -68,17 +68,6 @@ public class TestScrollActivity extends AppCompatActivity {
         mListView.setDivider(null);
         mStickyHeader = findViewById(R.id.placeHeaderMenuSticky);
 
-        //todo clean this shit:
-        ArrayList<Review> reviews = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            Review r = new Review();
-            r.setUser(ProfileUtils.getUser(mContext));
-            r.setDescription("این را سعید نهاد");
-            reviews.add(r);
-        }
-        mPlace.setReviews(reviews);
-        //until here
-
         final PlaceReviewAdapter placeReviewAdapter = new PlaceReviewAdapter(mContext,
                 mPlace.getReviews(), mPlace.getDescription());
         mListView.setAdapter(placeReviewAdapter);
@@ -142,6 +131,7 @@ public class TestScrollActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, AddReviewActivity.class);
                 intent.putExtra("id", mPlace.getId());
+                intent.putExtra("name", mPlace.getName());
                 mContext.startActivity(intent);
             }
         });

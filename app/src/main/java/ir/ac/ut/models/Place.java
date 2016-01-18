@@ -64,6 +64,7 @@ public class Place implements Serializable {
             place.setAvatar(jsonObject.getString("avatar"));
         }
 
+        place.reviews = new ArrayList<>();
         for (int i = 0; i < jsonObject.getJSONArray("reviews").length(); i++) {
             place.reviews.add(
                     Review.createFromJson(jsonObject.getJSONArray("reviews").getJSONObject(i)));
