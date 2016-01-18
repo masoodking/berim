@@ -284,6 +284,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void dropDatabase(Context context) {
         context.deleteDatabase(DATABASE_NAME);
+        db.close();
         helper = null;
     }
 }
