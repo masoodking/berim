@@ -2,4 +2,5 @@
 <resources>
     <integer name="min_tab_count_to_snap">2</integer>
     <integer name="max_tab_count_to_snap">5</integer>
+    <integer name="place_address_max">25</integer>
 </resources>

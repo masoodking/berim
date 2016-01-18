@@ -3,12 +3,16 @@ package ir.ac.ut.berim;
 import com.github.ksoichiro.android.observablescrollview.ObservableListView;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -35,6 +39,7 @@ public class TestScrollActivity extends AppCompatActivity {
     TextView mPlaceDescription;
     TextView mPlaceName;
     TextView mPlaceAddress;
+    ImageButton mMap;
 
     private View mStickyHeader;
 
@@ -50,10 +55,12 @@ public class TestScrollActivity extends AppCompatActivity {
         mStickyHeader = findViewById(R.id.placeHeaderMenuSticky);
 //todo clean this shit:
         ArrayList<Review> reviews = new ArrayList<>();
-        Review r = new Review();
-        r.setUser(ProfileUtils.getUser(mContext));
-        r.setDescription("این را سعید نهاد");
-        reviews.add(r);
+        for (int i = 0; i < 20; i++) {
+            Review r = new Review();
+            r.setUser(ProfileUtils.getUser(mContext));
+            r.setDescription("این را سعید نهاد");
+            reviews.add(r);
+        }
         mPlace.setReviews(reviews);
 //until here
 
@@ -74,8 +81,9 @@ public class TestScrollActivity extends AppCompatActivity {
         mPlaceAddress = (TextView) header.findViewById(R.id.PlaceLocation);
         mPlaceAddress.setText(mPlace.getAddress());
 
+        mMap = (ImageButton) header.findViewById(R.id.image_map);
 
-
+        mMap.setOnClickListener(new MapClickListener());
         mListView.addHeaderView(header, null, false);
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -94,5 +102,24 @@ public class TestScrollActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    public class MapClickListener implements View.OnClickListener{
+
+        @Override
+        public void onClick(View v) {
+
+            String placeUri = "geo:"+mPlace.getLatitude()+","+mPlace.getLongitude();
+            Log.d("map", "setting up maps at: "+placeUri);
+            // Create a Uri from an intent string. Use the result to create an Intent.
+            Uri gmmIntentUri = Uri.parse("google.streetview:cbll=46.414382,10.013988");
+
+            // Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+            // Make the Intent explicit by setting the Google Maps package
+//            mapIntent.setPackage("com.google.android.apps.maps");
+
+            // Attempt to start an activity that can handle the Intent
+            startActivity(mapIntent);
+        }
     }
 }

@@ -41,21 +41,23 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Name"
-                        android:textSize="26sp"
+                        android:singleLine="true"
+                        android:textSize="16sp"
                         android:textStyle="bold"/>
                 <TextView
                         android:id="@+id/PlaceLocation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Location"
-                        android:textSize="20sp"/>
+                        android:singleLine="true"
+                        android:textSize="13sp"/>
             </LinearLayout>
 
             <ImageView
                     android:layout_width="0dp"
                     android:layout_weight="0.25"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/location"
+                    android:src="@drawable/share"
                     android:padding="5dp"/>
             <ImageView
                     android:layout_width="0dp"
