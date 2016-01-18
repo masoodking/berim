@@ -109,6 +109,7 @@ public class TestScrollActivity extends AppCompatActivity {
         public void onClick(View v) {
 
             String placeUri = "geo:"+mPlace.getLatitude()+","+mPlace.getLongitude();
+//            String placeUri = "geo:"+mPlace.getAddress();
             Log.d("map", "setting up maps at: "+placeUri);
             // Create a Uri from an intent string. Use the result to create an Intent.
             Uri gmmIntentUri = Uri.parse(placeUri);
