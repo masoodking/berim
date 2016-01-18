@@ -66,7 +66,7 @@ public class PlacesListAdapter extends BaseAdapter {
         }
 
         viewHolder.name.setText(mPlaces[position].getName());
-        viewHolder.description.setText(mPlaces[position].getDescription());
+        viewHolder.description.setText(mPlaces[position].getAddress());
         viewHolder.icon.setImageResource(R.drawable.ic_launcher);
 
         return convertView;
@@ -78,11 +78,10 @@ public class PlacesListAdapter extends BaseAdapter {
         final TextView description;
         final ImageView icon;
 
-
         PlaceViewHolder(View view) {
             name = (TextView) view.findViewById(R.id.place_name_text_view);
             description = (TextView) view.findViewById(R.id.place_description_text_view);
-            icon = (ImageView) view.findViewById(R.id.user_avatar);
+            icon = (ImageView) view.findViewById(R.id.list_icon_image);
         }
     }
 }
