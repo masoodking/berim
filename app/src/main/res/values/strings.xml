@@ -132,4 +132,6 @@
     <string name="place_desc">توضیحات</string>
     <string name="submit">ثبت</string>
     <string name="send">ارسال</string>
+
+    <string name="i_add_user">من %s را به گروه اضافه کردم.</string>
 </resources>

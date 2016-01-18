@@ -19,7 +19,6 @@ import android.widget.Toast;
 import ir.ac.ut.adapter.PlacesListAdapter;
 import ir.ac.ut.berim.AddPlaceActivity;
 import ir.ac.ut.berim.R;
-import ir.ac.ut.berim.SearchUserActivity;
 import ir.ac.ut.berim.TestScrollActivity;
 import ir.ac.ut.models.Place;
 import ir.ac.ut.network.BerimNetworkException;
@@ -51,7 +50,7 @@ public class PlaceListFragment extends BaseFragment {
         View rootView = inflater.inflate(R.layout.fragment_places_list, null);
         mContext = this;
         PlacesGridView = (GridView) rootView.findViewById(R.id.grid_view_places);
-        getPlaces();
+        getData();
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.places_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +62,8 @@ public class PlaceListFragment extends BaseFragment {
         return rootView;
     }
 
-    public void getPlaces() {
+    @Override
+    public void getData() {
         NetworkManager.sendRequest(MethodsName.GET_PLACES, new JSONObject(),
                 mNetworkReceiver);
     }
