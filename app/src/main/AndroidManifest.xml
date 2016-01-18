@@ -1,58 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ir.ac.ut.berim" >
+          package="ir.ac.ut.berim">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="com.farsitel.bazaar.permission.PAY_THROUGH_BAZAAR"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission
+            android:name="com.farsitel.bazaar.permission.PAY_THROUGH_BAZAAR"></uses-permission>
 
     <application
-        android:name=".BerimApplication"
-        android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+            android:name=".BerimApplication"
+            android:allowBackup="true"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
+                android:name=".MainActivity"
+                android:label="@string/app_name">
         </activity>
         <activity
-            android:name=".PlaceActivity"
-            android:label="@string/title_activity_place" >
+                android:name=".AddPlaceActivity"
+                android:label="@string/title_activity_place">
         </activity>
         <activity
-            android:name=".ChatActivity"
-            android:label="@string/title_activity_chat" >
+                android:name=".ChatActivity"
+                android:label="@string/title_activity_chat">
         </activity>
         <activity
-            android:name=".TestScrollActivity"
-            android:label="@string/title_activity_test_scroll"
-            android:theme="@style/AppTheme.NoActionBar" >
+                android:name=".TestScrollActivity"
+                android:label="@string/title_activity_test_scroll"
+                android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".RegisterActivity"
-            android:label="@string/app_name" >
+                android:name=".RegisterActivity"
+                android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
-            android:name=".SearchUserActivity"
-            android:label="@string/title_activity_search_user" >
+                android:name=".SearchUserActivity"
+                android:label="@string/title_activity_search_user">
         </activity>
         <activity
-            android:name=".ProfileActivity"
-            android:label="@string/title_activity_profile"
-            android:theme="@style/AppTheme.NoActionBar" >
+                android:name=".ProfileActivity"
+                android:label="@string/title_activity_profile"
+                android:theme="@style/AppTheme.NoActionBar">
         </activity>
-
         <activity
                 android:name=".PaymentActivity"
                 android:label="@string/buy_vip"
-                android:theme="@style/AppTheme.NoActionBar" >
+                android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <activity
@@ -60,8 +60,9 @@
                 android:label="@string/app_name"
                 android:theme="@style/FilePickerTheme">
             <intent-filter>
-                <action android:name="android.intent.action.GET_CONTENT" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.GET_CONTENT"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
     </application>
