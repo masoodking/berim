@@ -83,6 +83,9 @@ public class Place implements Serializable {
         return reviews;
     }
 
+    public void setReviews() {
+        this.reviews = reviews;
+    }
     public void setReviews(ArrayList<Review> reviews) {
         this.reviews = reviews;
     }

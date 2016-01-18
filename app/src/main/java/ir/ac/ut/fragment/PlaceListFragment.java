@@ -63,7 +63,6 @@ public class PlaceListFragment extends BaseFragment {
         return rootView;
     }
 
-
     public void getPlaces() {
         NetworkManager.sendRequest(MethodsName.GET_PLACES, new JSONObject(),
                 mNetworkReceiver);

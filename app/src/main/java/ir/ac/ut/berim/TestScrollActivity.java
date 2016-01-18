@@ -11,8 +11,11 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import ir.ac.ut.adapter.PlaceReviewAdapter;
 import ir.ac.ut.models.Place;
+import ir.ac.ut.models.Review;
 import ir.ac.ut.utils.DimensionUtils;
 
 public class TestScrollActivity extends AppCompatActivity {
@@ -30,6 +33,8 @@ public class TestScrollActivity extends AppCompatActivity {
     Place mPlace;
 
     TextView mPlaceDescription;
+    TextView mPlaceName;
+    TextView mPlaceAddress;
 
     private View mStickyHeader;
 
@@ -39,9 +44,18 @@ public class TestScrollActivity extends AppCompatActivity {
         setContentView(R.layout.activity_test_scroll);
         mContext = this;
         mPlace = (Place) getIntent().getSerializableExtra("place");
+
         mListView = (ObservableListView) findViewById(R.id.list);
         mListView.setDivider(null);
         mStickyHeader = findViewById(R.id.placeHeaderMenuSticky);
+//todo clean this shit:
+        ArrayList<Review> reviews = new ArrayList<>();
+        Review r = new Review();
+        r.setUser(ProfileUtils.getUser(mContext));
+        r.setDescription("این را سعید نهاد");
+        reviews.add(r);
+        mPlace.setReviews(reviews);
+//until here
 
         PlaceReviewAdapter placeReviewAdapter = new PlaceReviewAdapter(mContext,
                 mPlace.getReviews());
@@ -52,11 +66,21 @@ public class TestScrollActivity extends AppCompatActivity {
                 false);
 
         mPlaceDescription = (TextView) header.findViewById(R.id.placeDescription);
+        mPlaceDescription.setText(mPlace.getDescription());
+
+        mPlaceName = (TextView) header.findViewById(R.id.PlaceName);
+        mPlaceName.setText(mPlace.getName());
+
+        mPlaceAddress = (TextView) header.findViewById(R.id.PlaceLocation);
+        mPlaceAddress.setText(mPlace.getAddress());
+
+
 
         mListView.addHeaderView(header, null, false);
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
+
             }
 
             @Override

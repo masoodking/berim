@@ -11,6 +11,8 @@ public class MethodsName {
 
     public final static String EDIT_PROFILE= "editProfile";
 
+    public final static String ADD_PLACE= "editProfile";
+
     public final static String ACTIVE_USER = "activeUser";
 
     public static final String SEND_MESSAGE = "sendMessage";
