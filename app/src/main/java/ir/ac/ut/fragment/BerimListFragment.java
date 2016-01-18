@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -39,7 +38,8 @@ public class BerimListFragment extends BaseFragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_berims_list, null);
         mContext = this;
@@ -54,7 +54,7 @@ public class BerimListFragment extends BaseFragment {
 
     @Override
     public void getData() {
-        if(getActivity() == null){
+        if (getActivity() == null) {
             return;
         }
         ArrayList<Room> rooms = DatabaseHelper.getInstance(getActivity())
@@ -64,14 +64,9 @@ public class BerimListFragment extends BaseFragment {
         PlacesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (mAdapter.getItem(position).getMaxUserCount() == 1) {
-                    Intent intent = new Intent(getActivity(), ChatActivity.class);
-                    intent.putExtra("user",
-                            mAdapter.getItem(position).getLastMessage().getSender());
-                    getActivity().startActivity(intent);
-                } else {
-                    Toast.makeText(getActivity(), "group chat", Toast.LENGTH_SHORT).show();
-                }
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
+                intent.putExtra("room", mAdapter.getItem(position));
+                getActivity().startActivity(intent);
             }
         });
     }

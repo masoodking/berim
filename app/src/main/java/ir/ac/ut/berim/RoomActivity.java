@@ -268,18 +268,23 @@ public class RoomActivity extends BerimActivity {
                     new NetworkReceiver<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            Message message = new Message();
-                            message.setDate(String.valueOf(System.currentTimeMillis()));
-                            message.setStatus(Message.MessageStatus.SENT);
-                            message.setText(String.format(getString(R.string.i_add_user),
-                                    user.getValidUserName()));
-                            message.setRoomId(mRoom.getId());
-                            message.setSender(mMe);
-                            try {
-                                sendMessage(message);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                            ((Activity) mContext).runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Message message = new Message();
+                                    message.setDate(String.valueOf(System.currentTimeMillis()));
+                                    message.setStatus(Message.MessageStatus.SENT);
+                                    message.setText(String.format(getString(R.string.i_add_user),
+                                            user.getValidUserName()));
+                                    message.setRoomId(mRoom.getId());
+                                    message.setSender(mMe);
+                                    try {
+                                        sendMessage(message);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
                         }
 
                         @Override
