@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ir.ac.ut.database.DatabaseHelper;
+import ir.ac.ut.fragment.BaseFragment;
 import ir.ac.ut.fragment.BerimListFragment;
 import ir.ac.ut.fragment.ChatsListFragment;
 import ir.ac.ut.fragment.PlaceListFragment;
@@ -40,6 +41,14 @@ public class MainActivity extends FragmentActivity {
     private SlidingTabBar mTabBar;
 
     private BerimHeader mBerimHeader;
+
+    private AppPagerAdapter mFragmentPagerAdapter;
+
+    public final static int PLACE_TAB = 0;
+
+    public final static int CHAT_TAB = 1;
+
+    public final static int BERIM_TAB = 2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,19 +82,25 @@ public class MainActivity extends FragmentActivity {
             NetworkManager.sendRequest(MethodsName.GET_CHAT_LIST, new JSONObject(),
                     new NetworkReceiver<JSONArray>() {
                         @Override
-                        public void onResponse(JSONArray response) {
-                            Log.wtf("CHAT_LIST", response.toString());
-                            List<Message> messages = new ArrayList<Message>();
-                            for (int i = 0; i < response.length(); i++) {
-                                try {
-                                    Message message = Message
-                                            .createFromJson(response.getJSONObject(i));
-                                    messages.add(message);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                        public void onResponse(final JSONArray response) {
+                            ((Activity) mContext).runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Log.wtf("CHAT_LIST", response.toString());
+                                    List<Message> messages = new ArrayList<Message>();
+                                    for (int i = 0; i < response.length(); i++) {
+                                        try {
+                                            Message message = Message
+                                                    .createFromJson(response.getJSONObject(i));
+                                            messages.add(message);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                    DatabaseHelper.getInstance(mContext).InsertMessage(messages);
+                                    ((BaseFragment) mFragmentPagerAdapter.getItem(CHAT_TAB)).getData();
                                 }
-                            }
-                            DatabaseHelper.getInstance(mContext).InsertMessage(messages);
+                            });
                         }
 
                         @Override
@@ -99,19 +114,25 @@ public class MainActivity extends FragmentActivity {
         NetworkManager.sendRequest(MethodsName.GET_ROOMS, new JSONObject(),
                 new NetworkReceiver<JSONArray>() {
                     @Override
-                    public void onResponse(JSONArray response) {
-                        Log.wtf("CHAT_ROOMS", response.toString());
-                        List<Room> rooms = new ArrayList<Room>();
-                        for (int i = 0; i < response.length(); i++) {
-                            try {
-                                Room room = Room
-                                        .createFromJson(response.getJSONObject(i));
-                                rooms.add(room);
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                    public void onResponse(final JSONArray response) {
+                        ((Activity) mContext).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.wtf("CHAT_ROOMS", response.toString());
+                                List<Room> rooms = new ArrayList<Room>();
+                                for (int i = 0; i < response.length(); i++) {
+                                    try {
+                                        Room room = Room
+                                                .createFromJson(response.getJSONObject(i));
+                                        rooms.add(room);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                DatabaseHelper.getInstance(mContext).InsertRoom(rooms);
+                                ((BaseFragment) mFragmentPagerAdapter.getItem(BERIM_TAB)).getData();
                             }
-                        }
-                        DatabaseHelper.getInstance(mContext).InsertRoom(rooms);
+                        });
                     }
 
                     @Override
@@ -126,10 +147,11 @@ public class MainActivity extends FragmentActivity {
                 getString(R.string.chats), getString(R.string.berims)};
         TabPagerAdapter mTabAdapter = new TabPagerAdapter(titles);
 
-        final AppPagerAdapter mFragmentPagerAdapter = new AppPagerAdapter(
+        mFragmentPagerAdapter = new AppPagerAdapter(
                 getSupportFragmentManager());
 
         final ViewPager fragmentPager = (ViewPager) findViewById(R.id.list_pager);
+        fragmentPager.setOffscreenPageLimit(3);
 //        fragmentPager.setAnimationCacheEnabled(true);
         mTabBar.setOnTabChangeListener(new SlidingTabBar.OnTabChangeListener() {
             @Override
@@ -183,11 +205,11 @@ public class MainActivity extends FragmentActivity {
         @Override
         public Fragment getItem(int i) {
             switch (i) {
-                case 0:
+                case PLACE_TAB:
                     return PlaceListFragment.newInstance();
-                case 1:
+                case CHAT_TAB:
                     return ChatsListFragment.newInstance();
-                case 2:
+                case BERIM_TAB:
                     return BerimListFragment.newInstance();
                 default:
                     return PlaceListFragment.newInstance();
@@ -221,6 +243,9 @@ public class MainActivity extends FragmentActivity {
                     try {
                         Log.wtf("notif",
                                 response.getString("text") + "-" + response.getString("id"));
+                        Message message = Message.createFromJson(response);
+                        DatabaseHelper.getInstance(mContext).InsertMessage(message);
+                        ((BaseFragment) mFragmentPagerAdapter.getItem(CHAT_TAB)).getData();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

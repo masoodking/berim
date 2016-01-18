@@ -61,6 +61,10 @@ public class RoomActivity extends BerimActivity {
 
     private Room mRoom;
 
+    private final int FILE_CODE = 1;
+
+    private final int SELECT_USER = 2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -168,6 +172,12 @@ public class RoomActivity extends BerimActivity {
     protected void onResume() {
         super.onResume();
         mBerimHeader.setTitle(mRoom.getName());
+        mBerimHeader.showRightAction(R.drawable.ic_action_new_user, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(mContext, SelectUserActivity.class), SELECT_USER);
+            }
+        });
         mChatNetworkListner.register();
     }
 
@@ -211,11 +221,8 @@ public class RoomActivity extends BerimActivity {
         i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_FILE);
         i.putExtra(FilePickerActivity.EXTRA_START_PATH,
                 Environment.getExternalStorageDirectory().getPath());
-
         startActivityForResult(i, FILE_CODE);
     }
-
-    private final int FILE_CODE = 1;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -248,6 +255,44 @@ public class RoomActivity extends BerimActivity {
                 Uri uri = data.getData();
                 uploadFile(uri.getPath());
             }
+        } else if (requestCode == SELECT_USER && resultCode == Activity.RESULT_OK) {
+            final User user = (User) data.getSerializableExtra("user");
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("userId", user.getId());
+                jsonObject.put("roomId", mRoom.getId());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            NetworkManager.sendRequest(MethodsName.ADD_USER_TO_ROOM, jsonObject,
+                    new NetworkReceiver<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Message message = new Message();
+                            message.setDate(String.valueOf(System.currentTimeMillis()));
+                            message.setStatus(Message.MessageStatus.SENT);
+                            message.setText(String.format(getString(R.string.i_add_user),
+                                    user.getValidUserName()));
+                            message.setRoomId(mRoom.getId());
+                            message.setSender(mMe);
+                            try {
+                                sendMessage(message);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onErrorResponse(final BerimNetworkException error) {
+                            ((Activity) mContext).runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(mContext, "خطا: " + error.toString(),
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    });
         }
     }
 

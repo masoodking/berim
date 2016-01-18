@@ -63,7 +63,7 @@ public class ChatsListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         PlaceViewHolder viewHolder;
         if (convertView == null) {
-            convertView = mLayoutInflater.inflate(R.layout.item_place_row, parent, false);
+            convertView = mLayoutInflater.inflate(R.layout.item_chat_row, parent, false);
             viewHolder = new PlaceViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
@@ -84,14 +84,14 @@ public class ChatsListAdapter extends BaseAdapter {
 
         final TextView name;
 
-        final TextView description;
+        final TextView lastMessage;
 
         final ImageView icon;
 
         PlaceViewHolder(View view) {
-            name = (TextView) view.findViewById(R.id.place_name_text_view);
-            description = (TextView) view.findViewById(R.id.place_description_text_view);
-            icon = (ImageView) view.findViewById(R.id.user_avatar);
+            name = (TextView) view.findViewById(R.id.chat_list_name);
+            lastMessage = (TextView) view.findViewById(R.id.chat_last_message);
+            icon = (ImageView) view.findViewById(R.id.chat_list_icon);
         }
     }
 }

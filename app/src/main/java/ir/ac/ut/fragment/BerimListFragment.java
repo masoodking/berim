@@ -46,15 +46,19 @@ public class BerimListFragment extends BaseFragment {
 
         PlacesGridView = (GridView) rootView.findViewById(R.id.grid_view_places);
 
-        getBerims();
+        getData();
 
         return rootView;
     }
 
 
-    private void getBerims() {
+    @Override
+    public void getData() {
+        if(getActivity() == null){
+            return;
+        }
         ArrayList<Room> rooms = DatabaseHelper.getInstance(getActivity())
-                .getRoom(DatabaseHelper.MAX_USER_COUNT + "!='1'");
+                .getRoom(null);
         mAdapter = new ChatsListAdapter(getActivity(), rooms);
         PlacesGridView.setAdapter(mAdapter);
         PlacesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

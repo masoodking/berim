@@ -29,4 +29,7 @@ public class MethodsName {
 
     public final static String GET_CHAT_LIST = "getChatList";
 
+    public final static String ADD_USER_TO_ROOM = "addUserToRoom";
+
+
 }

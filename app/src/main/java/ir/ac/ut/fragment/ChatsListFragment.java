@@ -65,12 +65,16 @@ public class ChatsListFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        getChats();
+        getData();
     }
 
-    private void getChats() {
+    @Override
+    public void getData() {
 //        ArrayList<Room> rooms = DatabaseHelper.getInstance(getActivity())
 //                .getRoom(DatabaseHelper.MAX_USER_COUNT + "='1'");
+        if(getActivity() == null){
+            return;
+        }
         ArrayList<Room> rooms = DatabaseHelper.getInstance(getActivity()).getChatList();
         mChatAdapter = new ChatsListAdapter(getActivity(), rooms);
         ChatsGridView.setAdapter(mChatAdapter);
@@ -89,33 +93,4 @@ public class ChatsListFragment extends BaseFragment {
         });
     }
 
-//    private NetworkReceiver<JSONArray> mNetworkReceiver = new NetworkReceiver<JSONArray>() {
-//        @Override
-//        public void onResponse(final JSONArray response) {
-//            getActivity().runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    Room[] rooms = new Room[response.length()];
-//                    for (int i = 0; i < response.length(); i++) {
-//                        try {
-//                            Room[i] = Room.createFromJson(response.getJSONObject(i));
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                    updateUserList(users);
-//                }
-//            });
-//        }
-//
-//        @Override
-//        public void onErrorResponse(final BerimNetworkException error) {
-//            ((Activity) mContext).runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    Toast.makeText(mContext, error.toString(), Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//        }
-//    };
 }

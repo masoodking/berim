@@ -7,4 +7,6 @@ public class BaseFragment extends Fragment {
     public BaseFragment() {
 
     }
+
+    public void getData(){};
 }
