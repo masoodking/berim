@@ -30,9 +30,10 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.ArrayList;
 
-import ir.ac.ut.adapter.ChatAdapter;
+import ir.ac.ut.adapter.RoomAdapter;
 import ir.ac.ut.database.DatabaseHelper;
 import ir.ac.ut.models.Message;
+import ir.ac.ut.models.Room;
 import ir.ac.ut.models.User;
 import ir.ac.ut.network.BerimNetworkException;
 import ir.ac.ut.network.ChatNetworkListner;
@@ -40,7 +41,7 @@ import ir.ac.ut.network.MethodsName;
 import ir.ac.ut.network.NetworkManager;
 import ir.ac.ut.network.NetworkReceiver;
 
-public class ChatActivity extends BerimActivity {
+public class RoomActivity extends BerimActivity {
 
     private Context mContext;
 
@@ -52,30 +53,28 @@ public class ChatActivity extends BerimActivity {
 
     private ArrayList<Message> mMessages;
 
-    private ChatAdapter mAdapter;
+    private RoomAdapter mAdapter;
 
     private ImageButton mSendOrAttachButton;
 
     private User mMe;
 
-    private User mTalkee;
+    private Room mRoom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
+        setContentView(R.layout.activity_room);
         mContext = this;
-
         mMe = ProfileUtils.getUser(mContext);
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setTitle(getString(R.string.please_wait));
         mProgressDialog.setMessage(getString(R.string.please_wait_more));
-
-        mTalkee = (User) getIntent().getSerializableExtra("user");
+        mRoom = (Room) getIntent().getSerializableExtra("room");
         mMessageInput = (EditText) findViewById(R.id.chat_text);
         mListView = (ListView) findViewById(R.id.listview);
         mMessages = new ArrayList<>();
-        mAdapter = new ChatAdapter(this, mMessages);
+        mAdapter = new RoomAdapter(this, mMessages);
         mListView.setAdapter(mAdapter);
         mListView.setDivider(null);
         mSendOrAttachButton = (ImageButton) findViewById(R.id.send_button);
@@ -107,7 +106,7 @@ public class ChatActivity extends BerimActivity {
                 if (!TextUtils.isEmpty(mMessageInput.getText().toString())) {
                     Message message = new Message();
                     message.setText(mMessageInput.getText().toString());
-                    message.setRoomId(mTalkee.getRoomId());
+                    message.setRoomId(mRoom.getId());
                     message.setSender(mMe);
                     message.setStatus(Message.MessageStatus.SENT);
                     message.setDate(String.valueOf(System.currentTimeMillis()));
@@ -122,21 +121,15 @@ public class ChatActivity extends BerimActivity {
                 }
             }
         });
-
         loadMessages();
-
     }
 
     public void loadMessages() {
         ArrayList<Message> messages = DatabaseHelper.getInstance(mContext).getMessage(
-                DatabaseHelper.ROOM_ID + "='" + mTalkee.getRoomId() + "' or ("
-                        + DatabaseHelper.SENDER_ROOM_ID
-                        + "='" + mTalkee.getRoomId() + "' and " + DatabaseHelper.ROOM_ID + "='"
-                        + mMe.getRoomId() + "')");
+                DatabaseHelper.ROOM_ID + "='" + mRoom.getId() + "'");
         mMessages.addAll(messages);
         mAdapter.notifyDataSetChanged();
         mMessageInput.setText("");
-
     }
 
     public void sendMessage(Message message) throws JSONException {
@@ -169,15 +162,12 @@ public class ChatActivity extends BerimActivity {
         mMessages.add(message);
         mAdapter.notifyDataSetChanged();
         mMessageInput.setText("");
-        if(message.getSender().getId().equals(mMe.getId())){
-            DatabaseHelper.getInstance(mContext).InsertMessage(message);
-        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mBerimHeader.setTitle(mTalkee.getValidUserName());
+        mBerimHeader.setTitle(mRoom.getName());
         mChatNetworkListner.register();
     }
 
@@ -196,8 +186,7 @@ public class ChatActivity extends BerimActivity {
                     try {
                         Log.e("notif", response.getString("text"));
                         Message message = Message.createFromJson(response);
-                        if (message.getRoomId().equals(mMe.getRoomId()) &&
-                                message.getSender().getId().equals(mTalkee.getId())) {
+                        if (message.getRoomId().equals(mRoom.getId())) {
                             addMessage(message);
                         }
                     } catch (JSONException e) {
@@ -292,7 +281,7 @@ public class ChatActivity extends BerimActivity {
                                 } else {
                                     Message message = new Message();
                                     message.setText("file");
-                                    message.setRoomId(mTalkee.getRoomId());
+                                    message.setRoomId(mRoom.getId());
                                     message.setFileAddress(
                                             jsonObject.getJSONObject("data").getString(
                                                     "fileAddress"));

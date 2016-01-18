@@ -1,6 +1,10 @@
 package ir.ac.ut.berim;
 
 import com.github.ksoichiro.android.observablescrollview.ObservableListView;
+import com.melnykov.fab.FloatingActionButton;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +24,11 @@ import java.util.ArrayList;
 import ir.ac.ut.adapter.PlaceReviewAdapter;
 import ir.ac.ut.models.Place;
 import ir.ac.ut.models.Review;
+import ir.ac.ut.models.Room;
+import ir.ac.ut.network.BerimNetworkException;
+import ir.ac.ut.network.MethodsName;
+import ir.ac.ut.network.NetworkManager;
+import ir.ac.ut.network.NetworkReceiver;
 import ir.ac.ut.utils.DimensionUtils;
 
 public class TestScrollActivity extends AppCompatActivity {
@@ -37,9 +46,14 @@ public class TestScrollActivity extends AppCompatActivity {
     Place mPlace;
 
     TextView mPlaceDescription;
+
     TextView mPlaceName;
+
     TextView mPlaceAddress;
+
     ImageButton mMap;
+
+    FloatingActionButton mBerimFAB;
 
     private View mStickyHeader;
 
@@ -50,10 +64,13 @@ public class TestScrollActivity extends AppCompatActivity {
         mContext = this;
         mPlace = (Place) getIntent().getSerializableExtra("place");
 
+        mBerimFAB = (FloatingActionButton) findViewById(R.id.berim_fab);
+
         mListView = (ObservableListView) findViewById(R.id.list);
         mListView.setDivider(null);
         mStickyHeader = findViewById(R.id.placeHeaderMenuSticky);
-//todo clean this shit:
+
+        //todo clean this shit:
         ArrayList<Review> reviews = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             Review r = new Review();
@@ -62,7 +79,7 @@ public class TestScrollActivity extends AppCompatActivity {
             reviews.add(r);
         }
         mPlace.setReviews(reviews);
-//until here
+        //until here
 
         PlaceReviewAdapter placeReviewAdapter = new PlaceReviewAdapter(mContext,
                 mPlace.getReviews());
@@ -102,20 +119,58 @@ public class TestScrollActivity extends AppCompatActivity {
                 }
             }
         });
+
+        mBerimFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createNewBerim();
+            }
+        });
     }
-    public class MapClickListener implements View.OnClickListener{
+
+    public class MapClickListener implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
 
-            String placeUri = "geo:"+mPlace.getLatitude()+","+mPlace.getLongitude();
+            String placeUri = "geo:" + mPlace.getLatitude() + "," + mPlace.getLongitude();
 //            String placeUri = "geo:"+mPlace.getAddress();
-            Log.d("map", "setting up maps at: "+placeUri);
+            Log.d("map", "setting up maps at: " + placeUri);
             // Create a Uri from an intent string. Use the result to create an Intent.
             Uri gmmIntentUri = Uri.parse(placeUri);
 
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
             startActivity(mapIntent);
         }
+    }
+
+    public void createNewBerim() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("name", "بریم " + mPlace.getName());
+            jsonObject.put("placeId", mPlace.getId());
+            jsonObject.put("maxUserCount", 50);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        NetworkManager.sendRequest(MethodsName.ADD_ROOM, jsonObject,
+                new NetworkReceiver<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            Room room = Room.createFromJson(response);
+                            Intent intent = new Intent(mContext, RoomActivity.class);
+                            intent.putExtra("room", room);
+                            startActivity(intent);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onErrorResponse(BerimNetworkException error) {
+
+                    }
+                });
     }
 }

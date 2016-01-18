@@ -19,14 +19,14 @@ import ir.ac.ut.models.Message;
 /**
  * Created by saeed on 11/24/2015.
  */
-public class ChatAdapter extends BaseAdapter {
+public class RoomAdapter extends BaseAdapter {
 
 
     private Context mContext;
 
     private ArrayList<Message> mMessages;
 
-    public ChatAdapter(Context context, ArrayList<Message> data) {
+    public RoomAdapter(Context context, ArrayList<Message> data) {
         mContext = context;
         mMessages = data;
     }

@@ -112,6 +112,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void InsertMessage(List<Message> messages) {
+        db.delete(MESSAGE_TABLE_NAME, ID + "='not-set'", null);
         for (int i = 0; i < messages.size(); i++) {
             String where = ID + "='" + messages.get(i).getId() + "'";
             if (db.update(MESSAGE_TABLE_NAME,
@@ -119,6 +120,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 db.insert(MESSAGE_TABLE_NAME, null,
                         convertMessageToContentValues(messages.get(i)));
             }
+        }
+    }
+
+    public void InsertMessage(Message message) {
+        String where = ID + "='" + message.getId() + "'";
+        if (db.update(MESSAGE_TABLE_NAME,
+                convertMessageToContentValues(message), where, null) == 0) {
+            db.insert(MESSAGE_TABLE_NAME, null,
+                    convertMessageToContentValues(message));
         }
     }
 
@@ -269,5 +279,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             values.put(LAST_MESSAGE_ID, room.getLastMessage().getId());
         }
         return values;
+    }
+
+    public void dropDatabase(Context context) {
+        context.deleteDatabase(DATABASE_NAME);
+        helper = null;
     }
 }

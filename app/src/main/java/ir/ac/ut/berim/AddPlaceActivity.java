@@ -1,34 +1,38 @@
 package ir.ac.ut.berim;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import ir.ac.ut.models.User;
 import ir.ac.ut.network.BerimNetworkException;
 import ir.ac.ut.network.MethodsName;
 import ir.ac.ut.network.NetworkManager;
 import ir.ac.ut.network.NetworkReceiver;
-import ir.ac.ut.utils.ImageLoader;
 
 /**
  * Created by saeed on 1/17/2016.
  */
-public class AddPlaceActivity extends AppCompatActivity{
+public class AddPlaceActivity extends BerimActivity {
+
     private Context mContext;
+
     private Button mSubmit;
+
     private TextView mName;
+
     private TextView mAddress;
+
     private TextView mDescription;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +50,7 @@ public class AddPlaceActivity extends AppCompatActivity{
                 JSONObject jsonObject = new JSONObject();
                 try {
                     if (!TextUtils.isEmpty(mName.getText().toString())) {
-                        jsonObject.put("name",mName.getText().toString());
+                        jsonObject.put("name", mName.getText().toString());
                     }
                     if (!TextUtils.isEmpty(mAddress.getText().toString())) {
                         jsonObject.put("address", mAddress.getText().toString());
@@ -91,5 +95,11 @@ public class AddPlaceActivity extends AppCompatActivity{
                         });
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mBerimHeader.setTitle(getString(R.string.title_activity_add_place));
     }
 }

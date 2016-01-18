@@ -33,6 +33,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.ArrayList;
 
+import ir.ac.ut.database.DatabaseHelper;
 import ir.ac.ut.models.User;
 import ir.ac.ut.network.BerimNetworkException;
 import ir.ac.ut.network.MethodsName;
@@ -141,7 +142,8 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onResponse(Object response) {
                 mProgressDialog.dismiss();
-                ProfileUtils.logoutUser(mContext);//todo do we need this?
+                ProfileUtils.logoutUser(mContext);
+                DatabaseHelper.getInstance(mContext).dropDatabase(mContext);
                 Intent intent = new Intent(mContext, RegisterActivity.class);
                 if (Build.VERSION.SDK_INT > 10) {
                     intent.addFlags(

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import ir.ac.ut.berim.R;
 
@@ -19,6 +20,8 @@ public class BerimHeader extends RelativeLayout {
     private View mRootView;
 
     private ImageView mNewUserIcon;
+
+    private TextView mTitle;
 
     public BerimHeader(Context context) {
         super(context);
@@ -44,6 +47,7 @@ public class BerimHeader extends RelativeLayout {
                 .inflate(R.layout.berim_header, this, true);
 
         mNewUserIcon = (ImageView) mRootView.findViewById(R.id.header_new_user);
+        mTitle = (TextView) findViewById(R.id.header_title);
     }
 
     public void showRightAction(int iconDrawable, OnClickListener onClickListener){
@@ -54,5 +58,14 @@ public class BerimHeader extends RelativeLayout {
 
     public void hideRightAction(){
         mNewUserIcon.setVisibility(GONE);
+    }
+
+    public void setTitle(String title){
+        mTitle.setText(title);
+        mTitle.setVisibility(VISIBLE);
+    }
+
+    public void hideTitle(){
+        mTitle.setVisibility(GONE);
     }
 }
