@@ -10,8 +10,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import ir.ac.ut.berim.ProfileUtils;
 import ir.ac.ut.berim.R;
 import ir.ac.ut.models.Review;
+import ir.ac.ut.utils.ImageLoader;
 
 /**
  * Created by masood on 10/1/15.
@@ -24,10 +26,12 @@ public class PlaceReviewAdapter extends BaseAdapter {
 
     private Context mContext;
 
+    private String description;
     private ArrayList<Review> reviews;
 
-    public PlaceReviewAdapter(Context context, ArrayList<Review> reviews) {
+    public PlaceReviewAdapter(Context context, ArrayList<Review> reviews, String description) {
         mContext = context;
+        this.description = description;
         this.reviews = reviews;
     }
 
@@ -68,16 +72,16 @@ public class PlaceReviewAdapter extends BaseAdapter {
                         .inflate(R.layout.item_place_description, parent, false);
                 reviewViewHolder = new PlaceReviewViewHolder(convertView);
                 convertView.setTag(reviewViewHolder);
-                reviewViewHolder.name.setText(reviews.get(position).getUser().getValidUserName());
-                reviewViewHolder.description.setText(reviews.get(position).getDescription());
+                reviewViewHolder.description.setText(description);
             } else {
                 convertView = LayoutInflater.from(mContext)
                         .inflate(R.layout.item_place_review, parent, false);
                 reviewViewHolder = new PlaceReviewViewHolder(convertView);
                 convertView.setTag(reviewViewHolder);
-                reviewViewHolder.name.setText(reviews.get(position).getUser().getValidUserName());
-                reviewViewHolder.description.setText(reviews.get(position).getDescription());
-                reviewViewHolder.icon.setImageResource(R.drawable.ic_launcher);
+                reviewViewHolder.name.setText(reviews.get(position-1).getUser().getValidUserName());
+                reviewViewHolder.description.setText(reviews.get(position-1).getDescription());
+                ImageLoader.getInstance()
+                        .display(ProfileUtils.getUser(mContext).getAvatar(), reviewViewHolder.icon, R.drawable.default_avatar);
             }
         } else {
             reviewViewHolder = (PlaceReviewViewHolder) convertView.getTag();

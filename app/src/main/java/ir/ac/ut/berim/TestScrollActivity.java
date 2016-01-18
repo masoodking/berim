@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -42,6 +43,7 @@ public class TestScrollActivity extends AppCompatActivity {
     ImageButton mMap;
 
     private View mStickyHeader;
+    private Button mAddReview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +66,8 @@ public class TestScrollActivity extends AppCompatActivity {
         mPlace.setReviews(reviews);
 //until here
 
-        PlaceReviewAdapter placeReviewAdapter = new PlaceReviewAdapter(mContext,
-                mPlace.getReviews());
+        final PlaceReviewAdapter placeReviewAdapter = new PlaceReviewAdapter(mContext,
+                mPlace.getReviews(),mPlace.getDescription());
         mListView.setAdapter(placeReviewAdapter);
 
         LayoutInflater inflater = getLayoutInflater();
@@ -93,7 +95,7 @@ public class TestScrollActivity extends AppCompatActivity {
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
-                    int totalItemCount) {
+                                 int totalItemCount) {
                 if (mListView != null && mListView.getChildAt(1) != null
                         && header.getBottom() < DimensionUtils.convertDpToPx(mContext, 60)) {
                     mStickyHeader.setVisibility(View.VISIBLE);
@@ -102,18 +104,24 @@ public class TestScrollActivity extends AppCompatActivity {
                 }
             }
         });
+
+        mAddReview = (Button) findViewById(R.id.add_review);
+        mAddReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext,PlaceReviewAdapter.class);
+                intent.putExtra("id",mPlace.getId());
+                mContext.startActivity(intent);
+            }
+        });
     }
     public class MapClickListener implements View.OnClickListener{
 
         @Override
         public void onClick(View v) {
 
-            String placeUri = "geo:"+mPlace.getLatitude()+","+mPlace.getLongitude();
-//            String placeUri = "geo:"+mPlace.getAddress();
-            Log.d("map", "setting up maps at: "+placeUri);
-            // Create a Uri from an intent string. Use the result to create an Intent.
+            String placeUri = "google.navigation:q="+mPlace.getLatitude()+","+mPlace.getLongitude();
             Uri gmmIntentUri = Uri.parse(placeUri);
-
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
             startActivity(mapIntent);
         }
