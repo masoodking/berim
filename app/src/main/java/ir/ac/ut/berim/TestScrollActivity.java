@@ -111,14 +111,9 @@ public class TestScrollActivity extends AppCompatActivity {
             String placeUri = "geo:"+mPlace.getLatitude()+","+mPlace.getLongitude();
             Log.d("map", "setting up maps at: "+placeUri);
             // Create a Uri from an intent string. Use the result to create an Intent.
-            Uri gmmIntentUri = Uri.parse("google.streetview:cbll=46.414382,10.013988");
+            Uri gmmIntentUri = Uri.parse(placeUri);
 
-            // Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-            // Make the Intent explicit by setting the Google Maps package
-//            mapIntent.setPackage("com.google.android.apps.maps");
-
-            // Attempt to start an activity that can handle the Intent
             startActivity(mapIntent);
         }
     }
