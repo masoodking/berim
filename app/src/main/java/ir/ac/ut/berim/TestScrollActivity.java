@@ -11,11 +11,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -33,13 +33,9 @@ import ir.ac.ut.utils.DimensionUtils;
 
 public class TestScrollActivity extends AppCompatActivity {
 
-    private View mToolbarView;
-
-    private View mBackgroundImage;
-
     private ObservableListView mListView;
 
-    TextView mtextView;
+    public View.OnClickListener mMapClickListener;
 
     Context mContext;
 
@@ -56,6 +52,8 @@ public class TestScrollActivity extends AppCompatActivity {
     FloatingActionButton mBerimFAB;
 
     private View mStickyHeader;
+
+    private Button mAddReview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +79,8 @@ public class TestScrollActivity extends AppCompatActivity {
         mPlace.setReviews(reviews);
         //until here
 
-        PlaceReviewAdapter placeReviewAdapter = new PlaceReviewAdapter(mContext,
-                mPlace.getReviews());
+        final PlaceReviewAdapter placeReviewAdapter = new PlaceReviewAdapter(mContext,
+                mPlace.getReviews(), mPlace.getDescription());
         mListView.setAdapter(placeReviewAdapter);
 
         LayoutInflater inflater = getLayoutInflater();
@@ -100,7 +98,18 @@ public class TestScrollActivity extends AppCompatActivity {
 
         mMap = (ImageButton) header.findViewById(R.id.image_map);
 
-        mMap.setOnClickListener(new MapClickListener());
+        mMapClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String placeUri = "google.navigation:q=" + mPlace.getLatitude() + "," + mPlace
+                        .getLongitude();
+                Uri gmmIntentUri = Uri.parse(placeUri);
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                startActivity(mapIntent);
+            }
+        };
+
+        mMap.setOnClickListener(mMapClickListener);
         mListView.addHeaderView(header, null, false);
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -126,22 +135,16 @@ public class TestScrollActivity extends AppCompatActivity {
                 createNewBerim();
             }
         });
-    }
 
-    public class MapClickListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-
-            String placeUri = "geo:" + mPlace.getLatitude() + "," + mPlace.getLongitude();
-//            String placeUri = "geo:"+mPlace.getAddress();
-            Log.d("map", "setting up maps at: " + placeUri);
-            // Create a Uri from an intent string. Use the result to create an Intent.
-            Uri gmmIntentUri = Uri.parse(placeUri);
-
-            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-            startActivity(mapIntent);
-        }
+        mAddReview = (Button) findViewById(R.id.add_review);
+        mAddReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, PlaceReviewAdapter.class);
+                intent.putExtra("id", mPlace.getId());
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     public void createNewBerim() {

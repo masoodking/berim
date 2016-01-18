@@ -42,8 +42,8 @@
                     android:id="@+id/PlaceLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
                     android:text="Location"
+                    android:lines="2"
                     android:textSize="13dp"/>
         </LinearLayout>
 
@@ -53,6 +53,7 @@
                 android:id="@+id/image_map"
                 android:src="@drawable/location"
                 android:layout_toRightOf="@+id/image_share"
+                android:background="#88ffffff"
                 android:padding="5dp"/>
         <ImageButton
                 android:id="@+id/image_share"
@@ -60,6 +61,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/share"
                 android:layout_alignParentLeft="true"
+                android:background="#88ffffff"
                 android:padding="5dp"/>
     </RelativeLayout>
     <TextView
