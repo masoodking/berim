@@ -99,8 +99,8 @@ public class PlaceListFragment extends BaseFragment {
                 }
             });
         }
-
         @Override
+
         public void onErrorResponse(final BerimNetworkException error) {
             getActivity().runOnUiThread(new Runnable() {
                 @Override

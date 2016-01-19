@@ -40,6 +40,13 @@ public class ProfileUtils {
         editor.commit();
     }
 
+    public static void updateNickname(Context context, String newName){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(USER_NICKNAME, newName);
+        editor.commit();
+    }
+
     public static void updateAvatar(Context context, String avatarUrl){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();

@@ -193,11 +193,13 @@ public class ProfileActivity extends AppCompatActivity {
                                     User user = User.createFromJson(response);
                                     if(nameChanged) {
                                         mNickName.setText(user.getNickName());
-//                                        ProfileUtils
+                                        ProfileUtils.updateNickname(mContext, user.getNickName());
+                                        Log.v("new username",ProfileUtils.getUser(mContext).getNickName());
                                     }
                                     else {
                                         ImageLoader.getInstance()
                                                 .display(user.getAvatar(), mAvatar, R.drawable.default_avatar);
+                                        ProfileUtils.updateAvatar(mContext,user.getAvatar());
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
