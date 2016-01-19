@@ -90,10 +90,13 @@ public class TestScrollActivity extends AppCompatActivity {
         mMapClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String placeUri = "google.navigation:q=" + mPlace.getLatitude() + "," + mPlace
-                        .getLongitude();
-                Uri gmmIntentUri = Uri.parse(placeUri);
+//                String placeUri = "google.navigation:q=" + mPlace.getName();
+//                Uri gmmIntentUri = Uri.parse(placeUri);
+//                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+//                startActivity(mapIntent);
+                Uri gmmIntentUri = Uri.parse("geo:0,0?q=restaurants");
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
                 startActivity(mapIntent);
             }
         };

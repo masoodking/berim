@@ -8,8 +8,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import ir.ac.ut.berim.ProfileUtils;
 import ir.ac.ut.berim.R;
 import ir.ac.ut.models.Place;
+import ir.ac.ut.utils.ImageLoader;
 
 /**
  * Created by masood on 10/1/15.
@@ -67,7 +69,9 @@ public class PlacesListAdapter extends BaseAdapter {
 
         viewHolder.name.setText(mPlaces[position].getName());
         viewHolder.description.setText(mPlaces[position].getAddress());
-        viewHolder.icon.setImageResource(R.drawable.ic_launcher);
+
+        ImageLoader.getInstance()
+                .display(mPlaces[position].getAvatar(), viewHolder.icon,R.drawable.no_photo);
 
         return convertView;
     }

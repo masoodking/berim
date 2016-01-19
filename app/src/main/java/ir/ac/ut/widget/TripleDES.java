@@ -48,7 +48,7 @@ public class TripleDES {
 		final SecretKey key = new SecretKeySpec(keyBytes, "DESede");
 		byte[] cipherText = new byte[8];
 		try {
-			final Cipher cipher = Cipher.getInstance("DESede/ECB/NoPadding");
+			final Cipher cipher = Cipher.getInstance("DES/CBC/NoPadding");
 			cipher.init(Cipher.ENCRYPT_MODE, key);
 
 			cipherText = cipher.doFinal(message);
@@ -76,7 +76,7 @@ public class TripleDES {
 		final IvParameterSpec iv = new IvParameterSpec(new byte[8]);
 		byte[] plainText = new byte[8];
 		try {
-			Cipher decipher = Cipher.getInstance("DESede/CBC/NoPadding");
+			Cipher decipher = Cipher.getInstance("DES/CBC/NoPadding");
 			decipher.init(Cipher.DECRYPT_MODE, key, iv);
 
 			plainText = decipher.doFinal(message);

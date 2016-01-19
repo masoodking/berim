@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +23,7 @@ import ir.ac.ut.network.BerimNetworkException;
 import ir.ac.ut.network.MethodsName;
 import ir.ac.ut.network.NetworkManager;
 import ir.ac.ut.network.NetworkReceiver;
+import ir.ac.ut.utils.EncryptionUtils;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -104,6 +106,13 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        String secretMsg = "sasasassa";
+        String enc = EncryptionUtils.encrypt(secretMsg);
+        String dec= EncryptionUtils.decrypt(enc);
+
+//        Log.v("encrypted: ", enc);
+//        Log.v("decrypted: ", decoded);
 
         mContext = this;
 
