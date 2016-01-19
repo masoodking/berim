@@ -109,7 +109,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                 alert.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        editProfile(input.getText().toString(), null);
+                        editProfile(input.getText().toString(), null,true);
                     }
                 });
 
@@ -162,7 +162,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
-    public void editProfile(String nickname, String avatar) {
+    public void editProfile(String nickname, String avatar, final boolean nameChanged) {
         mProgressDialog.show();
         JSONObject jsonObject = new JSONObject();
         try {
@@ -186,9 +186,14 @@ public class ProfileActivity extends AppCompatActivity {
                                 mProgressDialog.dismiss();
                                 try {
                                     User user = User.createFromJson(response);
-                                    mNickName.setText(user.getNickName());
-                                    ImageLoader.getInstance()
-                                            .display(user.getAvatar(), mAvatar, R.drawable.default_avatar);
+                                    if(nameChanged) {
+                                        mNickName.setText(user.getNickName());
+//                                        ProfileUtils
+                                    }
+                                    else {
+                                        ImageLoader.getInstance()
+                                                .display(user.getAvatar(), mAvatar, R.drawable.default_avatar);
+                                    }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -287,7 +292,7 @@ public class ProfileActivity extends AppCompatActivity {
                                             Toast.LENGTH_SHORT).show();
                                 } else {
                                     editProfile(null, jsonObject.getJSONObject("data").getString(
-                                            "fileAddress"));
+                                            "fileAddress"),false);
                                 }
                             } catch (JSONException ex) {
                             }
