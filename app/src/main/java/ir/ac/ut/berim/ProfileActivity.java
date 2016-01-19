@@ -303,7 +303,6 @@ public class ProfileActivity extends AppCompatActivity {
                                 }
                             } catch (JSONException ex) {
                             }
-
                         }
                     }
                 });

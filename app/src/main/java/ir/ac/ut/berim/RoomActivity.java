@@ -74,6 +74,7 @@ public class RoomActivity extends BerimActivity {
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setTitle(getString(R.string.please_wait));
         mProgressDialog.setMessage(getString(R.string.please_wait_more));
+
         mRoom = (Room) getIntent().getSerializableExtra("room");
         mMessageInput = (EditText) findViewById(R.id.chat_text);
         mListView = (ListView) findViewById(R.id.listview);
@@ -166,6 +167,9 @@ public class RoomActivity extends BerimActivity {
         mMessages.add(message);
         mAdapter.notifyDataSetChanged();
         mMessageInput.setText("");
+        if(message.getSender().getId().equals(mMe.getId())){
+            DatabaseHelper.getInstance(mContext).InsertMessage(message);
+        }
     }
 
     @Override

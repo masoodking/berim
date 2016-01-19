@@ -107,12 +107,17 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        String secretMsg = "sasasasssasasasas df dfasa sasa";
-        String enc = EncryptionUtils.encrypt(secretMsg);
-        String dec= EncryptionUtils.decrypt(enc);
-
-        Log.v("encrypted: ", enc);
-        Log.v("decrypted: ", dec);
+        try {
+            EncryptionUtils encryptionUtils = new EncryptionUtils("12345678".getBytes(),
+                    "12345678".getBytes());
+            String secretMsg = "سلام من متن هستنم";
+            byte[] enc = encryptionUtils.encrypt(secretMsg);
+            Log.wtf("####encrypted: ", enc.toString());
+            Object dec = encryptionUtils.decrypt(enc);
+            Log.wtf("####decrypted: ", dec.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         mContext = this;
 

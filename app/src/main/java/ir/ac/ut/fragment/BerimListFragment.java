@@ -12,8 +12,8 @@ import android.widget.GridView;
 import java.util.ArrayList;
 
 import ir.ac.ut.adapter.ChatsListAdapter;
-import ir.ac.ut.berim.ChatActivity;
 import ir.ac.ut.berim.R;
+import ir.ac.ut.berim.RoomActivity;
 import ir.ac.ut.database.DatabaseHelper;
 import ir.ac.ut.models.Room;
 
@@ -64,7 +64,7 @@ public class BerimListFragment extends BaseFragment {
         PlacesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), ChatActivity.class);
+                Intent intent = new Intent(getActivity(), RoomActivity.class);
                 intent.putExtra("room", mAdapter.getItem(position));
                 getActivity().startActivity(intent);
             }

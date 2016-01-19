@@ -39,8 +39,12 @@ public class Room implements Serializable{
             room.setCreatedDate(jsonObject.getString("createdDate"));
         }
 
-        if (jsonObject.has("lastMessage")) {
-            room.setLastMessage(Message.createFromJson(jsonObject.getJSONObject("lastMessage")));
+        try {
+            if (jsonObject.has("lastMessage")) {
+                room.setLastMessage(
+                        Message.createFromJson(jsonObject.getJSONObject("lastMessage")));
+            }
+        }catch (JSONException e){
         }
 
         if (jsonObject.has("placeId")) {

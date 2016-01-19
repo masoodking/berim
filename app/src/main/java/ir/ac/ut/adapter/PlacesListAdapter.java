@@ -8,7 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import ir.ac.ut.berim.ProfileUtils;
 import ir.ac.ut.berim.R;
 import ir.ac.ut.models.Place;
 import ir.ac.ut.utils.ImageLoader;
@@ -77,11 +76,9 @@ public class PlacesListAdapter extends BaseAdapter {
     }
 
     class PlaceViewHolder {
-
         final TextView name;
         final TextView description;
         final ImageView icon;
-
         PlaceViewHolder(View view) {
             name = (TextView) view.findViewById(R.id.place_name_text_view);
             description = (TextView) view.findViewById(R.id.place_description_text_view);
