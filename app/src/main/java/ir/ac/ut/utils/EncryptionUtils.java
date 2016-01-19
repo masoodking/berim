@@ -15,7 +15,10 @@ public class EncryptionUtils {
     }
 
     public static String encrypt(String messege){
-        byte[] coded = tripleDES.encrypt(stringToByteArray(messege),stringToByteArray(key));
+        String t = messege;
+        while(t.length()%8!=0)
+            t=t+" ";
+        byte[] coded = tripleDES.encrypt(stringToByteArray(t),stringToByteArray(key));
         return byteArrayToString(coded);
     }
 
