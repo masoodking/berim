@@ -57,16 +57,19 @@ public class ProfileActivity extends AppCompatActivity {
 
     private Button mBuyVIPButton;
 
+    private User mUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
+        mUser = ProfileUtils.getUser(mContext);
         setContentView(R.layout.activity_profile);
         logoutButton = (Button) findViewById(R.id.logout_button);
         mMobile = (TextView) findViewById(R.id.phone_textView);
         mNickName = (TextView) findViewById(R.id.nickname_textView);
         mAvatar = (ImageView) findViewById(R.id.user_avatar);
-        mMobile.setText(ProfileUtils.getUser(mContext).getPhoneNumber());
+        mMobile.setText(mUser.getPhoneNumber());
         mBuyVIPButton = (Button) findViewById(R.id.buy_vip_button);
 
         mProgressDialog = new ProgressDialog(this);
@@ -81,11 +84,13 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         ImageLoader.getInstance()
-                .display(ProfileUtils.getUser(mContext).getAvatar(), mAvatar, R.drawable.default_avatar);
+                .display(mUser.getAvatar(), mAvatar, R.drawable.default_avatar);
 
-        if (ProfileUtils.getUser(mContext).getNickName().equals("null") || TextUtils
-                .isEmpty(ProfileUtils.getUser(mContext).getNickName())) {
+        if (mUser.getNickName().equals("null") || TextUtils
+                .isEmpty(mUser.getNickName())) {
             mNickName.setText(R.string.no_nickname);
+        }else{
+            mNickName.setText(mUser.getNickName());
         }
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,7 +139,7 @@ public class ProfileActivity extends AppCompatActivity {
     public void logout() throws JSONException {
         mProgressDialog.show();
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("phoneNumber", ProfileUtils.getUser(mContext).getPhoneNumber());
+        jsonObject.put("phoneNumber", mUser.getPhoneNumber());
         jsonObject.put("deviceId", Settings.Secure.getString(mContext.getContentResolver(),
                 Settings.Secure.ANDROID_ID));
         NetworkManager.sendRequest(MethodsName.LOGOUT, jsonObject, new NetworkReceiver() {
