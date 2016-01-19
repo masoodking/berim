@@ -19,6 +19,10 @@ public class ProfileUtils {
 
     private static final String USER_ROOM_ID = "user_room_id";
 
+    private static final String USER_LAST_SEEN = "user_last_seen";
+
+    private static final String USER_ROOM_AVATAR = "user_avatar";
+
     private static final String USER_PHONE_NUMBER = "user_phone_number";
 
     private static final String USER_IS_LOGIN = "user_is_login";
@@ -29,11 +33,19 @@ public class ProfileUtils {
         editor.putString(USER_ID, user.getId());
         editor.putString(USER_NICKNAME, user.getNickName());
         editor.putString(USER_ROOM_ID, user.getRoomId());
+        editor.putInt(USER_LAST_SEEN, user.getLastSeen());
         editor.putString(USER_PHONE_NUMBER, user.getPhoneNumber());
+        editor.putString(USER_ROOM_AVATAR, user.getAvatar());
         editor.putBoolean(USER_IS_LOGIN, true);
         editor.commit();
     }
 
+    public static void updateAvatar(Context context, String avatarUrl){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(USER_ROOM_AVATAR, avatarUrl);
+        editor.commit();
+    }
     public static User getUser(Context context){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         User user = new User();
@@ -41,6 +53,8 @@ public class ProfileUtils {
         user.setRoomId(prefs.getString(USER_ROOM_ID, null));
         user.setPhoneNumber(prefs.getString(USER_PHONE_NUMBER, null));
         user.setNickName(prefs.getString(USER_NICKNAME, null));
+        user.setLastSeen(prefs.getInt(USER_LAST_SEEN, 0));
+        user.setAvatar(prefs.getString(USER_ROOM_AVATAR, null));
         return user;
     }
     public static void logoutUser(Context context){
@@ -49,6 +63,9 @@ public class ProfileUtils {
         editor.putString(USER_ID, null);
         editor.putString(USER_NICKNAME, null);
         editor.putString(USER_PASSWORD, null);
+        editor.putString(USER_ROOM_ID, null);
+        editor.putInt(USER_LAST_SEEN, 0);
+        editor.putString(USER_ROOM_AVATAR, null);
         editor.putString(USER_ROOM_ID, null);
         editor.putString(USER_PHONE_NUMBER, null);
         editor.putBoolean(USER_IS_LOGIN, false);
