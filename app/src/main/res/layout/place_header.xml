@@ -3,15 +3,22 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/placeBackground"
     android:layout_width="match_parent"
-    android:layout_height="300dp"
-    android:background="@drawable/default_place">
+    android:layout_height="300dp">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="0dp"
+        android:id="@+id/place_background"
+        android:layout_alignBottom="@+id/placeHeaderMenu"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
     <RelativeLayout
         android:id="@+id/placeHeaderMenu"
         android:layout_width="match_parent"
         android:layout_height="@dimen/place_sticky_height"
         android:layout_alignParentBottom="true"
-        android:background="#88ffffff">
+        android:background="#88ff0000">
 
         <TextView
             android:id="@+id/placeRate"

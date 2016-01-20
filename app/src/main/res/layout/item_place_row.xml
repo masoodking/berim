@@ -2,9 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
     android:background="#eeeeee"
-    android:orientation="horizontal"
     android:padding="10dp">
 
     <RelativeLayout
@@ -43,9 +41,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:lines="3"
-                android:padding="1dp"
+                android:paddingRight="5dp"
+                android:paddingLeft="5dp"
                 android:textColor="@android:color/darker_gray" />
-
         </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>

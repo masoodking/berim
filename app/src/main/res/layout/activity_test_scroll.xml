@@ -16,15 +16,13 @@
                 android:id="@+id/list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="100dp"
-                android:clipToPadding="true"
                 android:layout_below="@+id/placeDescription"/>
         <RelativeLayout
                 android:id="@+id/placeHeaderMenuSticky"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/place_sticky_height"
-                android:layout_alignParentBottom="true"
-                android:background="#88ffffff">
+                android:layout_alignParentTop="true"
+                android:background="#ffffff">
 
             <TextView
                     android:id="@+id/placeRate"
