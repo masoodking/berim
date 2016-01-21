@@ -85,7 +85,7 @@ public class PlaceReviewAdapter extends BaseAdapter {
                 reviewViewHolder = new PlaceReviewViewHolder(convertView);
                 convertView.setTag(reviewViewHolder);
                 reviewViewHolder.name.setText(review.getUser().getValidUserName());
-                reviewViewHolder.description.setText(review.getDescription());
+                reviewViewHolder.description.setText(review.getText());
                 reviewViewHolder.stars.setRating(review.getRate());
                 LayerDrawable stars = (LayerDrawable) reviewViewHolder.stars.getProgressDrawable();
                 stars.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);

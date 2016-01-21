@@ -76,6 +76,7 @@ public class ChatsListAdapter extends BaseAdapter {
             ImageLoader.getInstance()
                     .display(mRooms.get(position).getLastMessage().getSender().getAvatar(),
                             viewHolder.icon, R.drawable.ic_launcher);
+            viewHolder.lastMessage.setText(mRooms.get(position).getLastMessage().getText());
         }
         return convertView;
     }

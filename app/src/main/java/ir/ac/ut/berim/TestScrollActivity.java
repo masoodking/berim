@@ -8,9 +8,13 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +23,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -40,6 +45,7 @@ public class TestScrollActivity extends AppCompatActivity {
     private ObservableListView mListView;
 
     public View.OnClickListener mMapClickListener;
+    public View.OnClickListener shareClickListener;
 
     Context mContext;
 
@@ -51,8 +57,10 @@ public class TestScrollActivity extends AppCompatActivity {
 
     TextView mPlaceAddress;
     TextView mPlaceRate;
+    RatingBar mRatingBar;
 
     ImageButton mMap;
+    ImageButton mShare;
 
     FloatingActionButton mBerimFAB;
 
@@ -60,6 +68,12 @@ public class TestScrollActivity extends AppCompatActivity {
 
     private ImageView background;
     private Button mAddReview;
+    private TextView mPlaceNameSticky;
+    private TextView mPlaceAddressSticky;
+    private TextView mPlaceRateSticky;
+    private RatingBar mRatingBarSticky;
+    private ImageButton mShareSticky;
+    private ImageButton mMapSticky;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,19 +96,35 @@ public class TestScrollActivity extends AppCompatActivity {
         final ViewGroup header = (ViewGroup) inflater.inflate(R.layout.place_header, mListView,
                 false);
 
-//        mPlaceDescription = (TextView) header.findViewById(R.id.placeDescription);
-//        mPlaceDescription.setText(mPlace.getDescription());
-
-//        mPlaceRate = (TextView) header.findViewById(R.id.placeRate);
-//        mPlaceRate.setText(""+mPlace.getRate());
+        mPlaceRate = (TextView) header.findViewById(R.id.placeRate);
+        mPlaceRate.setText(""+mPlace.getRate());
+        mRatingBar = (RatingBar) header.findViewById(R.id.placeRateStars);
+        if(mPlace.getRate()>=0)
+            mRatingBar.setRating(mPlace.getRate());
+        LayerDrawable stars = (LayerDrawable) mRatingBar.getProgressDrawable();
+        stars.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
+        mPlaceRateSticky = (TextView) mStickyHeader.findViewById(R.id.placeRate);
+        mPlaceRateSticky.setText("" + mPlace.getRate());
+        mRatingBarSticky = (RatingBar) header.findViewById(R.id.placeRateStars);
+        if(mPlace.getRate()>=0)
+            mRatingBarSticky.setRating(mPlace.getRate());
+        LayerDrawable starsSticky = (LayerDrawable) mRatingBar.getProgressDrawable();
+        starsSticky.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
 
         mPlaceName = (TextView) header.findViewById(R.id.PlaceName);
         mPlaceName.setText(mPlace.getName());
+        mPlaceNameSticky = (TextView) mStickyHeader.findViewById(R.id.PlaceName);
+        mPlaceNameSticky.setText(mPlace.getName());
 
         mPlaceAddress = (TextView) header.findViewById(R.id.PlaceLocation);
         mPlaceAddress.setText(mPlace.getAddress());
+        mPlaceAddressSticky = (TextView) mStickyHeader.findViewById(R.id.PlaceLocation);
+        mPlaceAddressSticky.setText(mPlace.getAddress());
 
         mMap = (ImageButton) header.findViewById(R.id.image_map);
+        mShare = (ImageButton) header.findViewById(R.id.image_share);
+        mMapSticky = (ImageButton) mStickyHeader.findViewById(R.id.image_map);
+        mShareSticky = (ImageButton) mStickyHeader.findViewById(R.id.image_share);
 
         background = (ImageView) header.findViewById(R.id.place_background);
 
@@ -102,6 +132,23 @@ public class TestScrollActivity extends AppCompatActivity {
                 .display(mPlace.getAvatar(),background,
                         R.drawable.no_photo);
 
+        shareClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                String shareBody = mPlace.getDescription();
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "بریم "+mPlace.getName());
+//                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                startActivity(Intent.createChooser(sharingIntent, "Share via"));
+
+
+//                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+//                sharingIntent.setType("text/html");
+//                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<p>This is the text that will be shared.</p>"));
+//                startActivity(Intent.createChooser(sharingIntent,"Share using"));
+            }
+        };
         mMapClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,14 +156,13 @@ public class TestScrollActivity extends AppCompatActivity {
                 Uri gmmIntentUri = Uri.parse(placeUri);
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 startActivity(mapIntent);
-//                Uri gmmIntentUri = Uri.parse("geo:0,0?q=restaurants");
-//                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-//                mapIntent.setPackage("com.google.android.apps.maps");
-//                startActivity(mapIntent);
             }
         };
 
         mMap.setOnClickListener(mMapClickListener);
+        mShare.setOnClickListener(shareClickListener);
+        mMapSticky.setOnClickListener(mMapClickListener);
+        mShareSticky.setOnClickListener(shareClickListener);
         mListView.addHeaderView(header, null, false);
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override

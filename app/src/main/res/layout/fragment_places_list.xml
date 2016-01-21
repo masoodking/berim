@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:layout_margin="16dp"
-            android:src="@drawable/ic_action_add_place"
+            android:src="@drawable/ic_search"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             fab:fab_colorNormal="@color/primary"

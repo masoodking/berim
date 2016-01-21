@@ -32,6 +32,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/ratingBar2"
                     android:layout_alignParentLeft="true"
+                    android:isIndicator="true"
                     style="?android:attr/ratingBarStyleSmall"/>
                 <TextView
                     android:id="@+id/reviewer_name_text_view"
