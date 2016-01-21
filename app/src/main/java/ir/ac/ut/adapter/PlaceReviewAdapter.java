@@ -1,11 +1,15 @@
 package ir.ac.ut.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -82,6 +86,9 @@ public class PlaceReviewAdapter extends BaseAdapter {
                 convertView.setTag(reviewViewHolder);
                 reviewViewHolder.name.setText(review.getUser().getValidUserName());
                 reviewViewHolder.description.setText(review.getDescription());
+                reviewViewHolder.stars.setRating(review.getRate());
+                LayerDrawable stars = (LayerDrawable) reviewViewHolder.stars.getProgressDrawable();
+                stars.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
                 ImageLoader.getInstance()
                         .display(review.getUser().getAvatar(), reviewViewHolder.icon,
                                 R.drawable.default_avatar);
@@ -113,10 +120,13 @@ public class PlaceReviewAdapter extends BaseAdapter {
 
         final ImageView icon;
 
+        final RatingBar stars;
+
         PlaceReviewViewHolder(View view) {
             name = (TextView) view.findViewById(R.id.reviewer_name_text_view);
             description = (TextView) view.findViewById(R.id.review_description_text_view);
             icon = (ImageView) view.findViewById(R.id.review_icon_image);
+            stars = (RatingBar) view.findViewById(R.id.ratingBar2);
         }
     }
 }

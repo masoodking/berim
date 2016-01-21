@@ -86,15 +86,15 @@ public class PlaceListFragment extends BaseFragment {
                         PlacesGridView.setAdapter(mAdapter);
                         PlacesGridView
                                 .setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> parent, View view,
-                                            int position, long id) {
-                                        Intent intent = new Intent(getActivity(),
-                                                TestScrollActivity.class);//0544250
-                                        intent.putExtra("place", places[position]);
-                                        getActivity().startActivity(intent);
-                                    }
-                                });
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view,
+                                                    int position, long id) {
+                                Intent intent = new Intent(getActivity(),
+                                        TestScrollActivity.class);//0544250
+                                intent.putExtra("place", places[position]);
+                                getActivity().startActivity(intent);
+                            }
+                        });
                     }
                 }
             });

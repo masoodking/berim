@@ -3,16 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/placeBackground"
     android:layout_width="match_parent"
-    android:layout_height="300dp">
+    android:layout_height="wrap_content">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="0dp"
         android:id="@+id/place_background"
-        android:layout_alignBottom="@+id/placeHeaderMenu"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:src="@drawable/no_photo"
+        android:layout_alignParentTop="true"/>
     <RelativeLayout
         android:id="@+id/placeHeaderMenu"
         android:layout_width="match_parent"
@@ -25,12 +24,21 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
             android:text="3.7"
             android:textAlignment="center"
-            android:layout_centerVertical="true"
             android:paddingLeft="5dp"
-            android:textSize="44sp" />
+            android:textSize="36sp" />
 
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/placeRateStars"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/texts"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_below="@+id/image_map" />
         <LinearLayout
             android:id="@+id/texts"
             android:layout_width="wrap_content"
@@ -79,9 +87,4 @@
             android:src="@drawable/share" />
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/placeDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/placeHeaderMenu" />
 </RelativeLayout>

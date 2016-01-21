@@ -21,7 +21,7 @@ public class Place implements Serializable {
 
     private String description;
 
-    private int rate;
+    private float rate;
 
     private String category;
 
@@ -117,7 +117,7 @@ public class Place implements Serializable {
         this.description = description;
     }
 
-    public int getRate() {
+    public float getRate() {
         return rate;
     }
 

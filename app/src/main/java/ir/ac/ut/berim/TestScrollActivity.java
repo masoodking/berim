@@ -17,6 +17,9 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -30,6 +33,7 @@ import ir.ac.ut.network.MethodsName;
 import ir.ac.ut.network.NetworkManager;
 import ir.ac.ut.network.NetworkReceiver;
 import ir.ac.ut.utils.DimensionUtils;
+import ir.ac.ut.utils.ImageLoader;
 
 public class TestScrollActivity extends AppCompatActivity {
 
@@ -46,6 +50,7 @@ public class TestScrollActivity extends AppCompatActivity {
     TextView mPlaceName;
 
     TextView mPlaceAddress;
+    TextView mPlaceRate;
 
     ImageButton mMap;
 
@@ -53,6 +58,7 @@ public class TestScrollActivity extends AppCompatActivity {
 
     private View mStickyHeader;
 
+    private ImageView background;
     private Button mAddReview;
 
     @Override
@@ -76,8 +82,11 @@ public class TestScrollActivity extends AppCompatActivity {
         final ViewGroup header = (ViewGroup) inflater.inflate(R.layout.place_header, mListView,
                 false);
 
-        mPlaceDescription = (TextView) header.findViewById(R.id.placeDescription);
-        mPlaceDescription.setText(mPlace.getDescription());
+//        mPlaceDescription = (TextView) header.findViewById(R.id.placeDescription);
+//        mPlaceDescription.setText(mPlace.getDescription());
+
+//        mPlaceRate = (TextView) header.findViewById(R.id.placeRate);
+//        mPlaceRate.setText(""+mPlace.getRate());
 
         mPlaceName = (TextView) header.findViewById(R.id.PlaceName);
         mPlaceName.setText(mPlace.getName());
@@ -87,17 +96,23 @@ public class TestScrollActivity extends AppCompatActivity {
 
         mMap = (ImageButton) header.findViewById(R.id.image_map);
 
+        background = (ImageView) header.findViewById(R.id.place_background);
+
+        ImageLoader.getInstance()
+                .display(mPlace.getAvatar(),background,
+                        R.drawable.no_photo);
+
         mMapClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                String placeUri = "google.navigation:q=" + mPlace.getName();
-//                Uri gmmIntentUri = Uri.parse(placeUri);
-//                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-//                startActivity(mapIntent);
-                Uri gmmIntentUri = Uri.parse("geo:0,0?q=restaurants");
+                String placeUri = "google.navigation:q=" + mPlace.getName();
+                Uri gmmIntentUri = Uri.parse(placeUri);
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                mapIntent.setPackage("com.google.android.apps.maps");
                 startActivity(mapIntent);
+//                Uri gmmIntentUri = Uri.parse("geo:0,0?q=restaurants");
+//                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+//                mapIntent.setPackage("com.google.android.apps.maps");
+//                startActivity(mapIntent);
             }
         };
 
@@ -112,7 +127,7 @@ public class TestScrollActivity extends AppCompatActivity {
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
                     int totalItemCount) {
-                if (mListView != null && mListView.getChildAt(1) != null
+                if (mListView != null
                         && header.getBottom() < DimensionUtils.convertDpToPx(mContext, 60)) {
                     mStickyHeader.setVisibility(View.VISIBLE);
                 } else {
