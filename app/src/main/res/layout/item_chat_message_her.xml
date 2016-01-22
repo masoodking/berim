@@ -55,6 +55,7 @@
                 android:id="@+id/in_chat_image"
                 android:layout_width="200dp"
                 android:layout_height="200dp"
+                android:padding="1dp"
                 android:visibility="gone" />
         </RelativeLayout>
     </RelativeLayout>
