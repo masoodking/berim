@@ -1,6 +1,10 @@
 package ir.ac.ut.adapter;
 
+import android.app.DownloadManager;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -10,6 +14,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.github.nkzawa.socketio.client.On;
 
 import java.util.ArrayList;
 
@@ -64,7 +70,7 @@ public class ChatAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         int listViewItemType = getItemViewType(position);
-        Message chatMessage = mMessages.get(position);
+        final Message chatMessage = mMessages.get(position);
         MessageViewHolder viewHolder = null;
         if (convertView == null) {
             if (listViewItemType == FROM_ME) {
@@ -90,17 +96,17 @@ public class ChatAdapter extends BaseAdapter {
         viewHolder.name.setText(chatMessage.getText());
         if (chatMessage.getFileAddress() != null && !chatMessage.getFileAddress().toLowerCase().equals("null")) {
             Log.wtf("has file", chatMessage.getFileAddress());
-            if (chatMessage.getFileAddress().endsWith(".jpg") || chatMessage.getFileAddress().endsWith(".jpeg") || chatMessage.getFileAddress().endsWith(".png")) {
-                Log.wtf("has image", chatMessage.getFileAddress());
-                viewHolder.inAppImage.setVisibility(View.VISIBLE);
-                ImageLoader.getInstance().display(chatMessage.getFileAddress(), viewHolder.inAppImage, R.drawable.no_photo);
-            }
-            else{
-                viewHolder.inAppImage.setVisibility(View.VISIBLE);
-//                viewHolder.inAppImage.
-            }
-        }
-        else{
+            Log.wtf("has image", chatMessage.getFileAddress());
+            viewHolder.inAppImage.setVisibility(View.VISIBLE);
+            ImageLoader.getInstance().display(chatMessage.getFileAddress(), viewHolder.inAppImage, R.drawable.ic_action_attach);
+            viewHolder.inAppImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent download = new Intent(Intent.ACTION_VIEW, Uri.parse(chatMessage.getFileAddress()));
+                    mContext.startActivity(download);
+                }
+            });
+        } else {
             viewHolder.inAppImage.setVisibility(View.GONE);
         }
         return convertView;
