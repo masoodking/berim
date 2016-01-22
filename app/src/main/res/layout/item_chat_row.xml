@@ -1,60 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="10dp"
-    android:background="@android:color/white">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:background="@android:color/white">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/chat_list_icon"
-        android:layout_alignParentRight="true"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        app:civ_border_width="0dp" />
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/chat_list_icon"
+            android:layout_alignParentRight="true"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:civ_border_width="0dp"/>
 
     <RelativeLayout
-        android:layout_alignParentLeft="true"
-        android:layout_toRightOf="@+id/chat_list_icon"
-        android:layout_width="wrap_content"
-        android:gravity="right"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_toLeftOf="@+id/chat_list_icon"
-        android:layout_toStartOf="@+id/chat_list_icon">
-
-        <TextView
-            android:id="@+id/chat_list_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:lines="1"
-            android:text="name"
-            android:textColor="#000"
-            android:paddingRight="10dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
-        <TextView
-            android:id="@+id/chat_last_message"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentLeft="true"
+            android:layout_toRightOf="@+id/chat_list_icon"
             android:layout_width="wrap_content"
             android:gravity="right"
-            android:lines="1"
-            android:layout_below="@id/chat_list_name"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/darker_gray"
-            android:paddingRight="10dp" />
+            android:orientation="vertical"
+            android:layout_toLeftOf="@+id/chat_list_icon"
+            android:layout_toStartOf="@+id/chat_list_icon">
+
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1"
-            android:background="@drawable/round_bg"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:textColor="#ffeedd"/>
+                android:id="@+id/chat_list_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:lines="1"
+                android:text="name"
+                android:textColor="#000"
+                android:paddingRight="10dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
+
+        <TextView
+                android:id="@+id/chat_last_message"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:gravity="right"
+                android:lines="1"
+                android:layout_below="@id/chat_list_name"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/darker_gray"
+                android:paddingRight="10dp"/>
+        <TextView
+                android:id="@+id/chat_badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_bg"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="#ffeedd"
+                android:visibility="gone"/>
     </RelativeLayout>
 </RelativeLayout>

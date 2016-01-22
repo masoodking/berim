@@ -4,6 +4,7 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Response;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -128,7 +129,7 @@ public class ChatActivity extends BerimActivity {
     }
 
     public void loadMessages() {
-        ArrayList<Message> messages = DatabaseHelper.getInstance(mContext).getMessage(
+        ArrayList<Message> messages = DatabaseHelper.getInstance(mContext).getMessage(true,
                 DatabaseHelper.ROOM_ID + "='" + mTalkee.getRoomId() + "' or ("
                         + DatabaseHelper.SENDER_ROOM_ID
                         + "='" + mTalkee.getRoomId() + "' and " + DatabaseHelper.ROOM_ID + "='"
@@ -136,7 +137,45 @@ public class ChatActivity extends BerimActivity {
         mMessages.addAll(messages);
         mAdapter.notifyDataSetChanged();
         mMessageInput.setText("");
+        try {
+            seenMessagesOnServer(messages, true);
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
 
+    public void seenMessagesOnServer(final ArrayList<Message> messages, final boolean retry)
+            throws JSONException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("status", "seen");
+        JSONArray messageIdArray = new JSONArray();
+        for (Message message : messages) {
+            if (message.getSender().getId() != mMe.getId()) {
+                messageIdArray.put(message.getId());
+            }
+        }
+        jsonObject.put("messages", messageIdArray);
+        if (messageIdArray.length() == 0) {
+            return;
+        }
+        NetworkManager.sendRequest(MethodsName.bULK_CHANGE_MESSAGE_STATUS_GOT, jsonObject,
+                new NetworkReceiver() {
+                    @Override
+                    public void onResponse(Object response) {
+                        //message seen in server side
+                    }
+
+                    @Override
+                    public void onErrorResponse(BerimNetworkException error) {
+                        if (retry) {
+                            try {
+                                seenMessagesOnServer(messages, false);
+                            } catch (JSONException e) {
+
+                            }
+                        }
+                    }
+                });
     }
 
     public void sendMessage(Message message) throws JSONException {
@@ -169,7 +208,7 @@ public class ChatActivity extends BerimActivity {
         mMessages.add(message);
         mAdapter.notifyDataSetChanged();
         mMessageInput.setText("");
-        if(message.getSender().getId().equals(mMe.getId())){
+        if (message.getSender().getId().equals(mMe.getId())) {
             DatabaseHelper.getInstance(mContext).InsertMessageNoUpdate(message);
         }
     }
@@ -199,11 +238,12 @@ public class ChatActivity extends BerimActivity {
                         if (message.getRoomId().equals(mMe.getRoomId()) &&
                                 message.getSender().getId().equals(mTalkee.getId())) {
                             addMessage(message);
+                            ArrayList<Message> messages = new ArrayList<>();
+                            seenMessagesOnServer(messages, true);
                         }
                     } catch (JSONException e) {
                         return;
                     }
-
                 }
             });
         }

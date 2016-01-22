@@ -3,10 +3,12 @@ package ir.ac.ut.models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 /**
  * Created by Masood on 10/27/2015 AD.
  */
-public class Message {
+public class Message implements Serializable{
 
     private String id;
 
@@ -156,6 +158,16 @@ public class Message {
             return Message.MessageStatus.FAIL;
         } else {
             return Message.MessageStatus.SENT;
+        }
+    }
+
+    public String getStringStatus(){
+        if(this.status == MessageStatus.FAIL){
+            return "fail";
+        }else if(this.status == MessageStatus.SEEN){
+            return "seen";
+        }else{
+            return "sent";
         }
     }
 }

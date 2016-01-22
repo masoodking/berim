@@ -117,7 +117,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void InsertMessage(List<Message> messages) {
-        if(messages == null || messages.size() == 0){
+        if (messages == null || messages.size() == 0) {
             return;
         }
         db.delete(MESSAGE_TABLE_NAME, ID + "='not-set'", null);
@@ -152,9 +152,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return messages.size() > 0 ? messages.get(0) : null;
     }
 
-    public ArrayList<Message> getMessage(String where) {
-        return convertCursorToMessage(getReadableDatabase().query(
+    public ArrayList<Message> getMessage(boolean setSeen, String where) {
+        ArrayList<Message> data = convertCursorToMessage(getReadableDatabase().query(
                 MESSAGE_TABLE_NAME, null, where, null, null, null, null));
+        if (setSeen) {
+            for (Message message : data) {
+                if (message.getStatus() != Message.MessageStatus.SEEN) {
+                    message.setStatus(Message.MessageStatus.SEEN);
+                    InsertMessage(message);
+                }
+            }
+        }
+        return data;
     }
 
     public void InsertRoom(List<Room> messages) {
@@ -182,15 +191,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public ArrayList<Room> getChatList() {
         String myUserId = ProfileUtils.getUser(BerimApplication.getInstance()).getId();
-        ArrayList<Message> messages = getMessage(null);
+        ArrayList<Message> messages = getMessage(false, null);
         HashMap hashMap = new HashMap<String, Message>();
         ArrayList<Room> berims = getRoom(null);
         String berimRoomsId = "";
-        for(Room berim : berims){
-            berimRoomsId = berimRoomsId + "-" + berim.getId();
+        for (Room berim : berims) {
+            if (berim.getMaxUserCount() > 1) {
+                berimRoomsId = berimRoomsId + "-" + berim.getId();
+            }
         }
-        for (Message msg : messages) {
-            if(berimRoomsId.contains(msg.getRoomId())){
+        for (int i = 0; i < messages.size(); i++) {
+            Message msg = messages.get(i);
+            if (berimRoomsId.contains(msg.getRoomId())) {
                 continue;
             }
             if (!hashMap
@@ -214,16 +226,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             } else {
                 Room rm = (Room) hashMap
                         .get("<" + msg.getSender().getRoomId() + "," + msg.getRoomId() + ">");
-                if (rm != null){
+                if (rm != null) {
                     if (msg.getStatus() != Message.MessageStatus.SEEN
-                            && msg.getSender().getId() != myUserId) {
+                            && !msg.getSender().getId().equals(myUserId)) {
                         rm.setUnreadMessageCount(rm.getUnreadMessageCount() + 1);
                     }
                     if (!msg.getSender().getId().equals(myUserId)) {
                         rm.setName(msg.getSender().getValidUserName());
                     }
                     hashMap.remove("<" + msg.getSender().getRoomId() + "," + msg.getRoomId() + ">");
-                    hashMap.put("<" + msg.getSender().getRoomId() + "," + msg.getRoomId() + ">", rm);
+                    hashMap.put("<" + msg.getSender().getRoomId() + "," + msg.getRoomId() + ">",
+                            rm);
                 } else {
                     rm = (Room) hashMap
                             .get("<" + msg.getRoomId() + "," + msg.getSender().getRoomId() + ">");
@@ -235,13 +248,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         rm.setName(msg.getSender().getValidUserName());
                     }
                     hashMap.remove("<" + msg.getRoomId() + "," + msg.getSender().getRoomId() + ">");
-                    hashMap.put("<" + msg.getRoomId() + "," + msg.getSender().getRoomId() + ">", rm);
+                    hashMap.put("<" + msg.getRoomId() + "," + msg.getSender().getRoomId() + ">",
+                            rm);
                 }
             }
         }
         ArrayList<Room> rooms = new ArrayList<>();
         Collection rms = hashMap.values();
-        for(Object rm : rms){
+        for (Object rm : rms) {
             rooms.add((Room) rm);
         }
         return rooms;
@@ -340,7 +354,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(SENDER_ROOM_ID, message.getSender().getRoomId());
         values.put(SENDER_AVATAR, message.getSender().getAvatar());
         values.put(SENDER_LAST_SEEN, message.getSender().getLastSeen());
-        values.put(STATUS, message.getStatus().toString());
+        values.put(STATUS, message.getStringStatus());
         values.put(UPDATE_STATUS, message.getUpdateStatus());
         values.put(FILE_ADDRESS, message.getFileAddress());
         values.put(DATE, message.getDate());

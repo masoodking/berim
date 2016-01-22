@@ -70,13 +70,18 @@ public class ChatsListAdapter extends BaseAdapter {
             viewHolder = (PlaceViewHolder) convertView.getTag();
         }
 
-        viewHolder.name.setText(mRooms.get(position).getValidName());
-        if (mRooms.get(position).getLastMessage() != null
-                && mRooms.get(position).getLastMessage().getSender() != null) {
+        Room theRoom = mRooms.get(position);
+
+        viewHolder.name.setText(theRoom.getValidName());
+        if (theRoom.getLastMessage() != null
+                && theRoom.getLastMessage().getSender() != null) {
             ImageLoader.getInstance()
-                    .display(mRooms.get(position).getLastMessage().getSender().getAvatar(),
+                    .display(theRoom.getLastMessage().getSender().getAvatar(),
                             viewHolder.icon, R.drawable.ic_launcher);
-            viewHolder.lastMessage.setText(mRooms.get(position).getLastMessage().getText());
+            viewHolder.lastMessage.setText(theRoom.getLastMessage().getText());
+        }
+        if (theRoom.getUnreadMessageCount() > 0) {
+            viewHolder.badge.setText(String.valueOf(theRoom.getUnreadMessageCount()));
         }
         return convertView;
     }
@@ -89,10 +94,13 @@ public class ChatsListAdapter extends BaseAdapter {
 
         final ImageView icon;
 
+        final TextView badge;
+
         PlaceViewHolder(View view) {
             name = (TextView) view.findViewById(R.id.chat_list_name);
             lastMessage = (TextView) view.findViewById(R.id.chat_last_message);
             icon = (ImageView) view.findViewById(R.id.chat_list_icon);
+            badge = (TextView) view.findViewById(R.id.chat_badge);
         }
     }
 }

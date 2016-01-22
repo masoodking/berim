@@ -31,5 +31,6 @@ public class MethodsName {
 
     public final static String ADD_USER_TO_ROOM = "addUserToRoom";
 
+    public final static String bULK_CHANGE_MESSAGE_STATUS_GOT = "bulkChangeMessageStatusGot";
 
 }

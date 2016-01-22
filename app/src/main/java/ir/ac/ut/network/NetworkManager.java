@@ -7,6 +7,7 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.Response;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,9 +16,12 @@ import android.util.Log;
 
 import java.io.File;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 
 import ir.ac.ut.berim.BerimApplication;
 import ir.ac.ut.berim.R;
+import ir.ac.ut.database.DatabaseHelper;
+import ir.ac.ut.models.Message;
 
 /**
  * Created by Masood on 12/9/2015 AD.
@@ -63,7 +67,8 @@ public class NetworkManager {
                 .once(methodName + "Response", new Emitter.Listener() {
                     @Override
                     public void call(final Object... args) {
-                        Log.wtf("Socket", "result of <<" + methodName + ">> received. : " + args[0].toString());
+                        Log.wtf("Socket", "result of <<" + methodName + ">> received. : " + args[0]
+                                .toString());
                         JSONObject jsonObject = (JSONObject) args[0];
                         try {
                             if (jsonObject.has("error") && jsonObject.getBoolean("error") == true) {
@@ -91,6 +96,24 @@ public class NetworkManager {
             @Override
             public void call(final Object... args) {
                 ChatNetworkListner.sendNetworkResponseBroadcast(args[0]);
+            }
+        });
+        mSocket.off("bulkChangeMessageStatus");
+        mSocket.on("bulkChangeMessageStatus", new Emitter.Listener() {
+            @Override
+            public void call(final Object... args) {
+                try {
+                    JSONArray jsonArray = new JSONArray(args[0].toString());
+                    ArrayList<Message> messages = new ArrayList<Message>();
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        Message message = Message.createFromJson(jsonArray.getJSONObject(i));
+                        messages.add(message);
+                    }
+                    DatabaseHelper.getInstance(BerimApplication.getInstance())
+                            .InsertMessage(messages);
+                } catch (JSONException je) {
+                    je.printStackTrace();
+                }
             }
         });
     }
