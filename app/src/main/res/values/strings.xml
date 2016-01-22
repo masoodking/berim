@@ -138,4 +138,12 @@
 
     <string name="i_add_user">من %s را به گروه اضافه کردم.</string>
     <string name="successful">با موفقیت انجام شد!</string>
+    <string name="Berim">شبکه اجتماعی بریم</string>
+    <string name="creatoes">ساخته‌شده توسط:</string>
+    <string name="amir">امیر پوران‌بن‌ویسه</string>
+    <string name="masoud">مسعود هاشمیان</string>
+    <string name="saeed">سعید الوندکوهی</string>
+    <string name="amin">محمدامین ملاحسینی</string>
+    <string name="behrouz">بهروز منصوری</string>
+    <string name="berim_description">«بریم» هماهنگی یک تفریح دوستانه رو راحت‌تر می‌کنه. انتخاب مکان و زمان،  و بقیه ملزومات تفریح و در نهایت به اشتراک‌گذاری خاطره‌ها و عکس‌ها از طریق «بریم» به راحتی انجام میشه.</string>
 </resources>

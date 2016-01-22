@@ -89,7 +89,7 @@ public class TestScrollActivity extends AppCompatActivity {
         mStickyHeader = findViewById(R.id.placeHeaderMenuSticky);
 
         final PlaceReviewAdapter placeReviewAdapter = new PlaceReviewAdapter(mContext,
-                mPlace.getReviews(), mPlace.getDescription());
+                mPlace.getReviews(), mPlace.getDescription(), mPlace.getAddress());
         mListView.setAdapter(placeReviewAdapter);
 
         LayoutInflater inflater = getLayoutInflater();
@@ -146,7 +146,7 @@ public class TestScrollActivity extends AppCompatActivity {
         mMapClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String placeUri = "google.navigation:q=" + mPlace.getLatitude()+","+mPlace.getLongitude();
+                String placeUri = "google.navigation:q=" + mPlace.getName();
                 Uri gmmIntentUri = Uri.parse(placeUri);
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 startActivity(mapIntent);

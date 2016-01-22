@@ -30,12 +30,14 @@ public class PlaceReviewAdapter extends BaseAdapter {
     private Context mContext;
 
     private String description;
+    private String address;
 
     private ArrayList<Review> reviews;
 
-    public PlaceReviewAdapter(Context context, ArrayList<Review> reviews, String description) {
+    public PlaceReviewAdapter(Context context, ArrayList<Review> reviews, String description,String address) {
         mContext = context;
         this.description = description;
+        this.address = address;
         this.reviews = reviews;
     }
 
@@ -77,6 +79,7 @@ public class PlaceReviewAdapter extends BaseAdapter {
                 reviewViewHolder = new PlaceReviewViewHolder(convertView);
                 convertView.setTag(reviewViewHolder);
                 reviewViewHolder.description.setText(description);
+                reviewViewHolder.name.setText(address);
             } else {
                 convertView = LayoutInflater.from(mContext)
                         .inflate(R.layout.item_place_review, parent, false);

@@ -22,23 +22,24 @@ android:layoutDirection="rtl">
         android:layout_weight="1.00">
 
         <TextView
+            android:id="@+id/review_description_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#666"
+            android:layout_gravity="right"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp" />
+        <TextView
             android:id="@+id/reviewer_name_text_view"
             android:layout_gravity="right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
+            android:textSize="13sp"
             android:textColor="@android:color/black"
             android:textDirection="rtl"
+            android:paddingTop="5dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"/>
-        <TextView
-            android:id="@+id/review_description_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/darker_gray"
-            android:layout_gravity="right"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp" />
     </LinearLayout>
 
 

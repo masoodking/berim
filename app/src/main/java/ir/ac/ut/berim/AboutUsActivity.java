@@ -18,10 +18,6 @@ public class AboutUsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about_us);
-        we = new Place[6];
-        we[0] = new Place("شبکه احتماعی بریم","شبکه اجتماعی بریم به شما کمک می‌کند تا قرارهای بیرون رفتن با دوستان را راحت‌تر هماهنگ کنید.","ic_launcher_web");
 
-        mListView = (ListView) findViewById(R.id.about_us_list);
-        mListView.setAdapter(new PlacesListAdapter(mContext,we));
     }
 }

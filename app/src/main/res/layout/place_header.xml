@@ -7,7 +7,7 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="250dp"
         android:paddingTop="0dp"
         android:id="@+id/place_background"
         android:src="@drawable/no_photo"
@@ -19,8 +19,7 @@
         android:background="#88ffffff"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="114dp">
+        android:layout_alignParentStart="true">
 
         <TextView
             android:id="@+id/placeRate"

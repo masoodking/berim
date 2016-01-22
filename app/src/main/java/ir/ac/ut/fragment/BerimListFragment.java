@@ -30,9 +30,6 @@ public class BerimListFragment extends BaseFragment {
 
     public static BerimListFragment newInstance() {
         BerimListFragment pf = new BerimListFragment();
-//        Bundle bundle = new Bundle();
-//        bundle.putInt("type", type);
-//        pf.setArguments(bundle);
         return pf;
     }
 
