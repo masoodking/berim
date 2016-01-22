@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:id="@+id/chat_screen_linear_layout"
+    android:gravity="left"
+    android:padding="5dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/chat_sender_avatar"
+        android:layout_alignParentLeft="true"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:civ_border_width="0dp" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chat_background_linear_layout"
+            android:background="@drawable/theirbubble"
+            android:layoutDirection="rtl"
+            android:paddingBottom="0dp"
+            android:paddingTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_toRightOf="@id/chat_sender_avatar">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/chat_sender"
+                android:gravity="left"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"/>
+            <TextView
+                android:id="@+id/message_name_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textColor="#000"
+                android:layout_below="@id/chat_sender"
+                android:layout_alignParentLeft="true"
+                android:gravity="left"
+                android:paddingLeft="10dp"/>
+
+            <TextView
+                android:id="@+id/message_description_text_view"
+                android:layout_toRightOf="@+id/message_name_text_view"
+                android:layout_width="wrap_content"
+                android:layout_below="@id/chat_sender"
+                android:gravity="left"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/darker_gray"
+                android:paddingLeft="20dp" />
+        </RelativeLayout>
+    </RelativeLayout>
+

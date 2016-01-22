@@ -1,12 +1,19 @@
 package ir.ac.ut.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Filter;
+import java.util.logging.LogRecord;
 
 import ir.ac.ut.berim.R;
 import ir.ac.ut.models.Place;
@@ -15,7 +22,8 @@ import ir.ac.ut.utils.ImageLoader;
 /**
  * Created by masood on 10/1/15.
  */
-public class PlacesListAdapter extends BaseAdapter {
+public class PlacesListAdapter extends BaseAdapter{ //implements Filterable
+
 
     private Context mContext;
 
@@ -74,6 +82,51 @@ public class PlacesListAdapter extends BaseAdapter {
 
         return convertView;
     }
+
+//    @Override
+//    public android.widget.Filter getFilter() {
+//
+//        Filter filter = new Filter() {
+//
+//            @Override
+//            public boolean isLoggable(LogRecord record) {
+//                return false;
+//            }
+//
+//            @SuppressWarnings("unchecked")
+//            @Override
+//            protected void publishResults(CharSequence constraint, android.widget.Filter.FilterResults results) {
+//
+//                arrayListNames = (List<String>) results.values;
+//                notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            protected android.widget.Filter.FilterResults performFiltering(CharSequence constraint) {
+//
+//                android.widget.Filter.FilterResults results = new android.widget.Filter.FilterResults();
+//                ArrayList<String> FilteredArrayNames = new ArrayList<String>();
+//
+//                // perform your search here using the searchConstraint String.
+//
+//                constraint = constraint.toString().toLowerCase();
+//                for (int i = 0; i < mDatabaseOfNames.size(); i++) {
+//                    String dataNames = mDatabaseOfNames.get(i);
+//                    if (dataNames.toLowerCase().startsWith(constraint.toString()))  {
+//                        FilteredArrayNames.add(dataNames);
+//                    }
+//                }
+//
+//                results.count = FilteredArrayNames.size();
+//                results.values = FilteredArrayNames;
+//                Log.e("VALUES", results.values.toString());
+//
+//                return results;
+//            }
+//        };
+//
+//        return filter;
+//    }
 
     class PlaceViewHolder {
         final TextView name;

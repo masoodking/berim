@@ -9,11 +9,14 @@ import org.json.JSONObject;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import ir.ac.ut.adapter.PlacesListAdapter;
@@ -30,9 +33,10 @@ public class PlaceListFragment extends BaseFragment {
 
     private static PlaceListFragment mContext;
 
-    private GridView PlacesGridView;
+    private GridView placesGridView;
 
     private PlacesListAdapter mAdapter;
+    private TextView mEditText;
 
     public PlaceListFragment() {
     }
@@ -49,7 +53,9 @@ public class PlaceListFragment extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_places_list, null);
         mContext = this;
-        PlacesGridView = (GridView) rootView.findViewById(R.id.grid_view_places);
+        placesGridView = (GridView) rootView.findViewById(R.id.grid_view_places);
+        mEditText= (TextView) rootView.findViewById(R.id.place_search_box);
+
         getData();
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.places_fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -57,6 +63,22 @@ public class PlaceListFragment extends BaseFragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), AddPlaceActivity.class);
                 getActivity().startActivity(intent);
+            }
+        });
+        mEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
         return rootView;
@@ -83,18 +105,18 @@ public class PlaceListFragment extends BaseFragment {
                         }
 
                         mAdapter = new PlacesListAdapter(getActivity(), places);
-                        PlacesGridView.setAdapter(mAdapter);
-                        PlacesGridView
+                        placesGridView.setAdapter(mAdapter);
+                        placesGridView
                                 .setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view,
-                                                    int position, long id) {
-                                Intent intent = new Intent(getActivity(),
-                                        TestScrollActivity.class);//0544250
-                                intent.putExtra("place", places[position]);
-                                getActivity().startActivity(intent);
-                            }
-                        });
+                                    @Override
+                                    public void onItemClick(AdapterView<?> parent, View view,
+                                                            int position, long id) {
+                                        Intent intent = new Intent(getActivity(),
+                                                TestScrollActivity.class);//0544250
+                                        intent.putExtra("place", places[position]);
+                                        getActivity().startActivity(intent);
+                                    }
+                                });
                     }
                 }
             });

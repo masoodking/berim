@@ -34,6 +34,11 @@ public class Place implements Serializable {
     public Place() {
     }
 
+    public Place(String name, String desc, String avatar){
+        this.name = name;
+        this.description = desc;
+        this.avatar = avatar;
+    }
     public static Place createFromJson(JSONObject jsonObject) throws JSONException {
         Place place = new Place();
         if (jsonObject.has("id")) {

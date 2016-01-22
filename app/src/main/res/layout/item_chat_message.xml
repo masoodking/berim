@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/chat_screen_linear_layout"
+    android:gravity="right"
     android:padding="5dp">
 
     <!--<ImageView-->
@@ -28,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15sp"
-            android:textColor="@android:color/black"
+            android:textColor="#000"
             android:gravity="center_vertical"
             android:paddingLeft="10dp"/>
 

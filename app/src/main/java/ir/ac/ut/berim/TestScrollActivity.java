@@ -139,20 +139,14 @@ public class TestScrollActivity extends AppCompatActivity {
                 sharingIntent.setType("text/plain");
                 String shareBody = mPlace.getDescription();
                 sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "بریم "+mPlace.getName());
-//                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
                 startActivity(Intent.createChooser(sharingIntent, "Share via"));
-
-
-//                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-//                sharingIntent.setType("text/html");
-//                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<p>This is the text that will be shared.</p>"));
-//                startActivity(Intent.createChooser(sharingIntent,"Share using"));
             }
         };
         mMapClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String placeUri = "google.navigation:q=" + mPlace.getName();
+                String placeUri = "google.navigation:q=" + mPlace.getLatitude()+","+mPlace.getLongitude();
                 Uri gmmIntentUri = Uri.parse(placeUri);
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 startActivity(mapIntent);

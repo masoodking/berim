@@ -56,6 +56,7 @@ public class ProfileActivity extends AppCompatActivity {
     private Button logoutButton;
 
     private Button mBuyVIPButton;
+    private Button aboutUsButton;
 
     private User mUser;
 
@@ -71,6 +72,7 @@ public class ProfileActivity extends AppCompatActivity {
         mAvatar = (ImageView) findViewById(R.id.user_avatar);
         mMobile.setText(mUser.getPhoneNumber());
         mBuyVIPButton = (Button) findViewById(R.id.buy_vip_button);
+        aboutUsButton = (Button) findViewById(R.id.about_us_button);
 
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setTitle(getString(R.string.please_wait));
@@ -131,6 +133,13 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(mContext, PaymentActivity.class));
+            }
+        });
+
+        aboutUsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mContext, AboutUsActivity.class));
             }
         });
     }
