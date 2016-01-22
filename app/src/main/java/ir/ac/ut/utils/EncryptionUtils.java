@@ -24,6 +24,9 @@ import javax.crypto.spec.SecretKeySpec;
 public class EncryptionUtils {
 
 
+    public static final String MAIN_KEY = "4ej6&l8@";
+    public static final String IV_KEY = "K3dCsaQw";
+
     private Cipher deCipher;
     private Cipher enCipher;
     private SecretKeySpec key;

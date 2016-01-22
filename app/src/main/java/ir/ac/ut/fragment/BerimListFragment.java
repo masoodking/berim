@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ir.ac.ut.adapter.ChatsListAdapter;
+import ir.ac.ut.berim.BerimApplication;
+import ir.ac.ut.berim.ProfileUtils;
 import ir.ac.ut.berim.R;
 import ir.ac.ut.berim.RoomActivity;
 import ir.ac.ut.database.DatabaseHelper;
@@ -65,7 +67,7 @@ public class BerimListFragment extends BaseFragment {
             return;
         }
         ArrayList<Room> rooms = DatabaseHelper.getInstance(getActivity())
-                .getRoom(null);
+                .getRoom(DatabaseHelper.ID + "!='" + ProfileUtils.getUser(BerimApplication.getInstance()).getRoomId() + "'");
         mAdapter = new ChatsListAdapter(getActivity(), rooms);
         PlacesGridView.setAdapter(mAdapter);
         PlacesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

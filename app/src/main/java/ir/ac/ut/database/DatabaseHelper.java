@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -193,13 +194,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String myUserId = ProfileUtils.getUser(BerimApplication.getInstance()).getId();
         ArrayList<Message> messages = getMessage(false, null);
         HashMap hashMap = new HashMap<String, Message>();
-        ArrayList<Room> berims = getRoom(null);
+        ArrayList<Room> berims = getRoom(ID + "!='" + ProfileUtils.getUser(BerimApplication.getInstance()).getRoomId() + "'");
         String berimRoomsId = "";
         for (Room berim : berims) {
             if (berim.getMaxUserCount() > 1) {
                 berimRoomsId = berimRoomsId + "-" + berim.getId();
             }
         }
+//        Collections.reverse(messages);
         for (int i = 0; i < messages.size(); i++) {
             Message msg = messages.get(i);
             if (berimRoomsId.contains(msg.getRoomId())) {
@@ -234,6 +236,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     if (!msg.getSender().getId().equals(myUserId)) {
                         rm.setName(msg.getSender().getValidUserName());
                     }
+                    if(!TextUtils.isEmpty(msg.getText())){
+                        rm.setLastMessage(msg);
+                    }
                     hashMap.remove("<" + msg.getSender().getRoomId() + "," + msg.getRoomId() + ">");
                     hashMap.put("<" + msg.getSender().getRoomId() + "," + msg.getRoomId() + ">",
                             rm);
@@ -246,6 +251,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     }
                     if (!msg.getSender().getId().equals(myUserId)) {
                         rm.setName(msg.getSender().getValidUserName());
+                    }
+                    if(!TextUtils.isEmpty(msg.getText())){
+                        rm.setLastMessage(msg);
                     }
                     hashMap.remove("<" + msg.getRoomId() + "," + msg.getSender().getRoomId() + ">");
                     hashMap.put("<" + msg.getRoomId() + "," + msg.getSender().getRoomId() + ">",

@@ -238,7 +238,7 @@ public class ChatActivity extends BerimActivity {
                         if (message.getRoomId().equals(mMe.getRoomId()) &&
                                 message.getSender().getId().equals(mTalkee.getId())) {
                             addMessage(message);
-                            ArrayList<Message> messages = new ArrayList<>();
+                            ArrayList<Message> messages = new ArrayList<Message>();
                             seenMessagesOnServer(messages, true);
                         }
                     } catch (JSONException e) {

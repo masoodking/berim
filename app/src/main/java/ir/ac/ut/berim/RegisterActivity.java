@@ -109,8 +109,8 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         try {
-            EncryptionUtils encryptionUtils = new EncryptionUtils("12345678".getBytes(),
-                    "12345678".getBytes());
+            EncryptionUtils encryptionUtils = new EncryptionUtils(EncryptionUtils.MAIN_KEY.getBytes(),
+                    EncryptionUtils.IV_KEY.getBytes());
             String secretMsg = "سلام من متن هستنم";
             byte[] enc = encryptionUtils.encrypt(secretMsg);
             Log.wtf("####encrypted: ", enc.toString());
