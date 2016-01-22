@@ -95,8 +95,9 @@ public class ChatAdapter extends BaseAdapter {
 
         viewHolder.name.setText(chatMessage.getText());
         if (chatMessage.getFileAddress() != null && !chatMessage.getFileAddress().toLowerCase().equals("null")) {
+            String[] fileName = chatMessage.getFileAddress().split("/");
+            viewHolder.name.setText(fileName[fileName.length-1]);
             Log.wtf("has file", chatMessage.getFileAddress());
-            Log.wtf("has image", chatMessage.getFileAddress());
             viewHolder.inAppImage.setVisibility(View.VISIBLE);
             ImageLoader.getInstance().display(chatMessage.getFileAddress(), viewHolder.inAppImage, R.drawable.ic_action_attach);
             viewHolder.inAppImage.setOnClickListener(new View.OnClickListener() {
