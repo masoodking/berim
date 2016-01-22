@@ -1,8 +1,12 @@
 package ir.ac.ut.fragment;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +14,18 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import ir.ac.ut.adapter.ChatsListAdapter;
 import ir.ac.ut.berim.R;
 import ir.ac.ut.berim.RoomActivity;
 import ir.ac.ut.database.DatabaseHelper;
 import ir.ac.ut.models.Room;
+import ir.ac.ut.network.BerimNetworkException;
+import ir.ac.ut.network.ChatNetworkListner;
+import ir.ac.ut.network.MethodsName;
+import ir.ac.ut.network.NetworkManager;
+import ir.ac.ut.network.NetworkReceiver;
 
 public class BerimListFragment extends BaseFragment {
 
@@ -66,5 +76,73 @@ public class BerimListFragment extends BaseFragment {
                 getActivity().startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mChatNetworkListner.register();
+        getData();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mChatNetworkListner.unregister();
+    }
+
+    protected ChatNetworkListner mChatNetworkListner = new ChatNetworkListner() {
+        @Override
+        public void onMessageReceived(final JSONObject response) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+//                    try {
+//                        Message message = Message.createFromJson(response);
+//                        DatabaseHelper.getInstance(getActivity()).InsertMessage(message);
+                    getRoomData();
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+                }
+            });
+        }
+
+        @Override
+        public void onMessageErrorReceived(BerimNetworkException error) {
+            error.printStackTrace();
+        }
+    };
+
+    public void getRoomData() {
+        NetworkManager.sendRequest(MethodsName.GET_ROOMS, new JSONObject(),
+                new NetworkReceiver<JSONArray>() {
+                    @Override
+                    public void onResponse(final JSONArray response) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.wtf("CHAT_ROOMS", response.toString());
+                                List<Room> rooms = new ArrayList<Room>();
+                                for (int i = 0; i < response.length(); i++) {
+                                    try {
+                                        Room room = Room
+                                                .createFromJson(response.getJSONObject(i));
+                                        rooms.add(room);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                DatabaseHelper.getInstance(getActivity()).InsertRoom(rooms);
+                                getData();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onErrorResponse(BerimNetworkException error) {
+                        Log.wtf("CHAT_LIST", error.getMessage());
+                    }
+                });
     }
 }

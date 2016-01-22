@@ -19,14 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ir.ac.ut.database.DatabaseHelper;
-import ir.ac.ut.fragment.BaseFragment;
 import ir.ac.ut.fragment.BerimListFragment;
 import ir.ac.ut.fragment.ChatsListFragment;
 import ir.ac.ut.fragment.PlaceListFragment;
 import ir.ac.ut.models.Message;
 import ir.ac.ut.models.Room;
 import ir.ac.ut.network.BerimNetworkException;
-import ir.ac.ut.network.ChatNetworkListner;
 import ir.ac.ut.network.MethodsName;
 import ir.ac.ut.network.NetworkManager;
 import ir.ac.ut.network.NetworkReceiver;
@@ -72,10 +70,11 @@ public class MainActivity extends FragmentActivity {
 
         mTabBar = (SlidingTabBar) findViewById(R.id.tab_bar);
         initTabBar();
-        getData();
+        getChatData();
+        getRoomData();
     }
 
-    private void getData() {
+    public void getChatData() {
         try {
             JSONObject json = new JSONObject();
             json.put("messageId", "");
@@ -98,7 +97,7 @@ public class MainActivity extends FragmentActivity {
                                         }
                                     }
                                     DatabaseHelper.getInstance(mContext).InsertMessage(messages);
-                                    ((BaseFragment) mFragmentPagerAdapter.getItem(CHAT_TAB)).getData();
+                                    ((ChatsListFragment) mFragmentPagerAdapter.getItem(CHAT_TAB)).getData();
                                 }
                             });
                         }
@@ -110,7 +109,9 @@ public class MainActivity extends FragmentActivity {
                     });
         } catch (JSONException e) {
         }
+    }
 
+    public void getRoomData() {
         NetworkManager.sendRequest(MethodsName.GET_ROOMS, new JSONObject(),
                 new NetworkReceiver<JSONArray>() {
                     @Override
@@ -130,7 +131,7 @@ public class MainActivity extends FragmentActivity {
                                     }
                                 }
                                 DatabaseHelper.getInstance(mContext).InsertRoom(rooms);
-                                ((BaseFragment) mFragmentPagerAdapter.getItem(BERIM_TAB)).getData();
+                                ((BerimListFragment) mFragmentPagerAdapter.getItem(BERIM_TAB)).getData();
                             }
                         });
                     }
@@ -221,41 +222,4 @@ public class MainActivity extends FragmentActivity {
             return 3;
         }
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mChatNetworkListner.register();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mChatNetworkListner.unregister();
-    }
-
-    protected ChatNetworkListner mChatNetworkListner = new ChatNetworkListner() {
-        @Override
-        public void onMessageReceived(final JSONObject response) {
-            ((Activity) mContext).runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Log.wtf("notif",
-                                response.getString("text") + "-" + response.getString("id"));
-                        Message message = Message.createFromJson(response);
-                        DatabaseHelper.getInstance(mContext).InsertMessage(message);
-                        ((BaseFragment) mFragmentPagerAdapter.getItem(CHAT_TAB)).getData();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }
-
-        @Override
-        public void onMessageErrorReceived(BerimNetworkException error) {
-            error.printStackTrace();
-        }
-    };
 }

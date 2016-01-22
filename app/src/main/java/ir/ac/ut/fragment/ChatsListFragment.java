@@ -2,9 +2,13 @@ package ir.ac.ut.fragment;
 
 import com.melnykov.fab.FloatingActionButton;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +23,10 @@ import ir.ac.ut.berim.ChatActivity;
 import ir.ac.ut.berim.R;
 import ir.ac.ut.berim.SearchUserActivity;
 import ir.ac.ut.database.DatabaseHelper;
+import ir.ac.ut.models.Message;
 import ir.ac.ut.models.Room;
+import ir.ac.ut.network.BerimNetworkException;
+import ir.ac.ut.network.ChatNetworkListner;
 
 public class ChatsListFragment extends BaseFragment {
 
@@ -63,13 +70,8 @@ public class ChatsListFragment extends BaseFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        getData();
-    }
-
-    @Override
     public void getData() {
+        Log.wtf("CHAT ACTIVIT: ", "getData called");
 //        ArrayList<Room> rooms = DatabaseHelper.getInstance(getActivity())
 //                .getRoom(DatabaseHelper.MAX_USER_COUNT + "='1'");
         if(getActivity() == null){
@@ -93,4 +95,41 @@ public class ChatsListFragment extends BaseFragment {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mChatNetworkListner.register();
+        getData();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mChatNetworkListner.unregister();
+    }
+
+    protected ChatNetworkListner mChatNetworkListner = new ChatNetworkListner() {
+        @Override
+        public void onMessageReceived(final JSONObject response) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Log.wtf("CHAT MESSAGE RECIEVED",
+                                response.getString("text") + "-" + response.getString("id"));
+                        Message message = Message.createFromJson(response);
+                        DatabaseHelper.getInstance(getActivity()).InsertMessage(message);
+                        getData();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void onMessageErrorReceived(BerimNetworkException error) {
+            error.printStackTrace();
+        }
+    };
 }
