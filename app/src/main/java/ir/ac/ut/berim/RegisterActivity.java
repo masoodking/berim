@@ -92,11 +92,13 @@ public class RegisterActivity extends AppCompatActivity {
             ((Activity) mContext).runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(mContext, error.getMessage(),
-                            Toast.LENGTH_SHORT)
-                            .show();
-                    mProgressDialog.dismiss();
-                    showRegisterPan();
+                    if (error.getErrorCode() != BerimNetworkException.CONNECTION_LOST_ERROR_CODE) {
+                        Toast.makeText(mContext, error.getMessage(),
+                                Toast.LENGTH_SHORT)
+                                .show();
+                        mProgressDialog.dismiss();
+                        showRegisterPan();
+                    }
                 }
             });
         }
@@ -106,7 +108,6 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
         try {
             EncryptionUtils encryptionUtils = new EncryptionUtils("12345678".getBytes(),
                     "12345678".getBytes());
@@ -127,6 +128,7 @@ public class RegisterActivity extends AppCompatActivity {
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setTitle(getString(R.string.please_wait));
         mProgressDialog.setMessage(getString(R.string.please_wait_more));
+        mProgressDialog.setCancelable(true);
 
         mRegisterPan = (LinearLayout) findViewById(R.id.register_pan);
         mActivatePan = (LinearLayout) findViewById(R.id.activation_pan);

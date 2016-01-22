@@ -7,8 +7,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
+import ir.ac.ut.berim.BerimApplication;
+import ir.ac.ut.berim.ProfileUtils;
 import ir.ac.ut.models.Message;
 import ir.ac.ut.models.Room;
 import ir.ac.ut.models.User;
@@ -113,6 +117,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void InsertMessage(List<Message> messages) {
+        if(messages == null || messages.size() == 0){
+            return;
+        }
         db.delete(MESSAGE_TABLE_NAME, ID + "='not-set'", null);
         for (int i = 0; i < messages.size(); i++) {
             String where = ID + "='" + messages.get(i).getId() + "'";
@@ -131,6 +138,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.insert(MESSAGE_TABLE_NAME, null,
                     convertMessageToContentValues(message));
         }
+    }
+
+    public void InsertMessageNoUpdate(Message message) {
+        db.insert(MESSAGE_TABLE_NAME, null,
+                convertMessageToContentValues(message));
     }
 
     public Message getMessageById(String id) {
@@ -169,27 +181,94 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<Room> getChatList() {
-        Cursor cursor = db.query(
-        /* FROM */ MESSAGE_TABLE_NAME,
-        /* SELECT */ new String[]{"*", "COUNT(" + STATUS + ") AS count"},
-        /* WHERE */ null,
-        /* WHERE args */ null,
-        /* GROUP BY */ SENDER_ROOM_ID,
-        /* HAVING */ null,
-        /* ORDER BY */ DATE + " DESC"
-        );
-        ArrayList<Message> messages = convertCursorToMessage(cursor);
-        ArrayList<Room> rooms = new ArrayList<>();
+        String myUserId = ProfileUtils.getUser(BerimApplication.getInstance()).getId();
+        ArrayList<Message> messages = getMessage(null);
+        HashMap hashMap = new HashMap<String, Message>();
+        ArrayList<Room> berims = getRoom(null);
+        String berimRoomsId = "";
+        for(Room berim : berims){
+            berimRoomsId = berimRoomsId + "-" + berim.getId();
+        }
         for (Message msg : messages) {
-            Room room = new Room();
-            room.setId(msg.getRoomId());
-            room.setLastMessage(msg);
-            room.setMaxUserCount(1);
-            room.setName(msg.getSender().getValidUserName());
-            rooms.add(room);
+            if(berimRoomsId.contains(msg.getRoomId())){
+                continue;
+            }
+            if (!hashMap
+                    .containsKey("<" + msg.getSender().getRoomId() + "," + msg.getRoomId() + ">")
+                    && !hashMap
+                    .containsKey("<" + msg.getRoomId() + "," + msg.getSender().getRoomId() + ">")) {
+                Room room = new Room();
+                room.setId(msg.getRoomId());
+                room.setLastMessage(msg);
+                room.setMaxUserCount(1);
+                if (msg.getSender().getId()
+                        .equals(myUserId)) {
+                    room.setName("-");
+                } else {
+                    room.setName(msg.getSender().getValidUserName());
+                }
+                if (msg.getStatus() != Message.MessageStatus.SEEN) {
+                    room.setUnreadMessageCount(1);
+                }
+                hashMap.put("<" + msg.getSender().getRoomId() + "," + msg.getRoomId() + ">", room);
+            } else {
+                Room rm = (Room) hashMap
+                        .get("<" + msg.getSender().getRoomId() + "," + msg.getRoomId() + ">");
+                if (rm != null){
+                    if (msg.getStatus() != Message.MessageStatus.SEEN
+                            && msg.getSender().getId() != myUserId) {
+                        rm.setUnreadMessageCount(rm.getUnreadMessageCount() + 1);
+                    }
+                    if (!msg.getSender().getId().equals(myUserId)) {
+                        rm.setName(msg.getSender().getValidUserName());
+                    }
+                    hashMap.remove("<" + msg.getSender().getRoomId() + "," + msg.getRoomId() + ">");
+                    hashMap.put("<" + msg.getSender().getRoomId() + "," + msg.getRoomId() + ">", rm);
+                } else {
+                    rm = (Room) hashMap
+                            .get("<" + msg.getRoomId() + "," + msg.getSender().getRoomId() + ">");
+                    if (msg.getStatus() != Message.MessageStatus.SEEN
+                            && msg.getSender().getId() != myUserId) {
+                        rm.setUnreadMessageCount(rm.getUnreadMessageCount() + 1);
+                    }
+                    if (!msg.getSender().getId().equals(myUserId)) {
+                        rm.setName(msg.getSender().getValidUserName());
+                    }
+                    hashMap.remove("<" + msg.getRoomId() + "," + msg.getSender().getRoomId() + ">");
+                    hashMap.put("<" + msg.getRoomId() + "," + msg.getSender().getRoomId() + ">", rm);
+                }
+            }
+        }
+        ArrayList<Room> rooms = new ArrayList<>();
+        Collection rms = hashMap.values();
+        for(Object rm : rms){
+            rooms.add((Room) rm);
         }
         return rooms;
     }
+
+//    public ArrayList<Room> getChatList() {
+//        Cursor cursor = db.query(
+//        /* FROM */ MESSAGE_TABLE_NAME,
+//        /* SELECT */ new String[]{"*", "COUNT(" + STATUS + ") AS count"},
+//        /* WHERE */ null,
+//        /* WHERE args */ null,
+//        /* GROUP BY */ SENDER_ROOM_ID +", " + ROOM_ID,
+//        /* HAVING */ null,
+//        /* ORDER BY */ DATE + " DESC"
+//        );
+//        ArrayList<Message> messages = convertCursorToMessage(cursor);
+//        ArrayList<Room> rooms = new ArrayList<>();
+//        for (Message msg : messages) {
+//            Room room = new Room();
+//            room.setId(msg.getRoomId());
+//            room.setLastMessage(msg);
+//            room.setMaxUserCount(1);
+//            room.setName(msg.getSender().getValidUserName());
+//            rooms.add(room);
+//        }
+//        return rooms;
+//    }
 
     public ArrayList<Message> convertCursorToMessage(Cursor cursor) {
         ArrayList<Message> list = new ArrayList<Message>();

@@ -22,6 +22,8 @@ public class Room implements Serializable{
 
     private int maxUserCount;
 
+    private int unreadMessageCount;
+
     public Room() {
     }
 
@@ -115,5 +117,13 @@ public class Room implements Serializable{
 
     public void setMaxUserCount(int maxUserCount) {
         this.maxUserCount = maxUserCount;
+    }
+
+    public int getUnreadMessageCount() {
+        return unreadMessageCount;
+    }
+
+    public void setUnreadMessageCount(int unreadMessageCount) {
+        this.unreadMessageCount = unreadMessageCount;
     }
 }

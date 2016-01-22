@@ -18,7 +18,7 @@ import ir.ac.ut.berim.BerimApplication;
  */
 public class ImageLoader {
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     private static final boolean CACHE_ENABLED = true;
 

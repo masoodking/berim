@@ -1,59 +1,74 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white">
+                xmlns:fab="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white">
 
     <GridView
-        android:id="@+id/grid_view_places"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@android:color/white"
-        android:columnWidth="320dp"
-        android:gravity="center"
-        android:minHeight="110dp"
-        android:numColumns="auto_fit"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="10dp" />
+            android:id="@+id/grid_view_places"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:columnWidth="320dp"
+            android:gravity="center"
+            android:minHeight="110dp"
+            android:numColumns="auto_fit"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="10dp"
+            android:layout_below="@+id/search_pan"/>
 
-    <EditText
-        android:id="@+id/place_search_box"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#eeffffff"
-        android:dropDownWidth="match_parent"
-        android:gravity="right|center_vertical"
-        android:hint="@string/search"
-        android:imeOptions="actionSearch"
-        android:maxLength="20"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:textAppearance="@style/TextAppearance.Small"
-        android:textColor="@color/primary_dark"
-        android:layout_alignParentRight="true"
-        android:textColorHint="@color/primary_light" />
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:src="@drawable/ic_search"
-        android:foregroundGravity="left"
-        android:layout_toLeftOf="@+id/place_search_box"/>
+    <RelativeLayout
+            android:id="@+id/search_pan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true">
+        <EditText
+                android:id="@+id/place_search_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:paddingLeft="45dp"
+                android:paddingRight="8dp"
+                android:dropDownWidth="match_parent"
+                android:hint="@string/search"
+                android:textAppearance="@style/TextAppearance.Small"
+                android:dropDownVerticalOffset="8dp"
+                android:textColorHint="@color/primary_light"
+                android:textColor="@color/primary_dark"
+                android:imeOptions="actionSearch"
+                android:selectAllOnFocus="true"
+                android:maxLength="15"
+                android:gravity="right|center_vertical"
+                android:minWidth="40dp"
+                android:minHeight="40dp"
+                android:singleLine="true"/>
+
+        <ImageView
+                android:id="@+id/search_go"
+                android:background="@drawable/selector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="40dp"
+                android:minHeight="40dp"
+                android:scaleType="center"
+                android:src="@drawable/ic_search"
+                android:tint="@color/primary"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:layout_alignLeft="@id/place_search_box"/>
+    </RelativeLayout>
 
     <com.melnykov.fab.FloatingActionButton
-        android:id="@+id/places_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_search"
-        fab:fab_colorNormal="@color/primary"
-        fab:fab_colorPressed="@color/primary_dark"
-        fab:fab_colorRipple="@color/ripple" />
+            android:id="@+id/places_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_search"
+            fab:fab_colorNormal="@color/primary"
+            fab:fab_colorPressed="@color/primary_dark"
+            fab:fab_colorRipple="@color/ripple"/>
 
 </RelativeLayout>

@@ -170,7 +170,7 @@ public class ChatActivity extends BerimActivity {
         mAdapter.notifyDataSetChanged();
         mMessageInput.setText("");
         if(message.getSender().getId().equals(mMe.getId())){
-            DatabaseHelper.getInstance(mContext).InsertMessage(message);
+            DatabaseHelper.getInstance(mContext).InsertMessageNoUpdate(message);
         }
     }
 
