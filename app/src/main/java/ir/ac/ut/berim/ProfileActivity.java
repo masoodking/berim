@@ -25,6 +25,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -52,9 +54,8 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView mNickName;
 
     private ImageView mAvatar;
-
+    private CheckBox mCheckBox;
     private Button logoutButton;
-
     private Button mBuyVIPButton;
     private Button aboutUsButton;
 
@@ -77,7 +78,7 @@ public class ProfileActivity extends AppCompatActivity {
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setTitle(getString(R.string.please_wait));
         mProgressDialog.setMessage(getString(R.string.please_wait_more));
-
+        
         mAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -180,6 +181,7 @@ public class ProfileActivity extends AppCompatActivity {
         mProgressDialog.show();
         JSONObject jsonObject = new JSONObject();
         try {
+            jsonObject.put("nickName", nickname);
             if (!TextUtils.isEmpty(nickname)) {
                 jsonObject.put("nickName", nickname);
             }

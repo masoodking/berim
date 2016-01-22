@@ -1,43 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+    android:id="@+id/chat_screen_linear_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/chat_screen_linear_layout"
     android:gravity="right"
+    android:orientation="horizontal"
     android:padding="5dp">
 
     <!--<ImageView-->
-        <!--android:id="@+id/list_icon_image"-->
-        <!--android:layout_width="40dp"-->
-        <!--android:layout_height="40dp"-->
-        <!--android:scaleType="fitXY"-->
-        <!--android:src="@drawable/ic_launcher" />-->
+    <!--android:id="@+id/list_icon_image"-->
+    <!--android:layout_width="40dp"-->
+    <!--android:layout_height="40dp"-->
+    <!--android:scaleType="fitXY"-->
+    <!--android:src="@drawable/ic_launcher" />-->
 
     <LinearLayout
-        android:layout_width="wrap_content"
         android:id="@+id/chat_background_linear_layout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
         android:background="@drawable/bubble"
         android:layoutDirection="rtl"
         android:orientation="horizontal"
         android:paddingBottom="0dp"
-        android:paddingTop="0dp"
-        android:layout_marginBottom="0dp">
+        android:paddingTop="0dp">
+
         <TextView
             android:id="@+id/message_name_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="#000"
             android:gravity="center_vertical"
-            android:paddingLeft="10dp"/>
+            android:paddingLeft="10dp"
+            android:textColor="#000"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/message_description_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/darker_gray"
-            android:paddingLeft="20dp" />
+            android:paddingLeft="20dp"
+            android:textColor="@android:color/darker_gray" />
+
+        <ImageView
+            android:id="@+id/in_chat_image"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:visibility="gone" />
     </LinearLayout>
 </LinearLayout>

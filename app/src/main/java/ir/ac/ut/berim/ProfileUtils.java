@@ -24,6 +24,7 @@ public class ProfileUtils {
     private static final String USER_ROOM_AVATAR = "user_avatar";
 
     private static final String USER_PHONE_NUMBER = "user_phone_number";
+    private static final String USER_IS_VIP= "user_is_vip";
 
     private static final String USER_IS_LOGIN = "user_is_login";
 
@@ -36,6 +37,7 @@ public class ProfileUtils {
         editor.putInt(USER_LAST_SEEN, user.getLastSeen());
         editor.putString(USER_PHONE_NUMBER, user.getPhoneNumber());
         editor.putString(USER_ROOM_AVATAR, user.getAvatar());
+        editor.putBoolean(USER_IS_VIP, user.isVIP());
         editor.putBoolean(USER_IS_LOGIN, true);
         editor.commit();
     }
@@ -62,6 +64,7 @@ public class ProfileUtils {
         user.setNickName(prefs.getString(USER_NICKNAME, null));
         user.setLastSeen(prefs.getInt(USER_LAST_SEEN, 0));
         user.setAvatar(prefs.getString(USER_ROOM_AVATAR, null));
+        user.setIsVIP(prefs.getBoolean(USER_IS_VIP, false));
         return user;
     }
     public static void logoutUser(Context context){
@@ -76,6 +79,7 @@ public class ProfileUtils {
         editor.putString(USER_ROOM_ID, null);
         editor.putString(USER_PHONE_NUMBER, null);
         editor.putBoolean(USER_IS_LOGIN, false);
+        editor.putBoolean(USER_IS_VIP, false);
         editor.commit();
     }
 

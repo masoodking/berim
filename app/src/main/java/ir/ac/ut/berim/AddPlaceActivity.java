@@ -91,7 +91,7 @@ public class AddPlaceActivity extends BerimActivity {
                     if (!TextUtils.isEmpty(mDescription.getText().toString())) {
                         jsonObject.put("description", mDescription.getText().toString());
                     }
-                    jsonObject.put("avatar", mDescription.getText().toString());
+                    jsonObject.put("avatar", uploadedLink);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -192,11 +192,22 @@ public class AddPlaceActivity extends BerimActivity {
                                     Toast.LENGTH_SHORT).show();
                             e.printStackTrace();
                         } else {
-                            Log.wtf("FILE UPLOADED", result.getResult().toString());
-                            uploadedLink = result.getResult().toString();
-                            ImageLoader.getInstance()
-                                    .display(uploadedLink, mPhoto, R.drawable.default_place);
-
+                            Log.wtf("FILE UPLOADED!", result.getResult().toString());
+                            try {
+                                JSONObject jsonObject = new JSONObject(result.getResult());
+                                if (jsonObject.getBoolean("error")) {
+                                    Toast.makeText(mContext,
+                                            getString(R.string.an_error_occurred_try_again) + ": "
+                                                    + jsonObject.getString("errorMessage"),
+                                            Toast.LENGTH_SHORT).show();
+                                } else {
+                                    uploadedLink = jsonObject.getJSONObject("data").getString("fileAddress");
+                                    ImageLoader.getInstance()
+                                            .display(uploadedLink,
+                                                    mPhoto, R.drawable.no_photo);
+                                }
+                            } catch (JSONException ex) {
+                            }
                         }
                     }
                 });

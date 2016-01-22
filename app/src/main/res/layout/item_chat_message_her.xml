@@ -50,6 +50,12 @@
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/darker_gray"
                 android:paddingLeft="20dp" />
+
+            <ImageView
+                android:id="@+id/in_chat_image"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:visibility="gone" />
         </RelativeLayout>
     </RelativeLayout>
 

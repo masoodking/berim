@@ -18,6 +18,8 @@ public class User implements Serializable {
 
     private String roomId;
 
+    private boolean isVIP;
+
     private String avatar;
 
     private int lastSeen;
@@ -113,6 +115,14 @@ public class User implements Serializable {
         }
 
         return true;
+    }
+
+    public boolean isVIP() {
+        return isVIP;
+    }
+
+    public void setIsVIP(boolean isVIP) {
+        this.isVIP = isVIP;
     }
 
     @Override

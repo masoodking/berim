@@ -1,6 +1,7 @@
 package ir.ac.ut.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,19 +88,21 @@ public class ChatAdapter extends BaseAdapter {
         }
 
         viewHolder.name.setText(chatMessage.getText());
-//        LinearLayout chatLayout = (LinearLayout) convertView
-//                .findViewById(R.id.chat_background_linear_layout);
-//        LinearLayout chatScrennLayout = (LinearLayout) convertView
-//                .findViewById(R.id.chat_screen_linear_layout);
-
-//        if (ProfileUtils.getUser(mContext).getId()
-//                .equals(chatMessage.getSender().getId())) {
-//            chatLayout.setBackgroundResource(R.drawable.bubble);
-//            chatScrennLayout.setGravity(Gravity.RIGHT);
-//        } else {
-//            chatLayout.setBackgroundResource(R.drawable.theirbubble);
-//            chatScrennLayout.setGravity(Gravity.LEFT);
-//        }
+        if (chatMessage.getFileAddress() != null && !chatMessage.getFileAddress().toLowerCase().equals("null")) {
+            Log.wtf("has file", chatMessage.getFileAddress());
+            if (chatMessage.getFileAddress().endsWith(".jpg") || chatMessage.getFileAddress().endsWith(".jpeg") || chatMessage.getFileAddress().endsWith(".png")) {
+                Log.wtf("has image", chatMessage.getFileAddress());
+                viewHolder.inAppImage.setVisibility(View.VISIBLE);
+                ImageLoader.getInstance().display(chatMessage.getFileAddress(), viewHolder.inAppImage, R.drawable.no_photo);
+            }
+            else{
+                viewHolder.inAppImage.setVisibility(View.VISIBLE);
+//                viewHolder.inAppImage.
+            }
+        }
+        else{
+            viewHolder.inAppImage.setVisibility(View.GONE);
+        }
         return convertView;
     }
 
@@ -123,7 +126,7 @@ public class ChatAdapter extends BaseAdapter {
 
         final TextView description;
         final TextView sender;
-
+        final ImageView inAppImage;
         final ImageView icon;
 
         MessageViewHolder(View view) {
@@ -131,6 +134,7 @@ public class ChatAdapter extends BaseAdapter {
             description = (TextView) view.findViewById(R.id.message_description_text_view);
             sender = (TextView) view.findViewById(R.id.chat_sender);
             icon = (ImageView) view.findViewById(R.id.chat_sender_avatar);
+            inAppImage = (ImageView) view.findViewById(R.id.in_chat_image);
         }
     }
 }
