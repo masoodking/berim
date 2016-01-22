@@ -116,7 +116,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                 alert.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        editProfile(input.getText().toString(), null,true);
+                        editProfile(input.getText().toString(), null,true,mUser.getId());
                     }
                 });
 
@@ -176,7 +176,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
-    public void editProfile(String nickname, String avatar, final boolean nameChanged) {
+    public void editProfile(String nickname, String avatar, final boolean nameChanged,String userId) {
         mProgressDialog.show();
         JSONObject jsonObject = new JSONObject();
         try {
@@ -186,7 +186,7 @@ public class ProfileActivity extends AppCompatActivity {
             if (!TextUtils.isEmpty(avatar)) {
                 jsonObject.put("avatar", avatar);
             }
-
+            jsonObject.put("userId", userId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -308,7 +308,7 @@ public class ProfileActivity extends AppCompatActivity {
                                             Toast.LENGTH_SHORT).show();
                                 } else {
                                     editProfile(null, jsonObject.getJSONObject("data").getString(
-                                            "fileAddress"),false);
+                                            "fileAddress"),false,mUser.getId());
                                 }
                             } catch (JSONException ex) {
                             }

@@ -131,7 +131,7 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="place_name">نام مکان</string>
-    <string name="place_address">محله</string>
+    <string name="place_address">نشانی</string>
     <string name="place_desc">توضیحات</string>
     <string name="submit">ثبت</string>
     <string name="send">ارسال</string>
@@ -146,4 +146,5 @@
     <string name="amin">محمدامین ملاحسینی</string>
     <string name="behrouz">بهروز منصوری</string>
     <string name="berim_description">«بریم» هماهنگی یک تفریح دوستانه رو راحت‌تر می‌کنه. انتخاب مکان و زمان،  و بقیه ملزومات تفریح و در نهایت به اشتراک‌گذاری خاطره‌ها و عکس‌ها از طریق «بریم» به راحتی انجام میشه.</string>
+    <string name="upload_photo">آپلود عکس</string>
 </resources>

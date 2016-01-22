@@ -9,7 +9,7 @@ import android.widget.ListView;
 import ir.ac.ut.adapter.PlacesListAdapter;
 import ir.ac.ut.models.Place;
 
-public class AboutUsActivity extends AppCompatActivity {
+public class AboutUsActivity extends BerimActivity {
 
     Context mContext;
     ListView mListView;

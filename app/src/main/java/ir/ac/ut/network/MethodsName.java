@@ -11,7 +11,7 @@ public class MethodsName {
 
     public final static String EDIT_PROFILE= "editProfile";
 
-    public final static String ADD_PLACE= "editProfile";
+    public final static String ADD_PLACE= "addPlace";
 
     public final static String ADD_REVIEW= "addReview";
 
