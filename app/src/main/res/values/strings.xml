@@ -147,4 +147,7 @@
     <string name="behrouz">بهروز منصوری</string>
     <string name="berim_description">«بریم» هماهنگی یک تفریح دوستانه رو راحت‌تر می‌کنه. انتخاب مکان و زمان،  و بقیه ملزومات تفریح و در نهایت به اشتراک‌گذاری خاطره‌ها و عکس‌ها از طریق «بریم» به راحتی انجام میشه.</string>
     <string name="upload_photo">آپلود عکس</string>
+
+    <string name="new_message">پیام جدید</string>
+    <string name="you_have_new_message">چند پیام جدید وجود دارد</string>
 </resources>

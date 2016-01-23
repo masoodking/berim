@@ -27,6 +27,7 @@ import ir.ac.ut.models.Message;
 import ir.ac.ut.models.Room;
 import ir.ac.ut.network.BerimNetworkException;
 import ir.ac.ut.network.ChatNetworkListner;
+import ir.ac.ut.utils.NotificationUtils;
 
 public class ChatsListFragment extends BaseFragment {
 
@@ -74,7 +75,7 @@ public class ChatsListFragment extends BaseFragment {
         Log.wtf("CHAT ACTIVIT: ", "getData called");
 //        ArrayList<Room> rooms = DatabaseHelper.getInstance(getActivity())
 //                .getRoom(DatabaseHelper.MAX_USER_COUNT + "='1'");
-        if(getActivity() == null){
+        if (getActivity() == null) {
             return;
         }
         ArrayList<Room> rooms = DatabaseHelper.getInstance(getActivity()).getChatList();
@@ -120,6 +121,12 @@ public class ChatsListFragment extends BaseFragment {
                         Message message = Message.createFromJson(response);
                         DatabaseHelper.getInstance(getActivity()).InsertMessage(message);
                         getData();
+
+                        NotificationUtils
+                                .sendMessageNotif(getActivity(), getString(R.string.new_message),
+                                        getString(R.string.you_have_new_message));
+
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
