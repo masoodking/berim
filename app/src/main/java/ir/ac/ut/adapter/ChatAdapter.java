@@ -83,20 +83,14 @@ public class ChatAdapter extends BaseAdapter {
                 convertView = LayoutInflater.from(mContext)
                         .inflate(R.layout.item_chat_message_her, parent, false);
                 viewHolder = new MessageViewHolder(convertView);
-                viewHolder.sender.setText(chatMessage.getSender().getValidUserName());
                 convertView.setTag(viewHolder);
-                ImageLoader.getInstance()
-                        .display(chatMessage.getSender().getAvatar(), viewHolder.icon,
-                                R.drawable.default_avatar);
             }
         } else {
             viewHolder = (MessageViewHolder) convertView.getTag();
         }
 
-        viewHolder.name.setText(chatMessage.getText());
-        if (chatMessage.getFileAddress() != null && !chatMessage.getFileAddress().toLowerCase().equals("null")) {
+        if (chatMessage.getFileAddress() != null && !chatMessage.getFileAddress().equals("")) {
             String[] fileName = chatMessage.getFileAddress().split("/");
-            viewHolder.name.setText(fileName[fileName.length-1]);
             Log.wtf("has file", chatMessage.getFileAddress());
             viewHolder.inAppImage.setVisibility(View.VISIBLE);
             ImageLoader.getInstance().display(chatMessage.getFileAddress(), viewHolder.inAppImage, R.drawable.ic_action_attach);
@@ -108,6 +102,7 @@ public class ChatAdapter extends BaseAdapter {
                 }
             });
         } else {
+            viewHolder.name.setText(chatMessage.getText());
             viewHolder.inAppImage.setVisibility(View.GONE);
         }
         return convertView;
