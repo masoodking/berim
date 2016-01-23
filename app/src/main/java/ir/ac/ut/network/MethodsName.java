@@ -9,6 +9,8 @@ public class MethodsName {
 
     public final static String LOGOUT = "logOut";
 
+    public final static String LEAVE_ROOM = "leaveRoom";
+
     public final static String EDIT_PROFILE= "editProfile";
 
     public final static String ADD_PLACE= "addPlace";

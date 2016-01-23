@@ -21,6 +21,8 @@ public class BerimHeader extends RelativeLayout {
 
     private ImageView mNewUserIcon;
 
+    private ImageView mLeftActionIcon;
+
     private TextView mTitle;
 
     public BerimHeader(Context context) {
@@ -47,6 +49,7 @@ public class BerimHeader extends RelativeLayout {
                 .inflate(R.layout.berim_header, this, true);
 
         mNewUserIcon = (ImageView) mRootView.findViewById(R.id.header_new_user);
+        mLeftActionIcon = (ImageView) mRootView.findViewById(R.id.header_left_action);
         mTitle = (TextView) findViewById(R.id.header_title);
     }
 
@@ -54,6 +57,12 @@ public class BerimHeader extends RelativeLayout {
         mNewUserIcon.setImageResource(iconDrawable);
         mNewUserIcon.setOnClickListener(onClickListener);
         mNewUserIcon.setVisibility(VISIBLE);
+    }
+
+    public void showLeftAction(int iconDrawable, OnClickListener onClickListener){
+        mLeftActionIcon.setImageResource(iconDrawable);
+        mLeftActionIcon.setOnClickListener(onClickListener);
+        mLeftActionIcon.setVisibility(VISIBLE);
     }
 
     public void hideRightAction(){

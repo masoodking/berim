@@ -138,7 +138,7 @@ public class RoomActivity extends BerimActivity {
         mMessageInput.setText("");
         try {
             seenMessagesOnServer(messages, true);
-        }catch (JSONException e){
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }
@@ -207,7 +207,7 @@ public class RoomActivity extends BerimActivity {
         mMessages.add(message);
         mAdapter.notifyDataSetChanged();
         mMessageInput.setText("");
-        if(message.getSender().getId().equals(mMe.getId())){
+        if (message.getSender().getId().equals(mMe.getId())) {
             DatabaseHelper.getInstance(mContext).InsertMessage(message);
         }
     }
@@ -220,6 +220,43 @@ public class RoomActivity extends BerimActivity {
             @Override
             public void onClick(View v) {
                 startActivityForResult(new Intent(mContext, SelectUserActivity.class), SELECT_USER);
+            }
+        });
+        mBerimHeader.showLeftAction(R.drawable.ic_logout, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Message message = new Message();
+                    message.setText("من از گروه خارج شدم.");
+                    message.setRoomId(mRoom.getId());
+                    message.setSender(mMe);
+                    message.setStatus(Message.MessageStatus.SENT);
+                    message.setDate(String.valueOf(System.currentTimeMillis()));
+                    message.setId("not-set");
+                    try {
+                        sendMessage(message);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("roomId", mRoom.getId());
+                    NetworkManager
+                            .sendRequest(MethodsName.LEAVE_ROOM, jsonObject, new NetworkReceiver() {
+                                @Override
+                                public void onResponse(Object response) {
+                                    DatabaseHelper.getInstance(mContext).leaveRoom(mRoom.getId());
+                                    finish();
+                                }
+
+                                @Override
+                                public void onErrorResponse(BerimNetworkException error) {
+                                    Toast.makeText(mContext, "خطا: " + error.toString(),
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
         mChatNetworkListner.register();

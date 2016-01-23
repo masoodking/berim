@@ -82,6 +82,9 @@ public class ChatsListAdapter extends BaseAdapter {
         }
         if (theRoom.getUnreadMessageCount() > 0) {
             viewHolder.badge.setText(String.valueOf(theRoom.getUnreadMessageCount()));
+            viewHolder.badge.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.badge.setVisibility(View.GONE);
         }
         return convertView;
     }

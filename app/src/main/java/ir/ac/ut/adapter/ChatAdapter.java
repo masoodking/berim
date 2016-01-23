@@ -1,21 +1,15 @@
 package ir.ac.ut.adapter;
 
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Environment;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.github.nkzawa.socketio.client.On;
 
 import java.util.ArrayList;
 
@@ -93,7 +87,8 @@ public class ChatAdapter extends BaseAdapter {
             String[] fileName = chatMessage.getFileAddress().split("/");
             Log.wtf("has file", chatMessage.getFileAddress());
             viewHolder.inAppImage.setVisibility(View.VISIBLE);
-            ImageLoader.getInstance().display(chatMessage.getFileAddress(), viewHolder.inAppImage, R.drawable.ic_action_attach);
+            viewHolder.text.setVisibility(View.GONE);
+            ImageLoader.getInstance().display(chatMessage.getFileAddress(), viewHolder.inAppImage, R.drawable.ic_download);
             viewHolder.inAppImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -102,8 +97,9 @@ public class ChatAdapter extends BaseAdapter {
                 }
             });
         } else {
-            viewHolder.name.setText(chatMessage.getText());
             viewHolder.inAppImage.setVisibility(View.GONE);
+            viewHolder.text.setText(chatMessage.getText());
+            viewHolder.text.setVisibility(View.VISIBLE);
         }
         return convertView;
     }
@@ -123,19 +119,13 @@ public class ChatAdapter extends BaseAdapter {
     }
 
     class MessageViewHolder {
-
-        final TextView name;
-
         final TextView description;
-        final TextView sender;
+        final TextView text;
         final ImageView inAppImage;
-        final ImageView icon;
 
         MessageViewHolder(View view) {
-            name = (TextView) view.findViewById(R.id.message_name_text_view);
             description = (TextView) view.findViewById(R.id.message_description_text_view);
-            sender = (TextView) view.findViewById(R.id.chat_sender);
-            icon = (ImageView) view.findViewById(R.id.chat_sender_avatar);
+            text = (TextView) view.findViewById(R.id.message_name_text_view);
             inAppImage = (ImageView) view.findViewById(R.id.in_chat_image);
         }
     }

@@ -4,13 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -37,6 +35,19 @@ public class RoomAdapter extends BaseAdapter {
         mMessages = data;
     }
 
+    @Override
+    public int getViewTypeCount() {
+        return 2;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (ProfileUtils.getUser(mContext).getId()
+                .equals(mMessages.get(position).getSender().getId())) {
+            return FROM_ME;
+        }
+        return FROM_HER;
+    }
 
     @Override
     public int getCount() {
@@ -77,7 +88,7 @@ public class RoomAdapter extends BaseAdapter {
 
             } else {//IT'S A MESSEGE FROM OTHERS
                 convertView = LayoutInflater.from(mContext)
-                        .inflate(R.layout.item_chat_message_her, parent, false);
+                        .inflate(R.layout.item_room_message_her, parent, false);
                 viewHolder = new MessageViewHolder(convertView);
                 viewHolder.sender.setText(chatMessage.getSender().getValidUserName());
                 convertView.setTag(viewHolder);
@@ -89,12 +100,12 @@ public class RoomAdapter extends BaseAdapter {
             viewHolder = (MessageViewHolder) convertView.getTag();
         }
 
-        viewHolder.name.setText(chatMessage.getText());
-        if (chatMessage.getFileAddress() != null || !chatMessage.getFileAddress().toLowerCase().equals("")) {
+        if (chatMessage.getFileAddress() != null && !chatMessage.getFileAddress().equals("")) {
             String[] fileName = chatMessage.getFileAddress().split("/");
             Log.wtf("has file", chatMessage.getFileAddress());
             viewHolder.inAppImage.setVisibility(View.VISIBLE);
-            ImageLoader.getInstance().display(chatMessage.getFileAddress(), viewHolder.inAppImage, R.drawable.ic_action_attach);
+            viewHolder.name.setVisibility(View.GONE);
+            ImageLoader.getInstance().display(chatMessage.getFileAddress(), viewHolder.inAppImage, R.drawable.ic_download);
             viewHolder.inAppImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -103,16 +114,17 @@ public class RoomAdapter extends BaseAdapter {
                 }
             });
         } else {
+            viewHolder.name.setText(chatMessage.getText());
+            viewHolder.name.setVisibility(View.VISIBLE);
             viewHolder.inAppImage.setVisibility(View.GONE);
         }
+
         return convertView;
     }
-
 
     class MessageViewHolder {
 
         final TextView name;
-
         final TextView description;
         final TextView sender;
         final ImageView inAppImage;

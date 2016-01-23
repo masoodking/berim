@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -155,7 +154,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public ArrayList<Message> getMessage(boolean setSeen, String where) {
         ArrayList<Message> data = convertCursorToMessage(getReadableDatabase().query(
-                MESSAGE_TABLE_NAME, null, where, null, null, null, null));
+                MESSAGE_TABLE_NAME, null, where, null, null, null, DATE + " ASC"));
         if (setSeen) {
             for (Message message : data) {
                 if (message.getStatus() != Message.MessageStatus.SEEN) {
@@ -178,6 +177,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public void leaveRoom(String rommId) {
+        db.delete(ROOM_TABLE_NAME, ID + "='" + rommId + "'", null);
+        db.delete(MESSAGE_TABLE_NAME, ROOM_ID + "='" + rommId + "'", null);
+
+    }
+
     public ArrayList<Room> getRoom(String where) {
         return convertCursorToRoom(getReadableDatabase().query(
                 ROOM_TABLE_NAME, null, where, null, null, null, null));
@@ -191,10 +196,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<Room> getChatList() {
-        String myUserId = ProfileUtils.getUser(BerimApplication.getInstance()).getId();
+        User myUser = ProfileUtils.getUser(BerimApplication.getInstance());
         ArrayList<Message> messages = getMessage(false, null);
         HashMap hashMap = new HashMap<String, Message>();
-        ArrayList<Room> berims = getRoom(ID + "!='" + ProfileUtils.getUser(BerimApplication.getInstance()).getRoomId() + "'");
+        ArrayList<Room> berims = getRoom(ID + "!='" + myUser.getRoomId() + "'");
         String berimRoomsId = "";
         for (Room berim : berims) {
             if (berim.getMaxUserCount() > 1) {
@@ -212,11 +217,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     && !hashMap
                     .containsKey("<" + msg.getRoomId() + "," + msg.getSender().getRoomId() + ">")) {
                 Room room = new Room();
-                room.setId(msg.getRoomId());
+                if (!msg.getRoomId().equals(myUser.getRoomId())) {
+                    room.setId(msg.getRoomId());
+                } else {
+                    room.setId(msg.getSender().getRoomId());
+                }
                 room.setLastMessage(msg);
                 room.setMaxUserCount(1);
                 if (msg.getSender().getId()
-                        .equals(myUserId)) {
+                        .equals(myUser.getId())) {
                     room.setName("-");
                 } else {
                     room.setName(msg.getSender().getValidUserName());
@@ -230,13 +239,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         .get("<" + msg.getSender().getRoomId() + "," + msg.getRoomId() + ">");
                 if (rm != null) {
                     if (msg.getStatus() != Message.MessageStatus.SEEN
-                            && !msg.getSender().getId().equals(myUserId)) {
+                            && !msg.getSender().getId().equals(myUser.getId())) {
                         rm.setUnreadMessageCount(rm.getUnreadMessageCount() + 1);
                     }
-                    if (!msg.getSender().getId().equals(myUserId)) {
+                    if (!msg.getSender().getId().equals(myUser.getId())) {
                         rm.setName(msg.getSender().getValidUserName());
-                    }
-                    if(!TextUtils.isEmpty(msg.getText())){
                         rm.setLastMessage(msg);
                     }
                     hashMap.remove("<" + msg.getSender().getRoomId() + "," + msg.getRoomId() + ">");
@@ -246,13 +253,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     rm = (Room) hashMap
                             .get("<" + msg.getRoomId() + "," + msg.getSender().getRoomId() + ">");
                     if (msg.getStatus() != Message.MessageStatus.SEEN
-                            && msg.getSender().getId() != myUserId) {
+                            && !msg.getSender().getId().equals(myUser.getId())) {
                         rm.setUnreadMessageCount(rm.getUnreadMessageCount() + 1);
                     }
-                    if (!msg.getSender().getId().equals(myUserId)) {
+                    if (!msg.getSender().getId().equals(myUser.getId())) {
                         rm.setName(msg.getSender().getValidUserName());
-                    }
-                    if(!TextUtils.isEmpty(msg.getText())){
                         rm.setLastMessage(msg);
                     }
                     hashMap.remove("<" + msg.getRoomId() + "," + msg.getSender().getRoomId() + ">");

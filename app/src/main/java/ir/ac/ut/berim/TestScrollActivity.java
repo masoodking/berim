@@ -14,7 +14,6 @@ import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,16 +21,11 @@ import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 
 import ir.ac.ut.adapter.PlaceReviewAdapter;
 import ir.ac.ut.models.Place;
-import ir.ac.ut.models.Review;
 import ir.ac.ut.models.Room;
 import ir.ac.ut.network.BerimNetworkException;
 import ir.ac.ut.network.MethodsName;
@@ -82,6 +76,9 @@ public class TestScrollActivity extends AppCompatActivity {
         mContext = this;
         mPlace = (Place) getIntent().getSerializableExtra("place");
 
+        if(mPlace.getRate() == -1){
+            mPlace.setRate(0);
+        }
         mBerimFAB = (FloatingActionButton) findViewById(R.id.berim_fab);
 
         mListView = (ObservableListView) findViewById(R.id.list);
